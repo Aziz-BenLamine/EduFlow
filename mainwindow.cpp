@@ -12,3 +12,21 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_ajouterEmp_clicked()
+{
+    ui->employeesNavBar->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_afficherEmp_clicked()
+{
+    ui->employeesNavBar->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_modiferEmp_clicked()
+{
+    ui->employeesNavBar->setCurrentIndex(2);
+}
+

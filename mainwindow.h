@@ -17,6 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_ajouterEmp_clicked();
+
+    void on_afficherEmp_clicked();
+
+    void on_modiferEmp_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
