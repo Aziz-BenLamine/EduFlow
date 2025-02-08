@@ -106,3 +106,27 @@ void MainWindow::on_statsColis_clicked()
     ui->distributionsNavBar->setCurrentIndex(3);
 }
 
+
+void MainWindow::on_ajouterEq_clicked()
+{
+    ui->equipementsNavBar->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_afficherEq_clicked()
+{
+    ui->equipementsNavBar->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_modiferEq_clicked()
+{
+    ui->equipementsNavBar->setCurrentIndex(2);
+}
+
+
+void MainWindow::on_statsEq_clicked()
+{
+    ui->equipementsNavBar->setCurrentIndex(3);
+}
+

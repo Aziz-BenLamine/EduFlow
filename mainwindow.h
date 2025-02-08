@@ -50,6 +50,14 @@ private slots:
 
     void on_statsColis_clicked();
 
+    void on_ajouterEq_clicked();
+
+    void on_afficherEq_clicked();
+
+    void on_modiferEq_clicked();
+
+    void on_statsEq_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
