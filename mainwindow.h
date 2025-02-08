@@ -38,6 +38,18 @@ private slots:
 
     void on_statsEtab_clicked();
 
+    void on_distributionsBTN_clicked();
+
+    void on_equipementsBTN_clicked();
+
+    void on_ajouterColis_clicked();
+
+    void on_afficherColis_clicked();
+
+    void on_modiferColis_clicked();
+
+    void on_statsColis_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

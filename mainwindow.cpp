@@ -49,7 +49,7 @@ void MainWindow::on_employesBTN_clicked()
     ui->employeesNavBar->setCurrentIndex(0);
 }
 
-
+//Etablissements Navbar
 void MainWindow::on_ajouterEtab_clicked()
 {
     ui->etablissementsNavBar->setCurrentIndex(0);
@@ -68,5 +68,41 @@ void MainWindow::on_modiferEtab_clicked()
 void MainWindow::on_statsEtab_clicked()
 {
     ui->etablissementsNavBar->setCurrentIndex(3);
+}
+
+
+void MainWindow::on_distributionsBTN_clicked()
+{
+    ui->mainApp->setCurrentIndex(3);
+}
+
+
+void MainWindow::on_equipementsBTN_clicked()
+{
+    ui->mainApp->setCurrentIndex(4);
+}
+
+
+void MainWindow::on_ajouterColis_clicked()
+{
+    ui->distributionsNavBar->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_afficherColis_clicked()
+{
+    ui->distributionsNavBar->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_modiferColis_clicked()
+{
+    ui->distributionsNavBar->setCurrentIndex(2);
+}
+
+
+void MainWindow::on_statsColis_clicked()
+{
+    ui->distributionsNavBar->setCurrentIndex(3);
 }
 
