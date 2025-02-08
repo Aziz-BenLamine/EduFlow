@@ -30,3 +30,43 @@ void MainWindow::on_modiferEmp_clicked()
     ui->employeesNavBar->setCurrentIndex(2);
 }
 
+
+void MainWindow::on_statsEmp_clicked()
+{
+    ui->employeesNavBar->setCurrentIndex(3);
+}
+
+
+void MainWindow::on_etablissementBTN_clicked()
+{
+    ui->mainApp->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_employesBTN_clicked()
+{
+    ui->mainApp->setCurrentIndex(0);
+    ui->employeesNavBar->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_ajouterEtab_clicked()
+{
+    ui->etablissementsNavBar->setCurrentIndex(0);
+}
+
+void MainWindow::on_afficherEtab_clicked()
+{
+    ui->etablissementsNavBar->setCurrentIndex(1);
+}
+
+void MainWindow::on_modiferEtab_clicked()
+{
+    ui->etablissementsNavBar->setCurrentIndex(2);
+}
+
+void MainWindow::on_statsEtab_clicked()
+{
+    ui->etablissementsNavBar->setCurrentIndex(3);
+}
+

@@ -24,6 +24,20 @@ private slots:
 
     void on_modiferEmp_clicked();
 
+    void on_statsEmp_clicked();
+
+    void on_etablissementBTN_clicked();
+
+    void on_employesBTN_clicked();
+
+    void on_ajouterEtab_clicked();
+
+    void on_modiferEtab_clicked();
+
+    void on_afficherEtab_clicked();
+
+    void on_statsEtab_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

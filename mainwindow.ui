@@ -186,7 +186,7 @@ QWidget { background: transparent; }  </string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(0, 255, 255);</string>
       </property>
-      <widget class="QWidget" name="ajouterEmploye">
+      <widget class="QWidget" name="ajouterEmployes">
        <widget class="QLineEdit" name="cinInput">
         <property name="geometry">
          <rect>
@@ -1062,6 +1062,7 @@ color: black;</string>
         </item>
        </widget>
       </widget>
+      <widget class="QWidget" name="statistiquesEmployes"/>
      </widget>
      <widget class="QPushButton" name="ajouterEmp">
       <property name="geometry">
@@ -1130,7 +1131,578 @@ color: black;</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="etablissementsPage"/>
+    <widget class="QWidget" name="etablissementsPage">
+     <widget class="QPushButton" name="modiferEtab">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>10</y>
+        <width>251</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+      </property>
+      <property name="text">
+       <string>Modifier </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="afficherEtab">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>10</y>
+        <width>241</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+      </property>
+      <property name="text">
+       <string>Afficher </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ajouterEtab">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>10</y>
+        <width>241</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+      </property>
+      <property name="text">
+       <string>Ajouter </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="statsEtab">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>10</y>
+        <width>161</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+      </property>
+      <property name="text">
+       <string>Statistiques</string>
+      </property>
+     </widget>
+     <widget class="QStackedWidget" name="etablissementsNavBar">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>110</y>
+        <width>1351</width>
+        <height>991</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 255, 255);</string>
+      </property>
+      <widget class="QWidget" name="ajouterEtablissements">
+       <widget class="QLineEdit" name="nomEtabInput">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>160</y>
+          <width>331</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="govInput">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>160</y>
+          <width>331</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="localInput">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>300</y>
+          <width>331</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="capInput">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>300</y>
+          <width>331</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_37">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>120</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font-size: 20px;</string>
+        </property>
+        <property name="text">
+         <string>Nom:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_38">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>120</y>
+          <width>131</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font-size: 20px;</string>
+        </property>
+        <property name="text">
+         <string>Governorat:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_39">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>260</y>
+          <width>131</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font-size: 20px;</string>
+        </property>
+        <property name="text">
+         <string>Localisation:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_40">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>260</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font-size: 20px;</string>
+        </property>
+        <property name="text">
+         <string>Capacité:</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="afficherEtablissements">
+       <widget class="QLabel" name="label_45">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>241</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: transparent;  
+    border: none;  
+    color: white;  
+    font-weight: bold; 
+    font-size: 32px; 
+    padding: 10px 20px;  
+    border-radius: 8px;  </string>
+        </property>
+        <property name="text">
+         <string>Recherche :</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="champRecherche_3">
+        <property name="geometry">
+         <rect>
+          <x>230</x>
+          <y>30</y>
+          <width>481</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background : white;
+selection-background-color: #4CAF50;
+selection-color: white;
+border: 1px solid #dcdcdc; 
+border-radius: 24px; 
+padding: 10px 20px; 
+font-size: 16px;
+font-family: 'Roboto', sans-serif;
+color: #333; 
+transition: all 0.3s ease; 
+box-sizing: border-box;   outline: none; </string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_46">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>10</y>
+          <width>111</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: transparent;  
+    border: none;  
+    color: white;  
+    font-weight: bold; 
+    font-size: 32px; 
+    padding: 10px 20px;  
+    border-radius: 8px;  </string>
+        </property>
+        <property name="text">
+         <string>Tri :</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_3">
+        <property name="geometry">
+         <rect>
+          <x>810</x>
+          <y>30</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Governorat</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QPushButton" name="geoBTN">
+        <property name="geometry">
+         <rect>
+          <x>830</x>
+          <y>110</y>
+          <width>401</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 32px; 
+    padding: 10px 20px;  
+    border-radius: 8px;  </string>
+        </property>
+        <property name="text">
+         <string>Geolocalisation</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pdfEtab">
+        <property name="geometry">
+         <rect>
+          <x>830</x>
+          <y>200</y>
+          <width>401</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 32px; 
+    padding: 10px 20px;  
+    border-radius: 8px;  </string>
+        </property>
+        <property name="text">
+         <string>Generer PDF</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="textSpchBTN">
+        <property name="geometry">
+         <rect>
+          <x>830</x>
+          <y>310</y>
+          <width>401</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 32px; 
+    padding: 10px 20px;  
+    border-radius: 8px;  </string>
+        </property>
+        <property name="text">
+         <string>Text-To-Speech</string>
+        </property>
+       </widget>
+       <widget class="QTableWidget" name="tableWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>130</y>
+          <width>501</width>
+          <height>192</height>
+         </rect>
+        </property>
+        <column>
+         <property name="text">
+          <string>ID</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Nom</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Localisation</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Capacite</string>
+         </property>
+        </column>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="ModifierEtablissements">
+       <widget class="QLineEdit" name="nomEtabInputM">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>120</y>
+          <width>331</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_41">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>80</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font-size: 20px;</string>
+        </property>
+        <property name="text">
+         <string>Nom:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_44">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>220</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font-size: 20px;</string>
+        </property>
+        <property name="text">
+         <string>Capacité:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_42">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>220</y>
+          <width>131</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font-size: 20px;</string>
+        </property>
+        <property name="text">
+         <string>Localisation:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="capInputM">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>260</y>
+          <width>331</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="localInputM">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>260</y>
+          <width>331</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="govInputM">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>120</y>
+          <width>331</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_43">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>80</y>
+          <width>131</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font-size: 20px;</string>
+        </property>
+        <property name="text">
+         <string>Governorat:</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="statistiquesEtablissements"/>
+     </widget>
+    </widget>
    </widget>
    <zorder>frame</zorder>
    <zorder>employesBTN</zorder>
