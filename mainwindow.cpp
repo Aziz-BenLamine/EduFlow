@@ -130,3 +130,32 @@ void MainWindow::on_statsEq_clicked()
     ui->equipementsNavBar->setCurrentIndex(3);
 }
 
+
+void MainWindow::on_examensBTN_clicked()
+{
+    ui->mainApp->setCurrentIndex(2);
+}
+
+
+void MainWindow::on_ajouterExam_clicked()
+{
+    ui->examensNavBar->setCurrentIndex(0);
+}
+
+void MainWindow::on_afficherExam_clicked()
+{
+    ui->examensNavBar->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_modiferExam_clicked()
+{
+    ui->examensNavBar->setCurrentIndex(2);
+}
+
+
+void MainWindow::on_statsExam_clicked()
+{
+    ui->examensNavBar->setCurrentIndex(3);
+}
+

@@ -58,6 +58,16 @@ private slots:
 
     void on_statsEq_clicked();
 
+    void on_examensBTN_clicked();
+
+    void on_ajouterExam_clicked();
+
+    void on_afficherExam_clicked();
+
+    void on_modiferExam_clicked();
+
+    void on_statsExam_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
