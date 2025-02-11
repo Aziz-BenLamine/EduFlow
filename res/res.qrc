@@ -2,5 +2,6 @@
     <qresource prefix="/new/prefix1"/>
     <qresource prefix="/">
         <file>logo.png</file>
+        <file>loginbg.png</file>
     </qresource>
 </RCC>

@@ -159,3 +159,15 @@ void MainWindow::on_statsExam_clicked()
     ui->examensNavBar->setCurrentIndex(3);
 }
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->login_app->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_deconnexionBTN_clicked()
+{
+    ui->login_app->setCurrentIndex(0);
+}
+

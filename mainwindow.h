@@ -68,6 +68,10 @@ private slots:
 
     void on_statsExam_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_deconnexionBTN_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
