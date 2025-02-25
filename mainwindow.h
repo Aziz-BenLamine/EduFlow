@@ -72,6 +72,8 @@ private slots:
 
     void on_deconnexionBTN_clicked();
 
+    void on_ajouterEmp_4_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

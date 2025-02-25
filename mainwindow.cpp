@@ -171,3 +171,9 @@ void MainWindow::on_deconnexionBTN_clicked()
     ui->login_app->setCurrentIndex(0);
 }
 
+
+void MainWindow::on_ajouterEmp_4_clicked()
+{
+
+}
+

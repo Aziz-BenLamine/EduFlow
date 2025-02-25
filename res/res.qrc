@@ -3,5 +3,12 @@
     <qresource prefix="/">
         <file>logo.png</file>
         <file>loginbg.png</file>
+        <file>reconaissancePNG.png</file>
+        <file>collegeIcon.png</file>
+        <file>distributionIcon.png</file>
+        <file>employeeIcon.png</file>
+        <file>equipmentIcon.png</file>
+        <file>examIcon.png</file>
+        <file>shutdownIcon.png</file>
     </qresource>
 </RCC>
