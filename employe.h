@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <QSqlQueryModel>
 
 class Employe
 {
@@ -42,7 +43,7 @@ class Employe
         bool ajouter();
         bool modifier();
         bool supprimer();
-        std::vector<Employe> afficher();
+        QSqlQueryModel* afficher();
 };
 
 #endif // EMPLOYE_H

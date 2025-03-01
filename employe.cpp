@@ -109,7 +109,7 @@ Employe::Employe()
     this->roleEmp = "";
     this->photo = {};
 }
-//Ajouter Employe dans la base de donnes
+//CRUD
 
 bool Employe::ajouter()
 {
@@ -125,4 +125,21 @@ bool Employe::ajouter()
     query.bindValue(":roleEmp", QString::fromStdString(roleEmp));
     query.bindValue(":photo", QByteArray(reinterpret_cast<const char*>(photo.data()), photo.size()));
     return query.exec();
+}
+
+//Afficher Employe dans la table: tableEmploye
+
+QSqlQueryModel* Employe::afficher()
+{
+    QSqlQueryModel *model = new QSqlQueryModel();
+    model->setQuery("SELECT * FROM employe");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Prenom"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Email"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("Telephone"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("Daten de naissance"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("Role"));
+    model->setHeaderData(7, Qt::Horizontal, QObject::tr("Photo"));
+    return model;
 }

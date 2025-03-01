@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "employe.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -80,5 +80,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    Employe emp;
 };
 #endif // MAINWINDOW_H

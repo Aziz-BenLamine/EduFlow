@@ -599,7 +599,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
 background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterEmployes">
          <widget class="QFrame" name="formBackground">
@@ -1089,12 +1089,12 @@ color: black;
          </widget>
         </widget>
         <widget class="QWidget" name="afficherEmployes">
-         <widget class="QTableWidget" name="tableWidget">
+         <widget class="QTableWidget" name="tableEmployeModel">
           <property name="geometry">
            <rect>
             <x>20</x>
             <y>180</y>
-            <width>1131</width>
+            <width>1231</width>
             <height>141</height>
            </rect>
           </property>
@@ -1163,10 +1163,10 @@ QTableWidget {
            <bool>false</bool>
           </attribute>
           <attribute name="horizontalHeaderMinimumSectionSize">
-           <number>38</number>
+           <number>50</number>
           </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>112</number>
+           <number>150</number>
           </attribute>
           <attribute name="horizontalHeaderHighlightSections">
            <bool>true</bool>
@@ -1385,6 +1385,44 @@ color: black;</string>
           <property name="text">
            <string>Generer PDF</string>
           </property>
+         </widget>
+         <widget class="QTableView" name="tableEmploye">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>340</y>
+            <width>1231</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">/* Header styling (works for both QTableWidget and QTableView) */
+QHeaderView::section {
+    background-color: #0E3B52;
+    padding: 4px;
+    border: 1px solid #fffff8;
+    font-size: 14pt;
+}
+
+/* Styling for QTableView */
+QTableView {
+    color: black;
+    background-color: #F7F9FB;
+    border: 2px solid #2a82da;
+    gridline-color: #ddd;
+    selection-background-color: #2a82da;
+    selection-color: white;
+}</string>
+          </property>
+          <property name="cornerButtonEnabled">
+           <bool>false</bool>
+          </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>150</number>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
          </widget>
         </widget>
         <widget class="QWidget" name="ModifierEmployes">
