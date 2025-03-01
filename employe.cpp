@@ -1,4 +1,7 @@
 #include "employe.h"
+#include <QMessageBox>
+#include <QSqlQueryModel>
+#include <QSqlQuery>
 
 Employe::Employe(int id_employee, std::string nomEmp, std::string prenomEmp, std::string emailEmp, int telephoneEmp, std::string dateN, std::string roleEmp, std::vector<unsigned char> photo)
 {
@@ -105,4 +108,21 @@ Employe::Employe()
     this->dateN = "";
     this->roleEmp = "";
     this->photo = {};
+}
+//Ajouter Employe dans la base de donnes
+
+bool Employe::ajouter()
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO employe (id_employe, nomEmp, prenomEmp, email, telephone, dateN, role, photo) "
+                  "VALUES (:id_employee, :nomEmp, :prenomEmp, :emailEmp, :telephoneEmp, TO_DATE(:dateN, 'DD/MM/YYYY'), :roleEmp, :photo)");
+    query.bindValue(":id_employee", id_employee);
+    query.bindValue(":nomEmp", QString::fromStdString(nomEmp));
+    query.bindValue(":prenomEmp", QString::fromStdString(prenomEmp));
+    query.bindValue(":emailEmp", QString::fromStdString(emailEmp));
+    query.bindValue(":telephoneEmp", telephoneEmp);
+    query.bindValue(":dateN", QString::fromStdString(dateN));
+    query.bindValue(":roleEmp", QString::fromStdString(roleEmp));
+    query.bindValue(":photo", QByteArray(reinterpret_cast<const char*>(photo.data()), photo.size()));
+    return query.exec();
 }

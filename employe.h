@@ -37,6 +37,12 @@ class Employe
         void setDateN(std::string dateN);
         void setRoleEmp(std::string roleEmp);
         void setPhoto(std::vector<unsigned char> photo);
+
+        //CRUD
+        bool ajouter();
+        bool modifier();
+        bool supprimer();
+        std::vector<Employe> afficher();
 };
 
 #endif // EMPLOYE_H

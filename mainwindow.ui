@@ -599,7 +599,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
 background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="ajouterEmployes">
          <widget class="QFrame" name="formBackground">
@@ -962,7 +962,7 @@ border: 0px;</string>
             <string>CIN:</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="ajouterEmp_2">
+          <widget class="QPushButton" name="ajouterEmpBD">
            <property name="geometry">
             <rect>
              <x>330</x>
@@ -999,10 +999,10 @@ font: 600 22pt &quot;Segoe UI&quot;;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Employe ajouté avec succès ✅</string>
+            <string>AFD</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="cinInput_2">
+          <widget class="QLineEdit" name="mdpInput">
            <property name="geometry">
             <rect>
              <x>30</x>
@@ -1065,7 +1065,7 @@ border: 0px;</string>
             <string>Confirmation Mot de passe:</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="cinInput_4">
+          <widget class="QLineEdit" name="mdpInputC">
            <property name="geometry">
             <rect>
              <x>560</x>
@@ -3853,7 +3853,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterCollis">
          <widget class="QFrame" name="frame_7">

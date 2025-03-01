@@ -1,6 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QMessageBox>
+#include <QSqlQueryModel>
+#include <QSqlQuery>
+#include <QFileDialog>
 
+#include "employe.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -175,5 +180,46 @@ void MainWindow::on_deconnexionBTN_clicked()
 void MainWindow::on_ajouterEmp_4_clicked()
 {
 
+}
+
+
+void MainWindow::on_ajouterEmpBD_clicked()
+{
+    //Get the form variables
+    int id_employee = ui->cinInput->text().toInt();
+    std::string nomEmp = ui->nameInput->text().toStdString();
+    std::string prenomEmp = ui->prenomInput->text().toStdString();
+    std::string emailEmp = ui->emailInput->text().toStdString();
+    int telephoneEmp = ui->telephoneInput->text().toInt();
+    //Get date to insert it later into the oracle db
+    std::string dateN = ui->dateNInput->text().toStdString();
+    //Get combobox value as string
+    std::string roleEmp = ui->roleInput->currentText().toStdString();
+    std::vector<unsigned char> photo;
+    //Create an employee object
+    Employe e(id_employee, nomEmp, prenomEmp, emailEmp, telephoneEmp, dateN, roleEmp, photo);
+    //Add the employee to the database
+    bool test = e.ajouter();
+    if(test)
+    {
+        ui->MessageForme->setText("Employe ajouté avec succès ✅");
+        QMessageBox::information(nullptr, QObject::tr("Employee added"),
+                                 QObject::tr("Employee added successfully.\n"
+                                             "Click Cancel to exit."), QMessageBox::Cancel);
+    }
+    else
+    {
+        ui->MessageForme->setText("Erreur :Employe non ajouté ❎");
+        QMessageBox::critical(nullptr, QObject::tr("Employee not added"),
+                              QObject::tr("Employee not added.\n"
+                                          "Click Cancel to exit."), QMessageBox::Cancel);
+    }
+}
+
+
+void MainWindow::on_photoInput_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.bmp)"));
+    ui->photoInput->setText(fileName);
 }
 

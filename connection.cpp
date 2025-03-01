@@ -14,10 +14,5 @@ bool Connection::createconnect()
 
     if (db.open())
         test=true;
-
-
-
-
-
     return  test;
 }

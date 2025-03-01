@@ -74,6 +74,10 @@ private slots:
 
     void on_ajouterEmp_4_clicked();
 
+    void on_ajouterEmpBD_clicked();
+
+    void on_photoInput_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
