@@ -18,6 +18,7 @@ public:
     ~MainWindow();
 
 private slots:
+
     void on_ajouterEmp_clicked();
 
     void on_afficherEmp_clicked();
@@ -73,6 +74,18 @@ private slots:
     void on_deconnexionBTN_clicked();
 
     void on_ajouterEmp_4_clicked();
+
+    void on_ajouterEtab_2_clicked();
+
+    //void on_ajouterEmp_8_clicked();
+
+    void on_affBtn_clicked();
+
+    void on_checkBox_2_stateChanged(int arg1);
+
+    void on_checkBox_stateChanged(int arg1);
+
+    void on_ajouterEmp_8_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -1,5 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "QMessageBox"
+#include "etablissement.h"
+#include <string>
+#include <QTableWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -176,4 +180,96 @@ void MainWindow::on_ajouterEmp_4_clicked()
 {
 
 }
+
+// ajout de l' etablissement
+void MainWindow::on_ajouterEtab_2_clicked()
+{
+    QString nom = ui->nomEtabInput->text();
+    QString gouv = ui->govInput->text();
+    float longe = ui->long_2->text().toFloat();
+    float lat = ui->lat->text().toFloat();
+    int cap = ui->cap->text().toInt();
+    QString mail = ui->mail->text();
+    int tel = ui->tel->text().toInt();
+
+    QRegularExpression regexNom("^[a-zA-ZÀ-ÖØ-öø-ÿ ]+$");
+    QRegularExpression regexTel("^[0-9]+$");
+    bool nomValide = regexNom.match(nom).hasMatch();
+    bool gouvValide = regexNom.match(gouv).hasMatch();
+    bool telValide = regexTel.match(ui->tel->text()).hasMatch();
+    bool longeValide = longe > 0;
+    bool latValide = lat > 0;
+    bool mailValide = mail.contains("@") && mail.contains(".");
+    bool capValide = cap > 0;
+
+    if (!nomValide) {
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Le nom doit contenir uniquement des lettres et des espaces!"), QMessageBox::Ok);
+        return ;
+    } else if (!gouvValide) {
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Le gouvernorat doit contenir uniquement des lettres et des espaces!"), QMessageBox::Ok);
+    } else if (!longeValide) {
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("La longitude doit être un nombre positif!"), QMessageBox::Ok);
+        return ;
+    } else if (!latValide) {
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("La latitude doit être un nombre positif!"), QMessageBox::Ok);
+        return ;
+    } else if (!mailValide) {
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("L'email doit contenir '@' et '.'!"), QMessageBox::Ok);
+        return ;
+    }
+    else if (!telValide) {
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Le numéro de téléphone doit contenir uniquement des chiffres!"), QMessageBox::Ok);
+        return ;
+    } else if (!capValide) {
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("La capacité doit être un nombre positif!"), QMessageBox::Ok);
+        return ;
+    }
+    Etablissement E(nom.toStdString(), gouv.toStdString() , longe , lat , cap , mail.toStdString() , tel);
+    bool test = E.ajouter();
+    if(test)
+    {
+        QMessageBox::information(nullptr, QObject::tr("Valider"), QObject::tr("Ajout effectué avec succès!!"), QMessageBox::Cancel);
+        ui->nomEtabInput->clear();
+        ui->govInput->clear();
+        ui->long_2->clear();
+        ui->lat->clear();
+        ui->cap->clear();
+        ui->mail->clear();
+        ui->tel->clear();
+    }
+    else
+    {
+        QMessageBox::critical(nullptr, QObject::tr("Erreur"), QObject::tr("Ajout non effectué!!"), QMessageBox::Cancel);
+    }
+
+}
+
+// affichier les etablissements
+
+void MainWindow::on_affBtn_clicked()
+{
+    Etablissement E;
+    E.affichier(ui->tableWidget_3);
+}
+
+
+// supprimer les etablissements
+
+void MainWindow::on_checkBox_2_stateChanged(int arg1)
+{
+    if (arg1 == Qt::Checked) {
+        Etablissement E;
+
+        if (E.supprimerTous()) {
+            QMessageBox::information(this, "Suppression réussie", "Tous les établissements ont été supprimés.");
+
+            ui->tableWidget_3->setRowCount(0);
+        }
+        else {
+            QMessageBox::warning(this, "Erreur", "Échec de la suppression des établissements.");
+        }
+    }
+}
+
+
 

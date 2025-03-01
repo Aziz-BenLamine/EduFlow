@@ -10,13 +10,13 @@ CONFIG += c++17
 
 SOURCES += \
     connection.cpp \
-    employe.cpp \
+    etablissement.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     connection.h \
-    employe.h \
+    etablissement.h \
     mainwindow.h
 
 FORMS += \
