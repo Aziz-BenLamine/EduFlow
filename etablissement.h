@@ -2,7 +2,8 @@
 #define ETABLISSEMENT_H
 #include <string>
 #include <QSqlQuery>
-#include <QTableWidget>
+#include <QSqlTableModel>
+#include <QTableView>
 
 class Etablissement
 {
@@ -15,6 +16,7 @@ private:
     int capacite;
     std::string email;
     int tel;
+    QSqlQueryModel *model;
 public:
     // constructeur
     Etablissement();
@@ -44,9 +46,9 @@ public:
     // les methodes CRUD
 
     bool ajouter();
-    void affichier(QTableWidget * table);
+    void afficher(QTableView *tableView);
+    bool supprimer(int id);
     bool supprimerTous();
-    bool modifier(int id_etab);
 
 
 

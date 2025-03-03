@@ -3,8 +3,8 @@
 #include <QSqlQuery>
 #include <QDebug>
 #include <QSqlError>
-#include <QTableWidget>
-#include <QTableWidgetItem>
+#include <QSqlTableModel>
+#include <QTableView>
 
 Etablissement::Etablissement(std::string nom, std::string gouvernorat, float longe, float lat, int capacite, std::string email, int tel)
 {
@@ -96,6 +96,7 @@ void Etablissement::setTel(int tel)
 
 Etablissement::Etablissement()
 {
+    this->id_etab =1;
     this->nom = "";
     this->gouvernorat = "";
     this->longe = 0.0f;
@@ -128,37 +129,30 @@ bool Etablissement::ajouter()
 }
 
 
-void Etablissement::affichier(QTableWidget * table)
+void Etablissement::afficher(QTableView *tableView)
 {
-    {
-        QSqlQuery query;
-        query.prepare("SELECT * FROM ETABLISSEMENTS");
+    model = new QSqlQueryModel();
 
-        if (!query.exec()) {
-            qDebug() << "Erreur lors de la récupération des données:" << query.lastError().text();
-            return;
-        }
+    model->setQuery("SELECT * FROM ETABLISSEMENTS");
 
-        table->setRowCount(0);
-        int row = 0;
-
-        while (query.next()) {
-            table->insertRow(row);
-
-            table->setItem(row, 0, new QTableWidgetItem(query.value("ID_ETAB").toString()));
-            table->setItem(row, 1, new QTableWidgetItem(query.value("NOM").toString()));
-            table->setItem(row, 2, new QTableWidgetItem(query.value("GOUVERNORAT").toString()));
-            table->setItem(row, 3, new QTableWidgetItem(query.value("LONGE").toString()));
-            table->setItem(row, 4, new QTableWidgetItem(query.value("LAT").toString()));
-            table->setItem(row, 5, new QTableWidgetItem(query.value("CAPACITE").toString()));
-            table->setItem(row, 6, new QTableWidgetItem(query.value("MAIL").toString()));
-            table->setItem(row, 7, new QTableWidgetItem(query.value("TEL").toString()));
-
-            row++;
-        }
+    if (model->lastError().isValid()) {
+        qDebug() << "Erreur lors de l'exécution de la requête :" << model->lastError().text();
+        return;
     }
 
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Gouvernorat"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Longitude"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("Latitude"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("Capacité"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("Email"));
+    model->setHeaderData(7, Qt::Horizontal, QObject::tr("Téléphone"));
+
+    tableView->setModel(model);
 }
+
+
 
 bool Etablissement::supprimerTous()
 {
@@ -175,3 +169,16 @@ bool Etablissement::supprimerTous()
 }
 
 
+bool Etablissement::supprimer(int id)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM ETABLISSEMENTS WHERE ID_ETAB = :id");
+    query.bindValue(":id", id);
+
+    if (!query.exec()) {
+        qDebug() << "Erreur lors de la suppression:" << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}

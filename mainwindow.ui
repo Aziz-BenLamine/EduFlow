@@ -1931,7 +1931,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterEtablissements">
          <widget class="QFrame" name="frame_2">
@@ -2438,74 +2438,6 @@ color: black;</string>
            <string>Speech-To-Text</string>
           </property>
          </widget>
-         <widget class="QTableWidget" name="tableWidget_3">
-          <property name="geometry">
-           <rect>
-            <x>120</x>
-            <y>170</y>
-            <width>631</width>
-            <height>191</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">/*Header styling*/
-QHeaderView::section {
-    background-color: #0E3B52;
-    padding: 4px;
-    border: 1px solid #fffff8;
-    font-size: 12pt;
-}
-
-QTableWidget {
-	color:black;
-    background-color: #F7F9FB;
-    border: 2px solid #2a82da;
-    gridline-color: #ddd;
-    selection-background-color: #2a82da;
-    selection-color: white;
-}</string>
-          </property>
-          <column>
-           <property name="text">
-            <string>ID</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Nom</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Gouvernorat</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Longitude</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Lattitude</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Capacite</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Mail</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Tel</string>
-           </property>
-          </column>
-         </widget>
          <widget class="QCheckBox" name="checkBox">
           <property name="geometry">
            <rect>
@@ -2560,6 +2492,45 @@ QTableWidget {
           </property>
           <property name="text">
            <string>Afficher </string>
+          </property>
+         </widget>
+         <widget class="QTableView" name="tabV">
+          <property name="geometry">
+           <rect>
+            <x>40</x>
+            <y>170</y>
+            <width>791</width>
+            <height>192</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">/* Header styling */
+QHeaderView::section {
+    background-color: #0E3B52;
+    padding: 4px;
+    border: 1px solid #fffff8;
+    font-size: 12pt;
+    color: white;
+    font-weight: bold;
+}
+
+/* TableView styling */
+QTableView {
+    color: black;
+    background-color: #F7F9FB;
+    border: 2px solid #2a82da;
+    gridline-color: #ddd;
+    selection-background-color: #2a82da;
+    selection-color: white;
+    alternate-background-color: #E3EAF1;
+}
+
+/* Selected row highlight */
+QTableView::item:selected {
+    background-color: #2a82da;
+    color: white;
+}
+</string>
           </property>
          </widget>
         </widget>
