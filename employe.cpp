@@ -3,7 +3,7 @@
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 
-Employe::Employe(int id_employee, std::string nomEmp, std::string prenomEmp, std::string emailEmp, int telephoneEmp, std::string dateN, std::string roleEmp, std::vector<unsigned char> photo)
+Employe::Employe(int id_employee, std::string nomEmp, std::string prenomEmp, std::string emailEmp, int telephoneEmp, std::string dateN, std::string roleEmp, std::vector<unsigned char> photo, std::string password)
 {
     this->id_employee = id_employee;
     this->nomEmp = nomEmp;
@@ -13,6 +13,7 @@ Employe::Employe(int id_employee, std::string nomEmp, std::string prenomEmp, std
     this->dateN = dateN;
     this->roleEmp = roleEmp;
     this->photo = photo;
+    this->password = password;
 }
 
 //Getters
@@ -142,4 +143,31 @@ QSqlQueryModel* Employe::afficher()
     model->setHeaderData(6, Qt::Horizontal, QObject::tr("Role"));
     model->setHeaderData(7, Qt::Horizontal, QObject::tr("Photo"));
     return model;
+}
+
+//Supprimer Employe
+
+bool Employe::supprimer(int id_employee)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM employe WHERE id_employe = :id_employee");
+    query.bindValue(":id_employee", id_employee);
+    return query.exec();
+}
+
+//Modifier Employe
+
+bool Employe::modifier()
+{
+    QSqlQuery query;
+    query.prepare("UPDATE employe SET nomEmp = :nomEmp, prenomEmp = :prenomEmp, email = :emailEmp, telephone = :telephoneEmp, dateN = TO_DATE(:dateN, 'DD/MM/YYYY'), role = :roleEmp, photo = :photo WHERE id_employe = :id_employee");
+    query.bindValue(":id_employee", id_employee);
+    query.bindValue(":nomEmp", QString::fromStdString(nomEmp));
+    query.bindValue(":prenomEmp", QString::fromStdString(prenomEmp));
+    query.bindValue(":emailEmp", QString::fromStdString(emailEmp));
+    query.bindValue(":telephoneEmp", telephoneEmp);
+    query.bindValue(":dateN", QString::fromStdString(dateN));
+    query.bindValue(":roleEmp", QString::fromStdString(roleEmp));
+    query.bindValue(":photo", QByteArray(reinterpret_cast<const char*>(photo.data()), photo.size()));
+    return query.exec();
 }
