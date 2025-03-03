@@ -3,7 +3,8 @@
 #include "QMessageBox"
 #include "etablissement.h"
 #include <string>
-#include <QTableWidget>
+#include <QSqlTableModel>
+#include <QTableView>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -181,7 +182,8 @@ void MainWindow::on_ajouterEmp_4_clicked()
 
 }
 
-// ajout de l' etablissement
+// ajout un etablissement
+
 void MainWindow::on_ajouterEtab_2_clicked()
 {
     QString nom = ui->nomEtabInput->text();
@@ -249,7 +251,7 @@ void MainWindow::on_ajouterEtab_2_clicked()
 void MainWindow::on_affBtn_clicked()
 {
     Etablissement E;
-    E.affichier(ui->tableWidget_3);
+    E.afficher(ui->tabV);
 }
 
 
@@ -261,15 +263,24 @@ void MainWindow::on_checkBox_2_stateChanged(int arg1)
         Etablissement E;
 
         if (E.supprimerTous()) {
-            QMessageBox::information(this, "Suppression réussie", "Tous les établissements ont été supprimés.");
+            E.afficher(ui->tabV);
 
-            ui->tableWidget_3->setRowCount(0);
+            QMessageBox::information(this, "Suppression réussie", "Tous les établissements ont été supprimés.");
         }
         else {
             QMessageBox::warning(this, "Erreur", "Échec de la suppression des établissements.");
         }
     }
+    ui->checkBox_2->setChecked(false);
 }
 
 
+
+
+
+
+void MainWindow::on_checkBox_stateChanged(int arg1)
+{
+
+}
 
