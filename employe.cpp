@@ -115,8 +115,8 @@ Employe::Employe()
 bool Employe::ajouter()
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO employe (id_employe, nomEmp, prenomEmp, email, telephone, dateN, role, photo) "
-                  "VALUES (:id_employee, :nomEmp, :prenomEmp, :emailEmp, :telephoneEmp, TO_DATE(:dateN, 'DD/MM/YYYY'), :roleEmp, :photo)");
+    query.prepare("INSERT INTO employe (id_employe, nomEmp, prenomEmp, email, telephone, dateN, role, photo, password) "
+                  "VALUES (:id_employee, :nomEmp, :prenomEmp, :emailEmp, :telephoneEmp, TO_DATE(:dateN, 'DD/MM/YYYY'), :roleEmp, :photo, :password)");
     query.bindValue(":id_employee", id_employee);
     query.bindValue(":nomEmp", QString::fromStdString(nomEmp));
     query.bindValue(":prenomEmp", QString::fromStdString(prenomEmp));
@@ -125,6 +125,7 @@ bool Employe::ajouter()
     query.bindValue(":dateN", QString::fromStdString(dateN));
     query.bindValue(":roleEmp", QString::fromStdString(roleEmp));
     query.bindValue(":photo", QByteArray(reinterpret_cast<const char*>(photo.data()), photo.size()));
+    query.bindValue(":password", QString::fromStdString(password));
     return query.exec();
 }
 
@@ -160,7 +161,7 @@ bool Employe::supprimer(int id_employee)
 bool Employe::modifier()
 {
     QSqlQuery query;
-    query.prepare("UPDATE employe SET nomEmp = :nomEmp, prenomEmp = :prenomEmp, email = :emailEmp, telephone = :telephoneEmp, dateN = TO_DATE(:dateN, 'DD/MM/YYYY'), role = :roleEmp, photo = :photo WHERE id_employe = :id_employee");
+    query.prepare("UPDATE employe SET nomEmp = :nomEmp, prenomEmp = :prenomEmp, email = :emailEmp, telephone = :telephoneEmp, dateN = TO_DATE(:dateN, 'DD/MM/YYYY'), role = :roleEmp, photo = :photo, password = :password WHERE id_employe = :id_employee");
     query.bindValue(":id_employee", id_employee);
     query.bindValue(":nomEmp", QString::fromStdString(nomEmp));
     query.bindValue(":prenomEmp", QString::fromStdString(prenomEmp));
@@ -169,5 +170,6 @@ bool Employe::modifier()
     query.bindValue(":dateN", QString::fromStdString(dateN));
     query.bindValue(":roleEmp", QString::fromStdString(roleEmp));
     query.bindValue(":photo", QByteArray(reinterpret_cast<const char*>(photo.data()), photo.size()));
-    return query.exec();
+    query.bindValue(":password", QString::fromStdString(password));
+    return true;
 }

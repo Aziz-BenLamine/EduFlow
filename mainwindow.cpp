@@ -5,8 +5,11 @@
 #include <QSqlQuery>
 #include <QFileDialog>
 #include <QStandardItemModel>
+#include <QRegularExpression>
+#include <QDate>
 
 #include "employe.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -108,25 +111,208 @@ void MainWindow::onEmployeeTableClicked(const QModelIndex &index)
         int telephone = modelEmployee->data(modelEmployee->index(row, 4)).toInt();
         QString dateN = modelEmployee->data(modelEmployee->index(row, 5)).toString();
         QString role = modelEmployee->data(modelEmployee->index(row, 6)).toString();
-        // Skip photo
-        // Password
         QString password = modelEmployee->data(modelEmployee->index(row, 7)).toString();
 
         // Switch to the modify form (index 2)
         ui->employeesNavBar->setCurrentIndex(2);
 
-        // Populate the modify form fields (adjust these to match your UI)
+        // Populate the modify form fields
         ui->cinInputM->setText(QString::number(idEmployee));
         ui->nameInputM->setText(nom);
         ui->prenomInputM->setText(prenom);
         ui->emailInputM->setText(email);
         ui->telephoneInputM->setText(QString::number(telephone));
-        // Date input
         ui->dateNInputM->setDate(QDate::fromString(dateN, "dd/MM/yyyy"));
-
         ui->roleInputM->setCurrentText(role);
-        // Skip photo
         ui->mdpInputM->setText(password);
+    }
+}
+
+void MainWindow::on_ajouterEmpBD_clicked()
+{
+    // Get the form variables
+    QString idStr = ui->cinInput->text();
+    QString nomEmp = ui->nameInput->text();
+    QString prenomEmp = ui->prenomInput->text();
+    QString emailEmp = ui->emailInput->text();
+    QString telephoneStr = ui->telephoneInput->text();
+    QString dateN = ui->dateNInput->text();
+    QString roleEmp = ui->roleInput->currentText();
+    QString password = ui->mdpInput->text();
+    std::vector<unsigned char> photo;
+    QString fileName = ui->photoInput->text();
+    if (!fileName.isEmpty()) {
+        QFile file(fileName);
+        if (file.open(QIODevice::ReadOnly)) {
+            QByteArray imageData = file.readAll();
+            photo.assign(imageData.begin(), imageData.end());
+            file.close();
+        } else {
+            QMessageBox::warning(this, "Error", "Failed to open image file.");
+            return;
+        }
+    }
+
+    // Validation
+    QString errorMsg;
+
+    // ID validation
+    bool idOk;
+    int id_employee = idStr.toInt(&idOk);
+    if (!idOk || id_employee <= 0 || idStr.length() != 8) {
+        errorMsg = "ID est un entier de 8 chiffres.";
+    }
+
+    // Nom validation
+    QRegularExpression nameRegex("^[A-Za-zÀ-ÿ -]+$"); // Letters, spaces, hyphens, accented chars
+    if (nomEmp.isEmpty() || !nameRegex.match(nomEmp).hasMatch()) {
+        errorMsg += "\nLe nom ne doit pas être vide et ne doit contenir que des lettres.";
+    }
+
+    // Prenom validation
+    if (prenomEmp.isEmpty() || !nameRegex.match(prenomEmp).hasMatch()) {
+        errorMsg += "\nLe prénom ne doit pas être vide et ne doit contenir que des lettres.";
+    }
+
+    // Email validation
+    QRegularExpression emailRegex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    if (!emailRegex.match(emailEmp).hasMatch()) {
+        errorMsg += "\nFormat d'email invalide.";
+    }
+
+    // Telephone validation
+    bool telOk;
+    int telephoneEmp = telephoneStr.toInt(&telOk);
+    if (!telOk || telephoneEmp <= 0 || telephoneStr.length() != 8) {
+        errorMsg += "\nLe téléphone doit être un nombre positif de 8 chiffres.";
+    }
+
+    // Role validation (assuming combo box ensures non-empty)
+    if (roleEmp.isEmpty()) {
+        errorMsg += "\nLe rôle doit être sélectionné.";
+    }
+
+    // Password validation
+    if (password.length() < 6) {
+        errorMsg += "\nLe mot de passe doit contenir au moins 6 caractères.";
+    }
+
+    // Check if there are errors
+    if (!errorMsg.isEmpty()) {
+        ui->MessageForme->setText("Erreur : Employé non ajouté ❎\n" + errorMsg.trimmed());
+        return; // Stop execution if validation fails
+    }
+
+    // Create an employee object
+    Employe e(id_employee, nomEmp.toStdString(), prenomEmp.toStdString(), emailEmp.toStdString(),
+              telephoneEmp, dateN.toStdString(), roleEmp.toStdString(), photo, password.toStdString());
+
+    // Add the employee to the database
+    bool test = e.ajouter();
+    if (test) {
+        ui->MessageForme->setText("Employé ajouté avec succès ✅");
+        QMessageBox::information(this, tr("Employee added"),
+                                 tr("Employee added successfully.\nClick Cancel to exit."), QMessageBox::Cancel);
+        refreshEmployeeTable();
+    } else {
+        ui->MessageForme->setText("Erreur : Employé non ajouté ❎");
+        QMessageBox::critical(this, tr("Employee not added"),
+                              tr("Employee not added.\nClick Cancel to exit."), QMessageBox::Cancel);
+    }
+}
+
+void MainWindow::on_modifierEmpBD_clicked()
+{
+    // Get the form variables from modify form
+    QString idStr = ui->cinInputM->text();
+    QString nomEmp = ui->nameInputM->text();
+    QString prenomEmp = ui->prenomInputM->text();
+    QString emailEmp = ui->emailInputM->text();
+    QString telephoneStr = ui->telephoneInputM->text();
+    QString dateN = ui->dateNInputM->text();
+    QString roleEmp = ui->roleInputM->currentText();
+    QString password = ui->mdpInputM->text();
+
+    // Load photo (assuming there's a ui->photoInputM for the modify form)
+    std::vector<unsigned char> photo;
+    /*QString fileName = ui->photoInputM->text(); // Adjust if the widget name differs
+    if (!fileName.isEmpty()) {
+        QFile file(fileName);
+        if (file.open(QIODevice::ReadOnly)) {
+            QByteArray imageData = file.readAll();
+            photo.assign(imageData.begin(), imageData.end());
+            file.close();
+        } else {
+            QMessageBox::warning(this, "Error", "Failed to open image file.");
+            return;
+        }
+    }
+    */
+    // Validation
+    QString errorMsg;
+
+    // ID validation
+    bool idOk;
+    int id_employee = idStr.toInt(&idOk);
+    if (!idOk || id_employee <= 0 || idStr.length() != 8) {
+        errorMsg = "ID must be an 8-digit positive number.";
+    }
+
+    // Nom validation
+    QRegularExpression nameRegex("^[A-Za-zÀ-ÿ -]+$");
+    if (nomEmp.isEmpty() || !nameRegex.match(nomEmp).hasMatch()) {
+        errorMsg += "\nNom must not be empty and contain only letters.";
+    }
+
+    // Prenom validation
+    if (prenomEmp.isEmpty() || !nameRegex.match(prenomEmp).hasMatch()) {
+        errorMsg += "\nPrenom must not be empty and contain only letters.";
+    }
+
+    // Email validation
+    QRegularExpression emailRegex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    if (!emailRegex.match(emailEmp).hasMatch()) {
+        errorMsg += "\nInvalid email format.";
+    }
+
+    // Telephone validation
+    bool telOk;
+    int telephoneEmp = telephoneStr.toInt(&telOk);
+    if (!telOk || telephoneEmp <= 0 || telephoneStr.length() != 8) {
+        errorMsg += "\nTelephone must be an 8-digit positive number.";
+    }
+
+    // Role validation
+    if (roleEmp.isEmpty()) {
+        errorMsg += "\nRole must be selected.";
+    }
+
+    // Password validation
+    if (password.length() < 6) {
+        errorMsg += "\nPassword must be at least 6 characters long.";
+    }
+
+    // Check if there are errors
+    if (!errorMsg.isEmpty()) {
+        ui->MessageFormeM->setText("Erreur : Employé non modifié ❎\n" + errorMsg.trimmed());
+        return; // Stop execution if validation fails
+    }
+
+    // Create an employee object with updated values
+    Employe e(id_employee, nomEmp.toStdString(), prenomEmp.toStdString(), emailEmp.toStdString(),
+              telephoneEmp, dateN.toStdString(), roleEmp.toStdString(), photo, password.toStdString());
+
+    // Modify the employee in the database
+    bool test = e.modifier();
+    if (test) {
+        ui->MessageFormeM->setText("Employé modifié avec succès ✅");
+        QMessageBox::information(this, tr("Employee modified"),
+                                 tr("Employee modified successfully.\nClick Cancel to exit."), QMessageBox::Cancel);
+        refreshEmployeeTable();
+    } else {
+        ui->MessageFormeM->setText("Erreur : Employé non modifié ❎");
+        QMessageBox::critical(this, tr("Employee not modified"),
+                              tr("Employee not modified.\nClick Cancel to exit."), QMessageBox::Cancel);
     }
 }
 
@@ -135,30 +321,25 @@ void MainWindow::on_ajouterEmp_clicked()
     ui->employeesNavBar->setCurrentIndex(0);
 }
 
-
 void MainWindow::on_afficherEmp_clicked()
 {
     ui->employeesNavBar->setCurrentIndex(1);
 }
-
 
 void MainWindow::on_modiferEmp_clicked()
 {
     ui->employeesNavBar->setCurrentIndex(2);
 }
 
-
 void MainWindow::on_statsEmp_clicked()
 {
     ui->employeesNavBar->setCurrentIndex(3);
 }
 
-
 void MainWindow::on_etablissementBTN_clicked()
 {
     ui->mainApp->setCurrentIndex(1);
 }
-
 
 void MainWindow::on_employesBTN_clicked()
 {
@@ -166,7 +347,7 @@ void MainWindow::on_employesBTN_clicked()
     ui->employeesNavBar->setCurrentIndex(0);
 }
 
-//Etablissements Navbar
+// Etablissements Navbar
 void MainWindow::on_ajouterEtab_clicked()
 {
     ui->etablissementsNavBar->setCurrentIndex(0);
@@ -187,72 +368,60 @@ void MainWindow::on_statsEtab_clicked()
     ui->etablissementsNavBar->setCurrentIndex(3);
 }
 
-
 void MainWindow::on_distributionsBTN_clicked()
 {
     ui->mainApp->setCurrentIndex(3);
 }
-
 
 void MainWindow::on_equipementsBTN_clicked()
 {
     ui->mainApp->setCurrentIndex(4);
 }
 
-
 void MainWindow::on_ajouterColis_clicked()
 {
     ui->distributionsNavBar->setCurrentIndex(0);
 }
-
 
 void MainWindow::on_afficherColis_clicked()
 {
     ui->distributionsNavBar->setCurrentIndex(1);
 }
 
-
 void MainWindow::on_modiferColis_clicked()
 {
     ui->distributionsNavBar->setCurrentIndex(2);
 }
-
 
 void MainWindow::on_statsColis_clicked()
 {
     ui->distributionsNavBar->setCurrentIndex(3);
 }
 
-
 void MainWindow::on_ajouterEq_clicked()
 {
     ui->equipementsNavBar->setCurrentIndex(0);
 }
-
 
 void MainWindow::on_afficherEq_clicked()
 {
     ui->equipementsNavBar->setCurrentIndex(1);
 }
 
-
 void MainWindow::on_modiferEq_clicked()
 {
     ui->equipementsNavBar->setCurrentIndex(2);
 }
-
 
 void MainWindow::on_statsEq_clicked()
 {
     ui->equipementsNavBar->setCurrentIndex(3);
 }
 
-
 void MainWindow::on_examensBTN_clicked()
 {
     ui->mainApp->setCurrentIndex(2);
 }
-
 
 void MainWindow::on_ajouterExam_clicked()
 {
@@ -264,74 +433,29 @@ void MainWindow::on_afficherExam_clicked()
     ui->examensNavBar->setCurrentIndex(1);
 }
 
-
 void MainWindow::on_modiferExam_clicked()
 {
     ui->examensNavBar->setCurrentIndex(2);
 }
-
 
 void MainWindow::on_statsExam_clicked()
 {
     ui->examensNavBar->setCurrentIndex(3);
 }
 
-
 void MainWindow::on_pushButton_clicked()
 {
     ui->login_app->setCurrentIndex(1);
 }
-
 
 void MainWindow::on_deconnexionBTN_clicked()
 {
     ui->login_app->setCurrentIndex(0);
 }
 
-
 void MainWindow::on_ajouterEmp_4_clicked()
 {
-
 }
-
-
-void MainWindow::on_ajouterEmpBD_clicked()
-{
-    //Get the form variables
-    int id_employee = ui->cinInput->text().toInt();
-    std::string nomEmp = ui->nameInput->text().toStdString();
-    std::string prenomEmp = ui->prenomInput->text().toStdString();
-    std::string emailEmp = ui->emailInput->text().toStdString();
-    int telephoneEmp = ui->telephoneInput->text().toInt();
-    //Get date to insert it later into the oracle db
-    std::string dateN = ui->dateNInput->text().toStdString();
-    //Get combobox value as string
-    std::string roleEmp = ui->roleInput->currentText().toStdString();
-    std::vector<unsigned char> photo;
-
-    //Get the password
-    std::string password = ui->mdpInput->text().toStdString();
-    //Create an employee object
-    Employe e(id_employee, nomEmp, prenomEmp, emailEmp, telephoneEmp, dateN, roleEmp, photo, password);
-    //Add the employee to the database
-    bool test = e.ajouter();
-    if(test)
-    {
-        ui->MessageForme->setText("Employe ajouté avec succès ✅");
-        QMessageBox::information(nullptr, QObject::tr("Employee added"),
-                                 QObject::tr("Employee added successfully.\n"
-                                             "Click Cancel to exit."), QMessageBox::Cancel);
-        refreshEmployeeTable();
-    }
-    else
-    {
-        ui->MessageForme->setText("Erreur :Employe non ajouté ❎");
-        QMessageBox::critical(nullptr, QObject::tr("Employee not added"),
-                              QObject::tr("Employee not added.\n"
-                                          "Click Cancel to exit."), QMessageBox::Cancel);
-    }
-}
-
 
 void MainWindow::on_photoInput_clicked()
 {

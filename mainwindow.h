@@ -52,6 +52,8 @@ private slots:
     void on_ajouterEmpBD_clicked();
     void on_photoInput_clicked();
 
+    void on_modifierEmpBD_clicked();
+
 private:
     Ui::MainWindow *ui;
     Employe emp; // Properly declare emp as a member variable

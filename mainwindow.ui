@@ -599,7 +599,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
 background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="ajouterEmployes">
          <widget class="QFrame" name="formBackground">
@@ -987,16 +987,17 @@ border: 0px;</string>
           <widget class="QLineEdit" name="MessageForme">
            <property name="geometry">
             <rect>
-             <x>220</x>
+             <x>0</x>
              <y>600</y>
-             <width>541</width>
+             <width>981</width>
              <height>81</height>
             </rect>
            </property>
            <property name="styleSheet">
             <string notr="true">background: transparent;
 font: 600 22pt &quot;Segoe UI&quot;;
-border: 0px;</string>
+border: 0px;
+qproperty-alignment: AlignCenter;</string>
            </property>
            <property name="text">
             <string>AFD</string>
@@ -1245,8 +1246,8 @@ QTableView {
          <widget class="QFrame" name="formBackground_2">
           <property name="geometry">
            <rect>
-            <x>150</x>
-            <y>50</y>
+            <x>130</x>
+            <y>0</y>
             <width>981</width>
             <height>691</height>
            </rect>
@@ -1627,16 +1628,17 @@ border: 0px;</string>
           <widget class="QLineEdit" name="MessageFormeM">
            <property name="geometry">
             <rect>
-             <x>220</x>
+             <x>10</x>
              <y>600</y>
-             <width>541</width>
+             <width>961</width>
              <height>81</height>
             </rect>
            </property>
            <property name="styleSheet">
             <string notr="true">background: transparent;
 font: 600 22pt &quot;Segoe UI&quot;;
-border: 0px;</string>
+border: 0px;
+qproperty-alignment: AlignCenter;</string>
            </property>
            <property name="text">
             <string>AFD</string>
