@@ -5,6 +5,9 @@
 #include <string>
 #include <QSqlTableModel>
 #include <QTableView>
+#include <QModelIndex>
+#include <QDebug>
+#include <QSqlError>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -55,6 +58,7 @@ void MainWindow::on_employesBTN_clicked()
 }
 
 //Etablissements Navbar
+
 void MainWindow::on_ajouterEtab_clicked()
 {
     ui->etablissementsNavBar->setCurrentIndex(0);
@@ -261,7 +265,6 @@ void MainWindow::on_checkBox_2_stateChanged(int arg1)
 {
     if (arg1 == Qt::Checked) {
         Etablissement E;
-
         if (E.supprimerTous()) {
             E.afficher(ui->tabV);
 
@@ -274,13 +277,28 @@ void MainWindow::on_checkBox_2_stateChanged(int arg1)
     ui->checkBox_2->setChecked(false);
 }
 
-
-
-
-
-
 void MainWindow::on_checkBox_stateChanged(int arg1)
 {
+    if (arg1 == Qt::Checked) {
+        QModelIndex index = ui->tabV->currentIndex();
+        if (!index.isValid()) {
+            QMessageBox::warning(this, "Sélection invalide", "Veuillez sélectionner un établissement à supprimer.");
+            return;
+        }
 
+        int id = ui->tabV->model()->data(ui->tabV->model()->index(index.row(), 0)).toInt();
+
+        Etablissement E;
+        bool test = E.supprimer(id);
+        if (test) {
+            E.afficher(ui->tabV);
+            QMessageBox::information(this, "Suppression réussie", "L'établissement a été supprimé avec succès.");
+        } else {
+            QMessageBox::warning(this, "Erreur", "Échec de la suppression de l'établissement. Vérifiez si l'ID existe.");
+        }
+    }
+    ui->checkBox->setChecked(false);
 }
+
+
 

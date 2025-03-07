@@ -1931,7 +1931,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="ajouterEtablissements">
          <widget class="QFrame" name="frame_2">

@@ -182,3 +182,26 @@ bool Etablissement::supprimer(int id)
 
     return true;
 }
+
+bool Etablissement::modifier(int id)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE ETABLISSEMENTS SET NOM = :nom, GOUVERNORAT = :gouvernorat, "
+                  "LONGE = :longe, LAT = :lat, CAPACITE = :capacite, "
+                  "MAIL = :email, TEL = :tel WHERE ID_ETAB = :id");
+
+    query.bindValue(":nom", QString::fromStdString(nom));
+    query.bindValue(":gouvernorat", QString::fromStdString(gouvernorat));
+    query.bindValue(":longe", longe);
+    query.bindValue(":lat", lat);
+    query.bindValue(":capacite", capacite);
+    query.bindValue(":email", QString::fromStdString(email));
+    query.bindValue(":tel", tel);
+    query.bindValue(":id", id);
+    if (!query.exec()) {
+        qDebug() << "Erreur lors de la modification:" << query.lastError().text();
+        return false;
+    }
+    return true;
+}
+

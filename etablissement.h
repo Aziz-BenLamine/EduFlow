@@ -49,9 +49,9 @@ public:
     void afficher(QTableView *tableView);
     bool supprimer(int id);
     bool supprimerTous();
+    bool modifier(int id);
 
-
-
+    // metier SIMPLE
 
 };
 
