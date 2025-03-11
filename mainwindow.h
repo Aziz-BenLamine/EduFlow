@@ -85,6 +85,9 @@ private slots:
 
     void on_ajouterEmp_8_clicked();
 
+    void on_ajouterEmp_16_clicked();
+
+    void on_charger_clicked();
 
 private:
     Ui::MainWindow *ui;
