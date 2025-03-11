@@ -1,23 +1,37 @@
 #include "connection.h"
+#include <QDebug>
 
 Connection::Connection()
 {
+    db = QSqlDatabase::addDatabase("QODBC", "EduFlowConnection"); // Named connection
+}
 
+Connection::~Connection()
+{
+    closeConnection();
 }
 
 bool Connection::createconnect()
-{bool test=false;
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
-    db.setDatabaseName("EduFlow");//inserer le nom de la source de données
-    db.setUserName("Deepsight");//inserer nom de l'utilisateur
-    db.setPassword("123");//inserer mot de passe de cet utilisateur
+{
+    bool test = false;
+    db.setDatabaseName("EduFlow"); // Ensure this matches your ODBC DSN
+    db.setUserName("Deepsight");
+    db.setPassword("123");
 
-    if (db.open())
-        test=true;
+    if (db.open()) {
+        qDebug() << "Database opened successfully.";
+        test = true;
+    } else {
+        qDebug() << "Failed to open database:" << db.lastError().text();
+    }
+    return test;
+}
 
-
-
-
-
-    return  test;
+void Connection::closeConnection()
+{
+    if (db.isOpen()) {
+        db.close();
+        qDebug() << "Database connection closed.";
+    }
+    QSqlDatabase::removeDatabase("EduFlowConnection"); // Clean up named connection
 }
