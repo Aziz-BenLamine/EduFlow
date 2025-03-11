@@ -18,9 +18,9 @@ private:
     int tel;
     QSqlQueryModel *model;
 public:
+
     // constructeur
-    Etablissement();
-    Etablissement(std::string nom , std::string gouvernorat , float longe , float lat, int capacite , std::string email , int tel);
+    Etablissement(int id_etab, std::string nom , std::string gouvernorat , float longe , float lat, int capacite , std::string email , int tel);
 
     // getters
 

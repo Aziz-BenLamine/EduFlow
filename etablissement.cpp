@@ -5,9 +5,11 @@
 #include <QSqlError>
 #include <QSqlTableModel>
 #include <QTableView>
+#include <QSqlQueryModel>
 
-Etablissement::Etablissement(std::string nom, std::string gouvernorat, float longe, float lat, int capacite, std::string email, int tel)
+Etablissement::Etablissement(int id_etab, std::string nom, std::string gouvernorat, float longe, float lat, int capacite, std::string email, int tel)
 {
+    this->id_etab = id_etab;
     this->nom = nom;
     this->gouvernorat = gouvernorat;
     this->longe = longe;
@@ -18,6 +20,7 @@ Etablissement::Etablissement(std::string nom, std::string gouvernorat, float lon
 }
 
 // Getters
+
 int Etablissement::getID()
 {
     return id_etab;
@@ -94,17 +97,6 @@ void Etablissement::setTel(int tel)
     this->tel = tel;
 }
 
-Etablissement::Etablissement()
-{
-    this->id_etab =1;
-    this->nom = "";
-    this->gouvernorat = "";
-    this->longe = 0.0f;
-    this->lat = 0.0f;
-    this->capacite = 0;
-    this->email = "";
-    this->tel = 0;
-}
 
 bool Etablissement::ajouter()
 {

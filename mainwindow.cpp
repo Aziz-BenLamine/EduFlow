@@ -230,11 +230,13 @@ void MainWindow::on_ajouterEtab_2_clicked()
         QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("La capacité doit être un nombre positif!"), QMessageBox::Ok);
         return ;
     }
-    Etablissement E(nom.toStdString(), gouv.toStdString() , longe , lat , cap , mail.toStdString() , tel);
+    int id = 1;
+    Etablissement E(id , nom.toStdString(), gouv.toStdString() , longe , lat , cap , mail.toStdString() , tel);
     bool test = E.ajouter();
     if(test)
     {
         QMessageBox::information(nullptr, QObject::tr("Valider"), QObject::tr("Ajout effectué avec succès!!"), QMessageBox::Cancel);
+        E.afficher(ui->tabV);
         ui->nomEtabInput->clear();
         ui->govInput->clear();
         ui->long_2->clear();
@@ -242,6 +244,7 @@ void MainWindow::on_ajouterEtab_2_clicked()
         ui->cap->clear();
         ui->mail->clear();
         ui->tel->clear();
+        id++;
     }
     else
     {
@@ -257,7 +260,6 @@ void MainWindow::on_affBtn_clicked()
     Etablissement E;
     E.afficher(ui->tabV);
 }
-
 
 // supprimer les etablissements
 
@@ -301,4 +303,73 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
 }
 
 
+void MainWindow::on_ajouterEmp_8_clicked()
+{
+    int id = ui->tabV->model()->data(ui->tabV->model()->index(0, 0)).toInt();
+
+    qDebug() << "ID récupéré:" << id;
+
+    if (id == 0) {
+        QMessageBox::warning(this, "Erreur", "Aucun ID valide sélectionné.");
+        return;
+    }
+
+    QString nom1  = (ui->nom->text());
+    QString gouv2 = (ui->gov->text());
+    float longe3 = (ui->long_3->text().toFloat());
+    float lat4 = (ui->lat_2->text().toFloat());
+    int cap5 = (ui->cap_2->text().toInt());
+    QString mail5 = (ui->mail_2->text());
+    int tel6 = (ui->tel_2->text().toInt());
+
+    Etablissement e(nom1.toStdString(), gouv2.toStdString() , longe3 , lat4 , cap5 , mail5.toStdString() , tel6);
+
+    bool test1 = e.modifier(id);
+    if (test1) {
+        QMessageBox::information(this, "Succès", "L'établissement a été modifié avec succès.");
+        e.afficher(ui->tabV);
+    }
+    else {
+        QMessageBox::warning(this, "Erreur", "Échec de la modification.");
+    }
+}
+
+// cahrger les donnés de l'etablissment selon id dans le formulaire de modification
+
+void MainWindow::on_charger_clicked()
+{
+    int id = ui->tabV->model()->data(ui->tabV->model()->index(0, 0)).toInt();
+    qDebug() << "ID récupéré:" << id;
+
+    if (id == 0) {
+        QMessageBox::warning(this, "Erreur", "Aucun ID valide sélectionné.");
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare("SELECT NOM, GOUVERNORAT, LONGE, LAT, CAPACITE, MAIL, TEL FROM ETABLISSEMENTS WHERE ID_ETAB = :id");
+    query.bindValue(":id", id);
+
+    if (!query.exec()) {
+        qDebug() << "Erreur SQL:" << query.lastError().text();
+        return;
+    }
+
+    if (query.next()) {
+        ui->nom->setText(query.value(0).toString());
+        ui->gov->setText(query.value(1).toString());
+        ui->long_3->setText(query.value(2).toString());
+        ui->lat_2->setText(query.value(3).toString());
+        ui->cap_2->setText(query.value(4).toString());
+        ui->mail_2->setText(query.value(5).toString());
+        ui->tel_2->setText(query.value(6).toString());
+
+        QMessageBox::information(this, "Information", "L'établissement a été chargé pour modification.");
+    }
+    else {
+        QMessageBox::warning(this, "Erreur", "Aucun établissement trouvé avec cet ID.");
+        return;
+    }
+
+}
 

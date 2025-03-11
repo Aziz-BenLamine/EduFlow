@@ -2538,10 +2538,10 @@ QTableView::item:selected {
          <widget class="QFrame" name="frame_3">
           <property name="geometry">
            <rect>
-            <x>150</x>
-            <y>50</y>
-            <width>971</width>
-            <height>541</height>
+            <x>70</x>
+            <y>10</y>
+            <width>1011</width>
+            <height>581</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -2724,8 +2724,8 @@ color: black;</string>
           <widget class="QPushButton" name="ajouterEmp_8">
            <property name="geometry">
             <rect>
-             <x>350</x>
-             <y>470</y>
+             <x>240</x>
+             <y>500</y>
              <width>301</width>
              <height>61</height>
             </rect>
@@ -2741,24 +2741,6 @@ color: black;</string>
            </property>
            <property name="text">
             <string>Modifier Etablissement</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="MessageForme_6">
-           <property name="geometry">
-            <rect>
-             <x>150</x>
-             <y>521</y>
-             <width>661</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background: transparent;
-font: 600 22pt &quot;Segoe UI&quot;;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string/>
            </property>
           </widget>
           <widget class="QLineEdit" name="cap_2">
@@ -2882,6 +2864,28 @@ color: black;</string>
            </property>
            <property name="text">
             <string/>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="charger">
+           <property name="geometry">
+            <rect>
+             <x>570</x>
+             <y>500</y>
+             <width>301</width>
+             <height>61</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+           </property>
+           <property name="text">
+            <string>charger Etablissement</string>
            </property>
           </widget>
          </widget>
