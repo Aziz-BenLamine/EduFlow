@@ -56,6 +56,8 @@ private slots:
 
     void on_champRecherche_textChanged(const QString &arg1);
 
+    void on_pdfEmp_clicked();
+
 private:
     Ui::MainWindow *ui;
     Employe emp; // Properly declare emp as a member variable

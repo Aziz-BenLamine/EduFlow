@@ -1231,6 +1231,9 @@ QTableView {
     selection-color: white;
 }</string>
           </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+          </property>
           <property name="sortingEnabled">
            <bool>true</bool>
           </property>

@@ -7,6 +7,9 @@
 #include <QStandardItemModel>
 #include <QRegularExpression>
 #include <QDate>
+#include <QPainter>
+#include <QPdfWriter>
+
 
 #include "employe.h"
 
@@ -530,5 +533,213 @@ void MainWindow::on_photoInput_clicked()
 void MainWindow::on_champRecherche_textChanged(const QString &text)
 {
     filterEmployeeTable(text);
+}
+
+
+void MainWindow::on_pdfEmp_clicked()
+{
+    QModelIndexList selectedRows = ui->tableEmploye->selectionModel()->selectedRows();
+    if (selectedRows.isEmpty()) {
+        QMessageBox::warning(this, "No Selection", "Please select an employee from the table to generate a PDF.");
+        return;
+    }
+
+    int row = selectedRows[0].row();
+    QAbstractItemModel *model = ui->tableEmploye->model();
+    int idEmployee = model->data(model->index(row, 0)).toInt();
+    QString nom = model->data(model->index(row, 1)).toString();
+    QString prenom = model->data(model->index(row, 2)).toString();
+    QString email = model->data(model->index(row, 3)).toString();
+    int telephone = model->data(model->index(row, 4)).toInt();
+    QString dateNRaw = model->data(model->index(row, 5)).toString(); // Raw date from table
+    QString role = model->data(model->index(row, 6)).toString();
+    QString password = model->data(model->index(row, 7)).toString();
+
+    // Parse the date and strip time
+    QString dateN;
+    if (dateNRaw.contains("T")) { // Check for ISO 8601 format like "2000-01-01T00:00:00.000"
+        QDateTime dateTime = QDateTime::fromString(dateNRaw, Qt::ISODate); // Parse ISO 8601
+        dateN = dateTime.isValid() ? dateTime.date().toString("MM/dd/yyyy") : dateNRaw;
+    } else if (dateNRaw.contains("-") && !dateNRaw.contains(":")) { // Check for "DD-MON-RR" or "YYYY-MM-DD"
+        QDate date = QDate::fromString(dateNRaw, "yyyy-MM-dd"); // Try "YYYY-MM-DD"
+        if (!date.isValid()) {
+            date = QDate::fromString(dateNRaw, "dd-MMM-yy"); // Fallback to "DD-MON-RR"
+            if (date.year() < 1970 && date.isValid()) {
+                date = date.addYears(100); // Adjust for 20xx century
+            }
+        }
+        dateN = date.isValid() ? date.toString("MM/dd/yyyy") : dateNRaw;
+    } else {
+        dateN = dateNRaw; // Fallback to raw if unrecognized
+    }
+    qDebug() << "Raw date from table:" << dateNRaw << "Formatted date:" << dateN;
+
+    // Fetch photo
+    QSqlQuery query;
+    query.prepare("SELECT photo FROM employe WHERE id_employe = :id_employee");
+    query.bindValue(":id_employee", idEmployee);
+    if (!query.exec() || !query.next()) {
+        QMessageBox::warning(this, "Error", "Failed to retrieve employee photo.");
+        return;
+    }
+
+    QByteArray photoData = query.value(0).toByteArray();
+    QImage photo;
+    if (!photoData.isEmpty() && !photo.loadFromData(photoData)) {
+        QMessageBox::warning(this, "Error", "Failed to load photo data.");
+    }
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save PDF"),
+                                                    QString("%1_%2_employee.pdf").arg(nom).arg(prenom),
+                                                    tr("PDF Files (*.pdf)"));
+    if (fileName.isEmpty()) return;
+
+    QPdfWriter pdfWriter(fileName);
+    pdfWriter.setPageSize(QPageSize(QPageSize::A4));
+    pdfWriter.setResolution(300); // 300 DPI
+
+    QPainter painter(&pdfWriter);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    // Page dimensions
+    const int pageWidth = pdfWriter.width();  // ~2480 pixels
+    const int pageHeight = pdfWriter.height(); // ~3508 pixels
+    const int margin = 500;  // ~1.67 cm
+    const int lineSpacing = 250; // ~0.83 cm
+    const int maxPhotoWidth = 450;  // ~1.5 cm
+    const int maxPhotoHeight = 450; // ~1.5 cm
+
+    // Header background (light blue)
+    painter.setBrush(QBrush(QColor(200, 220, 255)));
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(0, 0, pageWidth, 800);
+
+    // Header title
+    QFont titleFont("Arial", 18, QFont::Bold);
+    painter.setFont(titleFont);
+    painter.setPen(Qt::black);
+    painter.drawText(margin, 400, "Employee Profile");
+
+    // Photo (top-right corner, no margin)
+    if (!photo.isNull()) {
+        int photoWidth = photo.width();
+        int photoHeight = photo.height();
+        if (photoWidth > maxPhotoWidth) {
+            photoWidth = maxPhotoWidth;
+            photoHeight = photo.height() * maxPhotoWidth / photo.width();
+        }
+        if (photoHeight > maxPhotoHeight) {
+            photoHeight = maxPhotoHeight;
+            photoWidth = photo.width() * maxPhotoHeight / photo.height();
+        }
+        int photoX = pageWidth - photoWidth;
+        int photoY = 0;
+        QRect photoRect(photoX, photoY, photoWidth, photoHeight);
+        painter.drawImage(photoRect, photo);
+        painter.setPen(QPen(Qt::black, 10));
+        painter.setBrush(Qt::NoBrush);
+        painter.drawRect(photoRect);
+    } else {
+        painter.setFont(QFont("Arial", 12));
+        painter.drawText(pageWidth - 200, 100, "No photo");
+    }
+
+    // Employee details section
+    int yPos = 800; // Start below header
+    QFont labelFont("Arial", 12, QFont::Bold);
+    QFont valueFont("Arial", 12);
+    const int labelX = margin + 50;      // ~550 pixels
+    const int valueX = margin + 600;     // ~950 pixels
+    const int maxValueWidth = pageWidth - valueX - margin; // ~1030 pixels
+
+    // Draw a box around details
+    painter.setPen(QPen(Qt::gray, 5));
+    painter.setBrush(Qt::NoBrush);
+    painter.drawRect(margin, yPos - lineSpacing / 2, pageWidth - 2 * margin, 8 * lineSpacing + 50);
+
+    // Details with labels
+    painter.setPen(Qt::black);
+
+    painter.setFont(labelFont);
+    painter.drawText(labelX, yPos, "ID:");
+    painter.setFont(valueFont);
+    painter.drawText(valueX, yPos, QString("%1").arg(idEmployee));
+    yPos += lineSpacing;
+
+    painter.setFont(labelFont);
+    painter.drawText(labelX, yPos, "Nom:");
+    painter.setFont(valueFont);
+    QString nomText = nom;
+    if (painter.fontMetrics().boundingRect(nomText).width() > maxValueWidth) {
+        nomText = painter.fontMetrics().elidedText(nom, Qt::ElideRight, maxValueWidth);
+    }
+    painter.drawText(valueX, yPos, nomText);
+    yPos += lineSpacing;
+
+    painter.setFont(labelFont);
+    painter.drawText(labelX, yPos, "Prenom:");
+    painter.setFont(valueFont);
+    QString prenomText = prenom;
+    if (painter.fontMetrics().boundingRect(prenomText).width() > maxValueWidth) {
+        prenomText = painter.fontMetrics().elidedText(prenom, Qt::ElideRight, maxValueWidth);
+    }
+    painter.drawText(valueX, yPos, prenomText);
+    yPos += lineSpacing;
+
+    painter.setFont(labelFont);
+    painter.drawText(labelX, yPos, "Email:");
+    painter.setFont(valueFont);
+    QString emailText = email;
+    if (painter.fontMetrics().boundingRect(emailText).width() > maxValueWidth) {
+        emailText = painter.fontMetrics().elidedText(email, Qt::ElideRight, maxValueWidth);
+    }
+    painter.drawText(valueX, yPos, emailText);
+    yPos += lineSpacing;
+
+    painter.setFont(labelFont);
+    painter.drawText(labelX, yPos, "Telephone:");
+    painter.setFont(valueFont);
+    painter.drawText(valueX, yPos, QString("%1").arg(telephone));
+    yPos += lineSpacing;
+
+    painter.setFont(labelFont);
+    painter.drawText(labelX, yPos, "Date de naissance:");
+    painter.setFont(valueFont);
+    QString dateNText = dateN; // Formatted as MM/DD/YYYY
+    if (painter.fontMetrics().boundingRect(dateNText).width() > maxValueWidth) {
+        dateNText = painter.fontMetrics().elidedText(dateN, Qt::ElideRight, maxValueWidth);
+    }
+    painter.drawText(valueX, yPos, dateNText);
+    yPos += lineSpacing;
+
+    painter.setFont(labelFont);
+    painter.drawText(labelX, yPos, "Role:");
+    painter.setFont(valueFont);
+    QString roleText = role;
+    if (painter.fontMetrics().boundingRect(roleText).width() > maxValueWidth) {
+        roleText = painter.fontMetrics().elidedText(role, Qt::ElideRight, maxValueWidth);
+    }
+    painter.drawText(valueX, yPos, roleText);
+    yPos += lineSpacing;
+
+    painter.setFont(labelFont);
+    painter.drawText(labelX, yPos, "Password:");
+    painter.setFont(valueFont);
+    QString passwordText = password;
+    if (painter.fontMetrics().boundingRect(passwordText).width() > maxValueWidth) {
+        passwordText = painter.fontMetrics().elidedText(password, Qt::ElideRight, maxValueWidth);
+    }
+    painter.drawText(valueX, yPos, passwordText);
+    yPos += lineSpacing;
+
+    // Footer
+    QFont footerFont("Arial", 10, QFont::Light);
+    painter.setFont(footerFont);
+    painter.setPen(Qt::gray);
+    painter.drawText(margin, pageHeight - margin / 2,
+                     QString("Generated on %1").arg(QDate::currentDate().toString("dd/MM/yyyy")));
+
+    painter.end();
+    QMessageBox::information(this, "Success", "PDF generated successfully!");
 }
 
