@@ -171,5 +171,5 @@ bool Employe::modifier()
     query.bindValue(":roleEmp", QString::fromStdString(roleEmp));
     query.bindValue(":photo", QByteArray(reinterpret_cast<const char*>(photo.data()), photo.size()));
     query.bindValue(":password", QString::fromStdString(password));
-    return true;
+    return query.exec();
 }

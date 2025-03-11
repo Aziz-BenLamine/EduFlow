@@ -54,8 +54,11 @@ private slots:
 
     void on_modifierEmpBD_clicked();
 
+    void on_champRecherche_textChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     Employe emp; // Properly declare emp as a member variable
+    void filterEmployeeTable(const QString &searchText);
 };
 #endif // MAINWINDOW_H

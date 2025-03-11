@@ -316,6 +316,70 @@ void MainWindow::on_modifierEmpBD_clicked()
     }
 }
 
+void MainWindow::filterEmployeeTable(const QString &searchText)
+{
+    // Get the original data from the database
+    QSqlQueryModel *sqlModelEmployee = emp.afficher();
+
+    // Create a new editable QStandardItemModel for employees
+    QStandardItemModel *modelEmployee = new QStandardItemModel(this);
+    modelEmployee->setColumnCount(10); // 8 columns (excluding photo) + 2 for Delete/Modify
+
+    // Set headers (same as refreshEmployeeTable)
+    modelEmployee->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    modelEmployee->setHeaderData(1, Qt::Horizontal, tr("Nom"));
+    modelEmployee->setHeaderData(2, Qt::Horizontal, tr("Prenom"));
+    modelEmployee->setHeaderData(3, Qt::Horizontal, tr("Email"));
+    modelEmployee->setHeaderData(4, Qt::Horizontal, tr("Telephone"));
+    modelEmployee->setHeaderData(5, Qt::Horizontal, tr("Date de naissance"));
+    modelEmployee->setHeaderData(6, Qt::Horizontal, tr("Role"));
+    modelEmployee->setHeaderData(7, Qt::Horizontal, tr("Password"));
+    modelEmployee->setHeaderData(8, Qt::Horizontal, tr("Delete"));
+    modelEmployee->setHeaderData(9, Qt::Horizontal, tr("Modify"));
+
+    // Filter rows based on search text
+    int rowCount = 0;
+    QString searchLower = searchText.toLower(); // Case-insensitive search
+    for (int row = 0; row < sqlModelEmployee->rowCount(); ++row) {
+        QString id = sqlModelEmployee->data(sqlModelEmployee->index(row, 0)).toString();
+        QString nom = sqlModelEmployee->data(sqlModelEmployee->index(row, 1)).toString();
+        QString prenom = sqlModelEmployee->data(sqlModelEmployee->index(row, 2)).toString();
+        QString email = sqlModelEmployee->data(sqlModelEmployee->index(row, 3)).toString();
+        QString telephone = sqlModelEmployee->data(sqlModelEmployee->index(row, 4)).toString();
+        QString dateN = sqlModelEmployee->data(sqlModelEmployee->index(row, 5)).toString();
+        QString role = sqlModelEmployee->data(sqlModelEmployee->index(row, 6)).toString();
+        QString password = sqlModelEmployee->data(sqlModelEmployee->index(row, 8)).toString();
+
+        // Check if any field contains the search text (case-insensitive)
+        if (id.contains(searchLower, Qt::CaseInsensitive) ||
+            nom.contains(searchLower, Qt::CaseInsensitive) ||
+            prenom.contains(searchLower, Qt::CaseInsensitive) ||
+            email.contains(searchLower, Qt::CaseInsensitive) ||
+            telephone.contains(searchLower, Qt::CaseInsensitive) ||
+            dateN.contains(searchLower, Qt::CaseInsensitive) ||
+            role.contains(searchLower, Qt::CaseInsensitive) ||
+            password.contains(searchLower, Qt::CaseInsensitive)) {
+            // Add matching row to the model
+            modelEmployee->setRowCount(rowCount + 1); // Increment row count
+            modelEmployee->setData(modelEmployee->index(rowCount, 0), id.toInt());
+            modelEmployee->setData(modelEmployee->index(rowCount, 1), nom);
+            modelEmployee->setData(modelEmployee->index(rowCount, 2), prenom);
+            modelEmployee->setData(modelEmployee->index(rowCount, 3), email);
+            modelEmployee->setData(modelEmployee->index(rowCount, 4), telephone.toInt());
+            modelEmployee->setData(modelEmployee->index(rowCount, 5), dateN);
+            modelEmployee->setData(modelEmployee->index(rowCount, 6), role);
+            modelEmployee->setData(modelEmployee->index(rowCount, 7), password);
+            modelEmployee->setData(modelEmployee->index(rowCount, 8), "[Delete]");
+            modelEmployee->setData(modelEmployee->index(rowCount, 9), "[Modify]");
+            rowCount++;
+        }
+    }
+
+    // Set the filtered model to the table
+    ui->tableEmploye->setModel(modelEmployee);
+    ui->tableEmploye->resizeColumnsToContents();
+}
+
 void MainWindow::on_ajouterEmp_clicked()
 {
     ui->employeesNavBar->setCurrentIndex(0);
@@ -462,3 +526,9 @@ void MainWindow::on_photoInput_clicked()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.bmp)"));
     ui->photoInput->setText(fileName);
 }
+
+void MainWindow::on_champRecherche_textChanged(const QString &text)
+{
+    filterEmployeeTable(text);
+}
+

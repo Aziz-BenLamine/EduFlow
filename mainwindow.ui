@@ -599,7 +599,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
 background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterEmployes">
          <widget class="QFrame" name="formBackground">
@@ -1208,8 +1208,8 @@ color: black;</string>
            <rect>
             <x>30</x>
             <y>170</y>
-            <width>1231</width>
-            <height>141</height>
+            <width>991</width>
+            <height>281</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -1230,6 +1230,9 @@ QTableView {
     selection-background-color: #2a82da;
     selection-color: white;
 }</string>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
           </property>
           <property name="cornerButtonEnabled">
            <bool>false</bool>
