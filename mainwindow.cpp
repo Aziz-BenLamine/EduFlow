@@ -57,7 +57,7 @@ void MainWindow::on_employesBTN_clicked()
     ui->employeesNavBar->setCurrentIndex(0);
 }
 
-//Etablissements Navbar
+//Etablissement Navbar
 
 void MainWindow::on_ajouterEtab_clicked()
 {
@@ -191,29 +191,34 @@ void MainWindow::on_ajouterEmp_4_clicked()
 void MainWindow::on_ajouterEtab_2_clicked()
 {
     QString nom = ui->nomEtabInput->text();
-    QString gouv = ui->govInput->text();
+    QString gouv = ui->combo->currentText();
     float longe = ui->long_2->text().toFloat();
     float lat = ui->lat->text().toFloat();
     int cap = ui->cap->text().toInt();
     QString mail = ui->mail->text();
-    int tel = ui->tel->text().toInt();
+    QString tele = ui->tel->text();
+    int tel = tele.toInt();
+
 
     QRegularExpression regexNom("^[a-zA-ZÀ-ÖØ-öø-ÿ ]+$");
     QRegularExpression regexTel("^[0-9]+$");
     bool nomValide = regexNom.match(nom).hasMatch();
-    bool gouvValide = regexNom.match(gouv).hasMatch();
-    bool telValide = regexTel.match(ui->tel->text()).hasMatch();
+    bool telValide = regexTel.match(tele).hasMatch() && tele.length()==8;
     bool longeValide = longe > 0;
     bool latValide = lat > 0;
     bool mailValide = mail.contains("@") && mail.contains(".");
     bool capValide = cap > 0;
+    bool gouvValide = !gouv.isEmpty();
 
     if (!nomValide) {
         QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Le nom doit contenir uniquement des lettres et des espaces!"), QMessageBox::Ok);
         return ;
-    } else if (!gouvValide) {
-        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Le gouvernorat doit contenir uniquement des lettres et des espaces!"), QMessageBox::Ok);
-    } else if (!longeValide) {
+    }
+    else if (!gouvValide) {
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Veuillez sélectionner un gouvernorat!"), QMessageBox::Ok);
+        return;
+    }
+    else if (!longeValide) {
         QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("La longitude doit être un nombre positif!"), QMessageBox::Ok);
         return ;
     } else if (!latValide) {
@@ -224,27 +229,24 @@ void MainWindow::on_ajouterEtab_2_clicked()
         return ;
     }
     else if (!telValide) {
-        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Le numéro de téléphone doit contenir uniquement des chiffres!"), QMessageBox::Ok);
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("verifier Le numéro de téléphone!"), QMessageBox::Ok);
         return ;
     } else if (!capValide) {
         QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("La capacité doit être un nombre positif!"), QMessageBox::Ok);
         return ;
     }
-    int id = 1;
-    Etablissement E(id , nom.toStdString(), gouv.toStdString() , longe , lat , cap , mail.toStdString() , tel);
+    Etablissement E( nom.toStdString(), gouv.toStdString() , longe , lat , cap , mail.toStdString() , tel);
     bool test = E.ajouter();
     if(test)
     {
         QMessageBox::information(nullptr, QObject::tr("Valider"), QObject::tr("Ajout effectué avec succès!!"), QMessageBox::Cancel);
         E.afficher(ui->tabV);
         ui->nomEtabInput->clear();
-        ui->govInput->clear();
         ui->long_2->clear();
         ui->lat->clear();
         ui->cap->clear();
         ui->mail->clear();
         ui->tel->clear();
-        id++;
     }
     else
     {
@@ -302,7 +304,6 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
     ui->checkBox->setChecked(false);
 }
 
-
 void MainWindow::on_ajouterEmp_8_clicked()
 {
     int id = ui->tabV->model()->data(ui->tabV->model()->index(0, 0)).toInt();
@@ -315,7 +316,7 @@ void MainWindow::on_ajouterEmp_8_clicked()
     }
 
     QString nom1  = (ui->nom->text());
-    QString gouv2 = (ui->gov->text());
+    QString gouv2 = (ui->gov3->text());
     float longe3 = (ui->long_3->text().toFloat());
     float lat4 = (ui->lat_2->text().toFloat());
     int cap5 = (ui->cap_2->text().toInt());
@@ -325,16 +326,24 @@ void MainWindow::on_ajouterEmp_8_clicked()
     Etablissement e(nom1.toStdString(), gouv2.toStdString() , longe3 , lat4 , cap5 , mail5.toStdString() , tel6);
 
     bool test1 = e.modifier(id);
+
     if (test1) {
         QMessageBox::information(this, "Succès", "L'établissement a été modifié avec succès.");
         e.afficher(ui->tabV);
+        ui->nom->clear();
+        ui->gov3->clear();
+        ui->long_3->clear();
+        ui->lat_2->clear();
+        ui->cap_2->clear();
+        ui->mail_2->clear();
+        ui->tel_2->clear();
     }
     else {
         QMessageBox::warning(this, "Erreur", "Échec de la modification.");
     }
 }
 
-// cahrger les donnés de l'etablissment selon id dans le formulaire de modification
+// charrger les donnés de  l'etablissment selon id dans le formulaire de modification
 
 void MainWindow::on_charger_clicked()
 {
@@ -357,14 +366,14 @@ void MainWindow::on_charger_clicked()
 
     if (query.next()) {
         ui->nom->setText(query.value(0).toString());
-        ui->gov->setText(query.value(1).toString());
+        ui->gov3->setText(query.value(1).toString());
         ui->long_3->setText(query.value(2).toString());
         ui->lat_2->setText(query.value(3).toString());
         ui->cap_2->setText(query.value(4).toString());
         ui->mail_2->setText(query.value(5).toString());
         ui->tel_2->setText(query.value(6).toString());
-
         QMessageBox::information(this, "Information", "L'établissement a été chargé pour modification.");
+
     }
     else {
         QMessageBox::warning(this, "Erreur", "Aucun établissement trouvé avec cet ID.");

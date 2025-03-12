@@ -1931,7 +1931,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="ajouterEtablissements">
          <widget class="QFrame" name="frame_2">
@@ -2042,7 +2042,7 @@ border: 0px;</string>
            <property name="geometry">
             <rect>
              <x>560</x>
-             <y>30</y>
+             <y>70</y>
              <width>131</width>
              <height>21</height>
             </rect>
@@ -2057,26 +2057,6 @@ border: 0px;</string>
            </property>
            <property name="text">
             <string>Governorat:</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="govInput">
-           <property name="geometry">
-            <rect>
-             <x>550</x>
-             <y>70</y>
-             <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background: white;
-border: 1px solid #ccc;
-border-radius: 15px;
-font-size: 14px;
-color: black;</string>
-           </property>
-           <property name="text">
-            <string/>
            </property>
           </widget>
           <widget class="QLabel" name="label_40">
@@ -2282,6 +2262,140 @@ border: 0px;</string>
            <property name="text">
             <string>Tel:</string>
            </property>
+          </widget>
+          <widget class="QComboBox" name="combo">
+           <property name="geometry">
+            <rect>
+             <x>710</x>
+             <y>70</y>
+             <width>151</width>
+             <height>28</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Ariana</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Béja</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Ben Arous</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Bizerte</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Gabès</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Gafsa</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Jendouba</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Kairouan</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Kasserine</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Kébili</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Le Kef</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Mahdia</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>La Manouba</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Médenine</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Monastir</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Nabeul</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Sfax</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Sidi Bouzid</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Siliana</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Sousse</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Tataouine</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Tozeur</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Tunis</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Zaghouan</string>
+            </property>
+           </item>
           </widget>
          </widget>
         </widget>
@@ -2660,26 +2774,6 @@ border: 0px;</string>
             <string>Governorat:</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="gov">
-           <property name="geometry">
-            <rect>
-             <x>540</x>
-             <y>80</y>
-             <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background: white;
-border: 1px solid #ccc;
-border-radius: 15px;
-font-size: 14px;
-color: black;</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
           <widget class="QLabel" name="label_44">
            <property name="geometry">
             <rect>
@@ -2704,8 +2798,8 @@ border: 0px;</string>
           <widget class="QLineEdit" name="lat_2">
            <property name="geometry">
             <rect>
-             <x>540</x>
-             <y>210</y>
+             <x>530</x>
+             <y>200</y>
              <width>331</width>
              <height>41</height>
             </rect>
@@ -2886,6 +2980,26 @@ color: black;</string>
            </property>
            <property name="text">
             <string>charger Etablissement</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="gov3">
+           <property name="geometry">
+            <rect>
+             <x>530</x>
+             <y>80</y>
+             <width>231</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </widget>
