@@ -9,6 +9,8 @@
 #include <QDate>
 #include <QPainter>
 #include <QPdfWriter>
+#include <QVBoxLayout>
+#include "statswidgetemp.h"
 
 
 #include "employe.h"
@@ -16,16 +18,32 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , newPhotoSelected(false)
 {
     ui->setupUi(this);
+
     refreshEmployeeTable();
     connect(ui->tableEmploye, &QTableView::clicked, this, &MainWindow::onEmployeeTableClicked);
+    refreshStats();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+//STATS
+void MainWindow::refreshStats() {
+    StatsWidgetEmp *statsWidget = qobject_cast<StatsWidgetEmp*>(ui->statsWidget);
+    if (statsWidget) {
+        statsWidget->updateStats();
+        qDebug() << "Refreshed stats on ui->statsWidget:" << statsWidget;
+    } else {
+        qDebug() << "Error: ui->statsWidget is not a StatsWidgetEmp!";
+    }
+}
+
+
 
 void MainWindow::refreshEmployeeTable()
 {
@@ -87,6 +105,7 @@ void MainWindow::refreshEmployeeTable()
 
     // Adjust column widths
     ui->tableEmploye->resizeColumnsToContents();
+    refreshStats(); // Update stats after refreshing the table
 }
 
 void MainWindow::onEmployeeTableClicked(const QModelIndex &index)
@@ -101,6 +120,7 @@ void MainWindow::onEmployeeTableClicked(const QModelIndex &index)
         if (reply == QMessageBox::Yes) {
             if (emp.supprimer(idEmployee)) {
                 refreshEmployeeTable(); // Refresh employee table
+                refreshStats(); // Refresh stats after deleting
                 QMessageBox::information(this, "Success", "Employee deleted successfully.");
             } else {
                 QMessageBox::warning(this, "Error", "Failed to delete employee.");
@@ -115,6 +135,8 @@ void MainWindow::onEmployeeTableClicked(const QModelIndex &index)
         QString dateN = modelEmployee->data(modelEmployee->index(row, 5)).toString();
         QString role = modelEmployee->data(modelEmployee->index(row, 6)).toString();
         QString password = modelEmployee->data(modelEmployee->index(row, 7)).toString();
+        newPhotoSelected = false;
+        currentPhotoPath = "";
 
         // Switch to the modify form (index 2)
         ui->employeesNavBar->setCurrentIndex(2);
@@ -128,194 +150,6 @@ void MainWindow::onEmployeeTableClicked(const QModelIndex &index)
         ui->dateNInputM->setDate(QDate::fromString(dateN, "dd/MM/yyyy"));
         ui->roleInputM->setCurrentText(role);
         ui->mdpInputM->setText(password);
-    }
-}
-
-void MainWindow::on_ajouterEmpBD_clicked()
-{
-    // Get the form variables
-    QString idStr = ui->cinInput->text();
-    QString nomEmp = ui->nameInput->text();
-    QString prenomEmp = ui->prenomInput->text();
-    QString emailEmp = ui->emailInput->text();
-    QString telephoneStr = ui->telephoneInput->text();
-    QString dateN = ui->dateNInput->text();
-    QString roleEmp = ui->roleInput->currentText();
-    QString password = ui->mdpInput->text();
-    std::vector<unsigned char> photo;
-    QString fileName = ui->photoInput->text();
-    if (!fileName.isEmpty()) {
-        QFile file(fileName);
-        if (file.open(QIODevice::ReadOnly)) {
-            QByteArray imageData = file.readAll();
-            photo.assign(imageData.begin(), imageData.end());
-            file.close();
-        } else {
-            QMessageBox::warning(this, "Error", "Failed to open image file.");
-            return;
-        }
-    }
-
-    // Validation
-    QString errorMsg;
-
-    // ID validation
-    bool idOk;
-    int id_employee = idStr.toInt(&idOk);
-    if (!idOk || id_employee <= 0 || idStr.length() != 8) {
-        errorMsg = "ID est un entier de 8 chiffres.";
-    }
-
-    // Nom validation
-    QRegularExpression nameRegex("^[A-Za-zÀ-ÿ -]+$"); // Letters, spaces, hyphens, accented chars
-    if (nomEmp.isEmpty() || !nameRegex.match(nomEmp).hasMatch()) {
-        errorMsg += "\nLe nom ne doit pas être vide et ne doit contenir que des lettres.";
-    }
-
-    // Prenom validation
-    if (prenomEmp.isEmpty() || !nameRegex.match(prenomEmp).hasMatch()) {
-        errorMsg += "\nLe prénom ne doit pas être vide et ne doit contenir que des lettres.";
-    }
-
-    // Email validation
-    QRegularExpression emailRegex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    if (!emailRegex.match(emailEmp).hasMatch()) {
-        errorMsg += "\nFormat d'email invalide.";
-    }
-
-    // Telephone validation
-    bool telOk;
-    int telephoneEmp = telephoneStr.toInt(&telOk);
-    if (!telOk || telephoneEmp <= 0 || telephoneStr.length() != 8) {
-        errorMsg += "\nLe téléphone doit être un nombre positif de 8 chiffres.";
-    }
-
-    // Role validation (assuming combo box ensures non-empty)
-    if (roleEmp.isEmpty()) {
-        errorMsg += "\nLe rôle doit être sélectionné.";
-    }
-
-    // Password validation
-    if (password.length() < 6) {
-        errorMsg += "\nLe mot de passe doit contenir au moins 6 caractères.";
-    }
-
-    // Check if there are errors
-    if (!errorMsg.isEmpty()) {
-        ui->MessageForme->setText("Erreur : Employé non ajouté ❎\n" + errorMsg.trimmed());
-        return; // Stop execution if validation fails
-    }
-
-    // Create an employee object
-    Employe e(id_employee, nomEmp.toStdString(), prenomEmp.toStdString(), emailEmp.toStdString(),
-              telephoneEmp, dateN.toStdString(), roleEmp.toStdString(), photo, password.toStdString());
-
-    // Add the employee to the database
-    bool test = e.ajouter();
-    if (test) {
-        ui->MessageForme->setText("Employé ajouté avec succès ✅");
-        QMessageBox::information(this, tr("Employee added"),
-                                 tr("Employee added successfully.\nClick Cancel to exit."), QMessageBox::Cancel);
-        refreshEmployeeTable();
-    } else {
-        ui->MessageForme->setText("Erreur : Employé non ajouté ❎");
-        QMessageBox::critical(this, tr("Employee not added"),
-                              tr("Employee not added.\nClick Cancel to exit."), QMessageBox::Cancel);
-    }
-}
-
-void MainWindow::on_modifierEmpBD_clicked()
-{
-    // Get the form variables from modify form
-    QString idStr = ui->cinInputM->text();
-    QString nomEmp = ui->nameInputM->text();
-    QString prenomEmp = ui->prenomInputM->text();
-    QString emailEmp = ui->emailInputM->text();
-    QString telephoneStr = ui->telephoneInputM->text();
-    QString dateN = ui->dateNInputM->text();
-    QString roleEmp = ui->roleInputM->currentText();
-    QString password = ui->mdpInputM->text();
-
-    // Load photo (assuming there's a ui->photoInputM for the modify form)
-    std::vector<unsigned char> photo;
-    /*QString fileName = ui->photoInputM->text(); // Adjust if the widget name differs
-    if (!fileName.isEmpty()) {
-        QFile file(fileName);
-        if (file.open(QIODevice::ReadOnly)) {
-            QByteArray imageData = file.readAll();
-            photo.assign(imageData.begin(), imageData.end());
-            file.close();
-        } else {
-            QMessageBox::warning(this, "Error", "Failed to open image file.");
-            return;
-        }
-    }
-    */
-    // Validation
-    QString errorMsg;
-
-    // ID validation
-    bool idOk;
-    int id_employee = idStr.toInt(&idOk);
-    if (!idOk || id_employee <= 0 || idStr.length() != 8) {
-        errorMsg = "ID must be an 8-digit positive number.";
-    }
-
-    // Nom validation
-    QRegularExpression nameRegex("^[A-Za-zÀ-ÿ -]+$");
-    if (nomEmp.isEmpty() || !nameRegex.match(nomEmp).hasMatch()) {
-        errorMsg += "\nNom must not be empty and contain only letters.";
-    }
-
-    // Prenom validation
-    if (prenomEmp.isEmpty() || !nameRegex.match(prenomEmp).hasMatch()) {
-        errorMsg += "\nPrenom must not be empty and contain only letters.";
-    }
-
-    // Email validation
-    QRegularExpression emailRegex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    if (!emailRegex.match(emailEmp).hasMatch()) {
-        errorMsg += "\nInvalid email format.";
-    }
-
-    // Telephone validation
-    bool telOk;
-    int telephoneEmp = telephoneStr.toInt(&telOk);
-    if (!telOk || telephoneEmp <= 0 || telephoneStr.length() != 8) {
-        errorMsg += "\nTelephone must be an 8-digit positive number.";
-    }
-
-    // Role validation
-    if (roleEmp.isEmpty()) {
-        errorMsg += "\nRole must be selected.";
-    }
-
-    // Password validation
-    if (password.length() < 6) {
-        errorMsg += "\nPassword must be at least 6 characters long.";
-    }
-
-    // Check if there are errors
-    if (!errorMsg.isEmpty()) {
-        ui->MessageFormeM->setText("Erreur : Employé non modifié ❎\n" + errorMsg.trimmed());
-        return; // Stop execution if validation fails
-    }
-
-    // Create an employee object with updated values
-    Employe e(id_employee, nomEmp.toStdString(), prenomEmp.toStdString(), emailEmp.toStdString(),
-              telephoneEmp, dateN.toStdString(), roleEmp.toStdString(), photo, password.toStdString());
-
-    // Modify the employee in the database
-    bool test = e.modifier();
-    if (test) {
-        ui->MessageFormeM->setText("Employé modifié avec succès ✅");
-        QMessageBox::information(this, tr("Employee modified"),
-                                 tr("Employee modified successfully.\nClick Cancel to exit."), QMessageBox::Cancel);
-        refreshEmployeeTable();
-    } else {
-        ui->MessageFormeM->setText("Erreur : Employé non modifié ❎");
-        QMessageBox::critical(this, tr("Employee not modified"),
-                              tr("Employee not modified.\nClick Cancel to exit."), QMessageBox::Cancel);
     }
 }
 
@@ -381,6 +215,205 @@ void MainWindow::filterEmployeeTable(const QString &searchText)
     // Set the filtered model to the table
     ui->tableEmploye->setModel(modelEmployee);
     ui->tableEmploye->resizeColumnsToContents();
+}
+
+void MainWindow::on_ajouterEmpBD_clicked()
+{
+    // Get the form variables
+    QString idStr = ui->cinInput->text();
+    QString nomEmp = ui->nameInput->text();
+    QString prenomEmp = ui->prenomInput->text();
+    QString emailEmp = ui->emailInput->text();
+    QString telephoneStr = ui->telephoneInput->text();
+    QString dateN = ui->dateNInput->text();
+    QString roleEmp = ui->roleInput->currentText();
+    QString password = ui->mdpInput->text();
+    std::vector<unsigned char> photo;
+    QString fileName = ui->photoInput->text();
+    if (!fileName.isEmpty()) {
+        QFile file(fileName);
+        if (file.open(QIODevice::ReadOnly)) {
+            QByteArray imageData = file.readAll();
+            photo.assign(imageData.begin(), imageData.end());
+            file.close();
+        } else {
+            QMessageBox::warning(this, "Erreur de saisie", "Failed to open image file.");
+            return;
+        }
+    }
+
+    // Validation - Stop at the first error
+    bool idOk;
+    int id_employee = idStr.toInt(&idOk);
+    if (!idOk || id_employee <= 0 || idStr.length() != 8) {
+        QMessageBox::warning(this, "Erreur de saisie", "ID est un entier de 8 chiffres.");
+        return;
+    }
+
+    QRegularExpression nameRegex("^[A-Za-zÀ-ÿ -]+$");
+    if (nomEmp.isEmpty() || !nameRegex.match(nomEmp).hasMatch()) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le nom ne doit pas être vide et ne doit contenir que des lettres.");
+        return;
+    }
+
+    if (prenomEmp.isEmpty() || !nameRegex.match(prenomEmp).hasMatch()) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le prénom ne doit pas être vide et ne doit contenir que des lettres.");
+        return;
+    }
+
+    QRegularExpression emailRegex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    if (!emailRegex.match(emailEmp).hasMatch()) {
+        QMessageBox::warning(this, "Erreur de saisie", "Format d'email invalide.");
+        return;
+    }
+
+    bool telOk;
+    int telephoneEmp = telephoneStr.toInt(&telOk);
+    if (!telOk || telephoneEmp <= 0 || telephoneStr.length() != 8) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le téléphone doit être un nombre positif de 8 chiffres.");
+        return;
+    }
+
+    if (roleEmp.isEmpty()) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le rôle doit être sélectionné.");
+        return;
+    }
+
+    if (password.length() < 6) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le mot de passe doit contenir au moins 6 caractères.");
+        return;
+    }
+
+    // If we reach here, all validations passed
+    // Create an employee object
+    Employe e(id_employee, nomEmp.toStdString(), prenomEmp.toStdString(), emailEmp.toStdString(),
+              telephoneEmp, dateN.toStdString(), roleEmp.toStdString(), photo, password.toStdString());
+
+    // Add the employee to the database
+    bool test = e.ajouter();
+    if (test) {
+        ui->MessageForme->setText("Employé ajouté avec succès ✅");
+        refreshEmployeeTable();
+        refreshStats();
+    } else {
+        ui->MessageForme->setText("Erreur : Employé non ajouté ❎");
+    }
+}
+
+void MainWindow::on_modifierEmpBD_clicked()
+{
+    // Get form variables
+    QString idStr = ui->cinInputM->text();
+    QString nomEmp = ui->nameInputM->text();
+    QString prenomEmp = ui->prenomInputM->text();
+    QString emailEmp = ui->emailInputM->text();
+    QString telephoneStr = ui->telephoneInputM->text();
+    QString dateN = ui->dateNInputM->text();
+    QString roleEmp = ui->roleInputM->currentText();
+    QString password = ui->mdpInputM->text();
+
+    // Initialize photo vector
+    std::vector<unsigned char> photo;
+
+    // Check for new photo
+    qDebug() << "currentPhotoPath:" << currentPhotoPath << ", newPhotoSelected:" << newPhotoSelected;
+
+    if (newPhotoSelected && !currentPhotoPath.isEmpty()) {
+        QFile file(currentPhotoPath);
+        if (file.exists() && file.open(QIODevice::ReadOnly)) {
+            QByteArray imageData = file.readAll();
+            photo.assign(imageData.begin(), imageData.end());
+            file.close();
+            qDebug() << "New photo loaded, size:" << photo.size();
+        } else {
+            QMessageBox::warning(this, "Erreur", "Cannot open selected file: " + currentPhotoPath);
+            qDebug() << "Failed to open file:" << currentPhotoPath;
+            return;
+        }
+    } else {
+        qDebug() << "No new photo selected, will use existing DB photo";
+    }
+
+    // Validation
+    bool idOk;
+    int id_employee = idStr.toInt(&idOk);
+    if (!idOk || id_employee <= 0 || idStr.length() != 8) {
+        QMessageBox::warning(this, "Erreur de saisie", "ID must be an 8-digit positive number.");
+        return;
+    }
+
+    QRegularExpression nameRegex("^[A-Za-zÀ-ÿ -]+$");
+    if (nomEmp.isEmpty() || !nameRegex.match(nomEmp).hasMatch()) {
+        QMessageBox::warning(this, "Erreur de saisie", "Nom must not be empty and contain only letters.");
+        return;
+    }
+
+    if (prenomEmp.isEmpty() || !nameRegex.match(prenomEmp).hasMatch()) {
+        QMessageBox::warning(this, "Erreur de saisie", "Prenom must not be empty and contain only letters.");
+        return;
+    }
+
+    QRegularExpression emailRegex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    if (!emailRegex.match(emailEmp).hasMatch()) {
+        QMessageBox::warning(this, "Erreur de saisie", "Invalid email format.");
+        return;
+    }
+
+    bool telOk;
+    int telephoneEmp = telephoneStr.toInt(&telOk);
+    if (!telOk || telephoneEmp <= 0 || telephoneStr.length() != 8) {
+        QMessageBox::warning(this, "Erreur de saisie", "Telephone must be an 8-digit positive number.");
+        return;
+    }
+
+    if (roleEmp.isEmpty()) {
+        QMessageBox::warning(this, "Erreur de saisie", "Role must be selected.");
+        return;
+    }
+
+    if (password.length() < 6) {
+        QMessageBox::warning(this, "Erreur de saisie", "Password must be at least 6 characters long.");
+        return;
+    }
+
+    // Create employee object
+    Employe e(id_employee, nomEmp.toStdString(), prenomEmp.toStdString(), emailEmp.toStdString(),
+              telephoneEmp, dateN.toStdString(), roleEmp.toStdString(), photo, password.toStdString());
+
+    // Load existing photo if no new one
+    if (!newPhotoSelected) {
+        QSqlQuery query;
+        query.prepare("SELECT photo FROM employe WHERE id_employe = :id_employee");
+        query.bindValue(":id_employee", id_employee);
+        if (query.exec() && query.next()) {
+            QByteArray photoData = query.value(0).toByteArray();
+            if (!photoData.isEmpty()) {
+                photo.assign(photoData.begin(), photoData.end());
+                e.setPhoto(photo);
+                qDebug() << "Loaded existing photo from DB, size:" << photo.size();
+            } else {
+                qDebug() << "No photo exists in DB for ID:" << id_employee;
+            }
+        } else {
+            QMessageBox::warning(this, "Erreur", "Failed to fetch DB photo: ");
+
+            return;
+        }
+    }
+
+    // Modify employee
+    bool test = e.modifier();
+    if (test) {
+        ui->MessageFormeM->setText("Employé modifié avec succès ✅");
+        refreshEmployeeTable();
+        refreshStats();
+        qDebug() << "Employee modified successfully";
+        newPhotoSelected = false;
+        currentPhotoPath = "";
+    } else {
+        ui->MessageFormeM->setText("Erreur : Employé non modifié ❎");
+        qDebug() << "Failed to modify employee";
+    }
 }
 
 void MainWindow::on_ajouterEmp_clicked()
@@ -741,5 +774,22 @@ void MainWindow::on_pdfEmp_clicked()
 
     painter.end();
     QMessageBox::information(this, "Success", "PDF generated successfully!");
+}
+
+
+
+
+void MainWindow::on_photoInputM_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.bmp)"));
+    if (!fileName.isEmpty() && QFile::exists(fileName)) {
+        currentPhotoPath = fileName;
+        newPhotoSelected = true;
+        qDebug() << "New photo selected:" << fileName;
+    } else {
+        currentPhotoPath = "";
+        newPhotoSelected = false;
+        qDebug() << "No valid photo selected";
+    }
 }
 

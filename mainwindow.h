@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QModelIndex>
 #include "employe.h"
+#include "statswidgetemp.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,6 +17,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void refreshStats();
 
 private slots:
     void refreshEmployeeTable();
@@ -58,9 +60,13 @@ private slots:
 
     void on_pdfEmp_clicked();
 
+    void on_photoInputM_clicked();
+
 private:
     Ui::MainWindow *ui;
     Employe emp; // Properly declare emp as a member variable
     void filterEmployeeTable(const QString &searchText);
+    bool newPhotoSelected;
+    QString currentPhotoPath;
 };
 #endif // MAINWINDOW_H

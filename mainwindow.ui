@@ -599,7 +599,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
 background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="ajouterEmployes">
          <widget class="QFrame" name="formBackground">
@@ -1736,7 +1736,18 @@ color: black;
           </widget>
          </widget>
         </widget>
-        <widget class="QWidget" name="statistiquesEmployes"/>
+        <widget class="QWidget" name="statistiquesEmployes">
+         <widget class="StatsWidgetEmp" name="statsWidget" native="true">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1181</width>
+            <height>721</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
        </widget>
        <widget class="QPushButton" name="ajouterEmp">
         <property name="geometry">
@@ -5002,6 +5013,14 @@ border: 0px;</string>
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>StatsWidgetEmp</class>
+   <extends>QWidget</extends>
+   <header>statswidgetemp.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
