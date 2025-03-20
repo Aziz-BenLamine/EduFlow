@@ -33,7 +33,7 @@ QWidget { background: transparent; }  </string>
      <string notr="true">background: transparent;</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Login">
      <property name="styleSheet">
@@ -192,7 +192,7 @@ color:white;</string>
         <string>Mot de passe</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="CINLOGIN">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -209,7 +209,7 @@ font-size: 14px;
 color: black;</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="MDPLOGIN">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -226,7 +226,7 @@ font-size: 14px;
 color: black;</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="LOGINBTN">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -279,6 +279,25 @@ font: 400 12pt &quot;Segoe UI&quot;;</string>
        </property>
        <property name="text">
         <string>mot de passe oublié</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="LOGINFACIAL">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>430</y>
+         <width>91</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-color: rgb(0, 255, 0);
+background-color: transparent;
+font: 900 14pt &quot;Segoe UI&quot;;
+color:white;</string>
+       </property>
+       <property name="text">
+        <string>Se connecter</string>
        </property>
       </widget>
      </widget>
@@ -599,7 +618,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
 background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="ajouterEmployes">
          <widget class="QFrame" name="formBackground">
@@ -742,6 +761,9 @@ color: black;
            </property>
            <property name="text">
             <string/>
+           </property>
+           <property name="readOnly">
+            <bool>false</bool>
            </property>
           </widget>
           <widget class="QLabel" name="label_9">
@@ -1043,48 +1065,6 @@ border: 0px;</string>
            </property>
            <property name="text">
             <string>Mot de passe:</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_32">
-           <property name="geometry">
-            <rect>
-             <x>570</x>
-             <y>460</y>
-             <width>281</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Confirmation Mot de passe:</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="mdpInputC">
-           <property name="geometry">
-            <rect>
-             <x>560</x>
-             <y>490</y>
-             <width>300</width>
-             <height>40</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background: white;
-border: 1px solid #ccc;
-border-radius: 15px;
-font-size: 14px;
-color: black;
-</string>
-           </property>
-           <property name="text">
-            <string/>
            </property>
           </widget>
          </widget>
@@ -1390,6 +1370,9 @@ color: black;
            <property name="text">
             <string/>
            </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
           </widget>
           <widget class="QLabel" name="label_13">
            <property name="geometry">
@@ -1690,48 +1673,6 @@ border: 0px;</string>
            </property>
            <property name="text">
             <string>Mot de passe:</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_35">
-           <property name="geometry">
-            <rect>
-             <x>570</x>
-             <y>460</y>
-             <width>281</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Confirmation Mot de passe:</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="mdpInputCM">
-           <property name="geometry">
-            <rect>
-             <x>560</x>
-             <y>490</y>
-             <width>300</width>
-             <height>40</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background: white;
-border: 1px solid #ccc;
-border-radius: 15px;
-font-size: 14px;
-color: black;
-</string>
-           </property>
-           <property name="text">
-            <string/>
            </property>
           </widget>
          </widget>

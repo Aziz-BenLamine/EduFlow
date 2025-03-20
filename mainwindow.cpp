@@ -793,3 +793,39 @@ void MainWindow::on_photoInputM_clicked()
     }
 }
 
+void MainWindow::on_LOGINBTN_clicked()
+{
+    // Get input values from the login form
+    QString cinLogin = ui->CINLOGIN->text(); // Assuming the QLineEdit is named cinLoginInput
+    QString mdpLogin = ui->MDPLOGIN->text(); // Assuming the QLineEdit is named mdpLoginInput
+
+    // Basic input validation
+    if (cinLogin.isEmpty() || mdpLogin.isEmpty()) {
+        QMessageBox::warning(this, "Erreur de connexion", "Veuillez entrer un CIN et un mot de passe.");
+        return;
+    }
+
+    bool cinOk;
+    int id_employee = cinLogin.toInt(&cinOk);
+    if (!cinOk || cinLogin.length() != 8) {
+        QMessageBox::warning(this, "Erreur de connexion", "Le CIN doit être un numéro de 8 chiffres.");
+        return;
+    }
+
+    // Query the database to verify credentials
+    QSqlQuery query;
+    query.prepare("SELECT id_employe, password FROM employe WHERE id_employe = :id_employee AND password = :password");
+    query.bindValue(":id_employee", id_employee);
+    query.bindValue(":password", mdpLogin);
+
+    if (query.exec() && query.next()) {
+        // Login successful
+        QMessageBox::information(this, "Connexion réussie", "Bienvenue !");
+        ui->login_app->setCurrentIndex(1);
+        ui->CINLOGIN->clear();
+        ui->MDPLOGIN->clear();
+    } else {
+        // Login failed
+        QMessageBox::warning(this, "Erreur de connexion", "CIN ou mot de passe incorrect.");
+    }
+}

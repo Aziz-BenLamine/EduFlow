@@ -62,6 +62,8 @@ private slots:
 
     void on_photoInputM_clicked();
 
+    void on_LOGINBTN_clicked();
+
 private:
     Ui::MainWindow *ui;
     Employe emp; // Properly declare emp as a member variable
