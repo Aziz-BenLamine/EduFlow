@@ -11,7 +11,8 @@
 #include <QPdfWriter>
 #include <QVBoxLayout>
 #include "statswidgetemp.h"
-
+#include <QDateTime>
+//GG
 
 #include "employe.h"
 
@@ -19,19 +20,187 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , newPhotoSelected(false)
+    , cap(nullptr) // Initialize camera pointer
+    , timer(nullptr) // Initialize timer
+
 {
     ui->setupUi(this);
-
+    ui->cameraLabel->hide();
     refreshEmployeeTable();
     connect(ui->tableEmploye, &QTableView::clicked, this, &MainWindow::onEmployeeTableClicked);
     refreshStats();
+
+    // Initialize DNN models
+    detector = cv::FaceDetectorYN::create("C:/models/face_detection_yunet_2023mar.onnx", "", cv::Size(320, 320));
+    detector->setScoreThreshold(0.6); // Lowered for more detections
+    detector->setNMSThreshold(0.3);
+    detector->setTopK(5000);
+    recognizer = cv::FaceRecognizerSF::create("C:/models/face_recognition_sface_2021dec.onnx", "");
+
+
+    // Load known features
+    loadKnownFeatures();
+
+    qDebug() << "Qt Version:" << QT_VERSION_STR;
+    /*QFile file("C:\\opencv-4.9.0minGW\\install\\etc\\haarcascades\\haarcascade_frontalface_default.xml");
+    if (!file.exists()) {
+        qDebug() << "Haar cascade file does not exist at specified path!";
+    } else {
+        qDebug() << "File found, attempting to load...";
+    }*/
 }
 
 MainWindow::~MainWindow()
 {
+    if (cap && cap->isOpened()) {
+        cap->release();
+    }
+    delete cap;
+    delete timer;
     delete ui;
 }
 
+//FACIAL RECOGNITION
+void MainWindow::loadKnownFeatures()
+{
+    knownFeatures.clear();
+    QSqlQuery query("SELECT id_employe, photo FROM employe");
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        QByteArray photoData = query.value(1).toByteArray();
+
+        if (!photoData.isEmpty()) {
+            cv::Mat img = cv::imdecode(cv::Mat(1, photoData.size(), CV_8UC1, photoData.data()), cv::IMREAD_COLOR);
+            if (!img.empty()) {
+                // Resize to consistent size
+                cv::resize(img, img, cv::Size(320, 320));
+                detector->setInputSize(img.size());
+                cv::Mat faces;
+                detector->detect(img, faces);
+                if (faces.rows == 1) { // Only one face per photo
+                    cv::Mat alignedFace;
+                    recognizer->alignCrop(img, faces.row(0), alignedFace);
+                    if (!alignedFace.empty()) {
+                        // Save for debugging
+                        QString debugFile = QString("db_face_id_%1.jpg").arg(id);
+                        cv::imwrite(debugFile.toStdString(), alignedFace);
+                        qDebug() << "Saved DB aligned face for ID" << id << "to" << debugFile;
+
+                        cv::Mat feature;
+                        recognizer->feature(alignedFace, feature);
+                        knownFeatures.push_back({id, feature.clone()}); // Single feature per ID
+                        qDebug() << "Loaded feature for ID:" << id;
+                    } else {
+                        qDebug() << "Alignment failed for ID:" << id;
+                    }
+                } else {
+                    qDebug() << "Invalid face count for ID" << id << ":" << faces.rows << "faces detected";
+                }
+            } else {
+                qDebug() << "Failed to decode photo for ID:" << id;
+            }
+        } else {
+            qDebug() << "Empty photo data for ID:" << id;
+        }
+    }
+    qDebug() << "Loaded features for" << knownFeatures.size() << "employees.";
+
+    // Debug distances between known features
+    for (size_t i = 0; i < knownFeatures.size(); ++i) {
+        for (size_t j = i + 1; j < knownFeatures.size(); ++j) {
+            double distance = recognizer->match(knownFeatures[i].second, knownFeatures[j].second, cv::FaceRecognizerSF::FR_COSINE);
+            qDebug() << "Distance between ID" << knownFeatures[i].first << "and ID" << knownFeatures[j].first << ":" << distance;
+        }
+    }
+}
+
+
+
+void MainWindow::processFrameAndUpdateGUI()
+{
+    if (!cap || !cap->isOpened()) {
+        qDebug() << "Camera not initialized.";
+        return;
+    }
+
+    cv::Mat frame;
+    *cap >> frame;
+    if (frame.empty()) {
+        qDebug() << "No frame captured.";
+        return;
+    }
+
+    // Resize frame for consistency
+    cv::Mat resizedFrame;
+    cv::resize(frame, resizedFrame, cv::Size(320, 320));
+    detector->setInputSize(resizedFrame.size());
+
+    // Detect faces
+    cv::Mat faces;
+    detector->detect(resizedFrame, faces);
+    qDebug() << "Detected" << faces.rows << "faces";
+
+    cv::Mat displayFrame = resizedFrame.clone();
+    const double threshold = 0.4; // Stricter threshold
+
+    if (faces.rows > 0) {
+        // Process the first face
+        cv::Rect bbox(faces.at<float>(0, 0), faces.at<float>(0, 1), faces.at<float>(0, 2), faces.at<float>(0, 3));
+        cv::rectangle(displayFrame, bbox, cv::Scalar(0, 255, 0), 2);
+
+        // Align and extract feature
+        cv::Mat alignedFace;
+        recognizer->alignCrop(resizedFrame, faces.row(0), alignedFace);
+        if (alignedFace.empty()) {
+            qDebug() << "Alignment failed for live frame.";
+            cv::putText(displayFrame, "Alignment Failed", cv::Point(10, 30),
+                        cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 255), 2);
+        } else {
+            // Save live aligned face for debugging with timestamp
+            QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss");
+            QString debugFile = QString("live_face_%1.jpg").arg(timestamp);
+            cv::imwrite(debugFile.toStdString(), alignedFace);
+            qDebug() << "Saved live aligned face to" << debugFile;
+
+            cv::Mat feature;
+            recognizer->feature(alignedFace, feature);
+
+            // Find best match with separation check
+            double minDistance = DBL_MAX, secondMinDistance = DBL_MAX;
+            int bestId = -1;
+            for (const auto& known : knownFeatures) {
+                double distance = recognizer->match(feature, known.second, cv::FaceRecognizerSF::FR_COSINE);
+                qDebug() << "Distance to ID" << known.first << ":" << distance;
+                if (distance < minDistance) {
+                    secondMinDistance = minDistance;
+                    minDistance = distance;
+                    bestId = known.first;
+                } else if (distance < secondMinDistance) {
+                    secondMinDistance = distance;
+                }
+            }
+
+            if (minDistance < threshold && (secondMinDistance - minDistance > 0.1)) { // Clear separation
+                QString text = QString("ID: %1 (Dist: %2)").arg(bestId).arg(minDistance, 0, 'f', 2);
+                cv::putText(displayFrame, text.toStdString(), cv::Point(bbox.x, bbox.y - 10),
+                            cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 255, 0), 2);
+                qDebug() << "Matched ID:" << bestId << "with distance:" << minDistance;
+            } else {
+                cv::putText(displayFrame, "Unknown", cv::Point(bbox.x, bbox.y - 10),
+                            cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 255), 2);
+                qDebug() << "No clear match. Best:" << minDistance << "Second:" << secondMinDistance;
+            }
+        }
+    } else {
+        cv::putText(displayFrame, "No Face Detected", cv::Point(10, 30),
+                    cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(255, 255, 255), 2);
+    }
+
+    // Display frame
+    cv::cvtColor(displayFrame, displayFrame, cv::COLOR_BGR2RGB);
+    QImage qimg(displayFrame.data, displayFrame.cols, displayFrame.rows, displayFrame.step, QImage::Format_RGB888);
+    ui->cameraLabel->setPixmap(QPixmap::fromImage(qimg).scaled(ui->cameraLabel->size(), Qt::KeepAspectRatio));
+}
 //STATS
 void MainWindow::refreshStats() {
     StatsWidgetEmp *statsWidget = qobject_cast<StatsWidgetEmp*>(ui->statsWidget);
@@ -828,4 +997,43 @@ void MainWindow::on_LOGINBTN_clicked()
         // Login failed
         QMessageBox::warning(this, "Erreur de connexion", "CIN ou mot de passe incorrect.");
     }
+}
+
+void MainWindow::on_LOGINFACIAL_clicked()
+{
+    if (cap && cap->isOpened()) {
+        timer->stop();
+        cap->release();
+        delete cap;
+        cap = nullptr;
+        ui->cameraLabel->hide();
+        qDebug() << "Camera stopped.";
+        return;
+    }
+
+    cap = new cv::VideoCapture(0);
+    if (!cap->isOpened()) {
+        QMessageBox::critical(this, "Error", "Could not open camera.");
+        delete cap;
+        cap = nullptr;
+        return;
+    }
+
+    // Match the resolution used for database photos
+    cap->set(cv::CAP_PROP_FRAME_WIDTH, 1920);
+    cap->set(cv::CAP_PROP_FRAME_HEIGHT, 1080);
+    qDebug() << "Camera resolution set to:" << cap->get(cv::CAP_PROP_FRAME_WIDTH) << "x" << cap->get(cv::CAP_PROP_FRAME_HEIGHT);
+
+    if (knownFeatures.empty()) {
+        QMessageBox::warning(this, "Error", "No employee features found in database.");
+        cap->release();
+        delete cap;
+        cap = nullptr;
+        return;
+    }
+
+    ui->cameraLabel->show();
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::processFrameAndUpdateGUI);
+    timer->start(33);
 }

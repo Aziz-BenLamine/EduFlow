@@ -33,7 +33,7 @@ QWidget { background: transparent; }  </string>
      <string notr="true">background: transparent;</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Login">
      <property name="styleSheet">
@@ -300,6 +300,19 @@ color:white;</string>
         <string>Se connecter</string>
        </property>
       </widget>
+     </widget>
+     <widget class="QLabel" name="cameraLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>120</y>
+        <width>320</width>
+        <height>240</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="EduFlow">
@@ -618,7 +631,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
 background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterEmployes">
          <widget class="QFrame" name="formBackground">

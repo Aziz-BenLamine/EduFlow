@@ -5,6 +5,14 @@
 #include <QModelIndex>
 #include "employe.h"
 #include "statswidgetemp.h"
+#include <Qdebug>
+#include <QTimer>
+#include <opencv2/opencv.hpp>
+#include <opencv2/face.hpp> // For FaceRecognizerSF
+#include <opencv2/dnn.hpp>  // For FaceDetectorYN
+
+
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -64,11 +72,24 @@ private slots:
 
     void on_LOGINBTN_clicked();
 
+    void on_LOGINFACIAL_clicked();
+    void processFrameAndUpdateGUI();
+
+
 private:
     Ui::MainWindow *ui;
-    Employe emp; // Properly declare emp as a member variable
+    Employe emp;
     void filterEmployeeTable(const QString &searchText);
     bool newPhotoSelected;
     QString currentPhotoPath;
+
+    cv::VideoCapture *cap;
+    QTimer *timer;
+    // Replace employeePhotos with knownFeatures
+    std::vector<std::pair<int, cv::Mat>> knownFeatures; // Employee ID and feature vector
+    cv::Ptr<cv::FaceDetectorYN> detector;              // DNN-based face detector
+    cv::Ptr<cv::FaceRecognizerSF> recognizer;          // DNN-based face recognizer
+    void loadKnownFeatures();                          // Load features from DB
+
 };
 #endif // MAINWINDOW_H
