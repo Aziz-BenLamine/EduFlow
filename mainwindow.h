@@ -1,7 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include <QtCharts>
 #include <QMainWindow>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -89,7 +90,18 @@ private slots:
 
     void on_charger_clicked();
 
+    void on_pdfEtab_clicked();
+
+    void on_comboBox_3_currentIndexChanged(int index);
+
+    void on_comboBox_3_activated(int index);
+
+    void on_champRecherche_3_textChanged(const QString &arg1);
+
+    void on_textSpchBTN_clicked();
+
 private:
     Ui::MainWindow *ui;
+    void setupStatsChart();
 };
 #endif // MAINWINDOW_H

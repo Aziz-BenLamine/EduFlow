@@ -4,6 +4,7 @@
 #include <QSqlQuery>
 #include <QSqlTableModel>
 #include <QTableView>
+#include <QMap>
 
 class Etablissement
 {
@@ -17,11 +18,22 @@ private:
     std::string email;
     int tel;
     QSqlQueryModel *model;
+
 public:
 
     // constructeur
-    Etablissement(int id_etab, std::string nom , std::string gouvernorat , float longe , float lat, int capacite , std::string email , int tel);
-
+    Etablissement(std::string nom , std::string gouvernorat , float longe , float lat, int capacite , std::string email , int tel);
+    Etablissement()
+    {
+        this->id_etab=0;
+        this->nom="";
+        this->gouvernorat="";
+        this->longe=0.0f;
+        this->lat=0.0f;
+        this->capacite=0;
+        this->email="";
+        this->tel=0;
+    }
     // getters
 
     int getID();
@@ -51,8 +63,8 @@ public:
     bool supprimerTous();
     bool modifier(int id);
 
-    // metier SIMPLE
-
+    //New method to get stats
+    QMap<QString, int> getStatsByGovernorate();
 };
 
 #endif // ETABLISSEMENT_H
