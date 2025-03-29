@@ -1,5 +1,7 @@
 QT       += core gui
 QT  += sql
+QT += charts sql
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -12,12 +14,12 @@ SOURCES += \
     connection.cpp \
     etablissement.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
 
 HEADERS += \
     connection.h \
     etablissement.h \
-    mainwindow.h
+    mainwindow.h \
 
 FORMS += \
     mainwindow.ui
@@ -29,3 +31,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res/res.qrc
+
