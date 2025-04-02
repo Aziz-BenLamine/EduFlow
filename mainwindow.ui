@@ -1835,7 +1835,7 @@ border: 0px;</string>
          <rect>
           <x>690</x>
           <y>10</y>
-          <width>251</width>
+          <width>201</width>
           <height>61</height>
          </rect>
         </property>
@@ -1855,9 +1855,9 @@ border: 0px;</string>
        <widget class="QPushButton" name="afficherEtab">
         <property name="geometry">
          <rect>
-          <x>380</x>
+          <x>390</x>
           <y>10</y>
-          <width>241</width>
+          <width>191</width>
           <height>61</height>
          </rect>
         </property>
@@ -1877,9 +1877,9 @@ border: 0px;</string>
        <widget class="QPushButton" name="ajouterEtab">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>90</x>
           <y>10</y>
-          <width>241</width>
+          <width>181</width>
           <height>61</height>
          </rect>
         </property>
@@ -1899,9 +1899,9 @@ border: 0px;</string>
        <widget class="QPushButton" name="statsEtab">
         <property name="geometry">
          <rect>
-          <x>1020</x>
+          <x>960</x>
           <y>10</y>
-          <width>161</width>
+          <width>171</width>
           <height>61</height>
          </rect>
         </property>
@@ -2489,7 +2489,7 @@ color: black;</string>
          <widget class="QPushButton" name="geoBTN">
           <property name="geometry">
            <rect>
-            <x>800</x>
+            <x>740</x>
             <y>120</y>
             <width>271</width>
             <height>61</height>
@@ -2511,7 +2511,7 @@ color: black;</string>
          <widget class="QPushButton" name="pdfEtab">
           <property name="geometry">
            <rect>
-            <x>800</x>
+            <x>740</x>
             <y>230</y>
             <width>271</width>
             <height>61</height>
@@ -2533,7 +2533,7 @@ color: black;</string>
          <widget class="QPushButton" name="textSpchBTN">
           <property name="geometry">
            <rect>
-            <x>800</x>
+            <x>740</x>
             <y>340</y>
             <width>271</width>
             <height>61</height>
@@ -2591,7 +2591,7 @@ color: black;</string>
            <rect>
             <x>10</x>
             <y>120</y>
-            <width>781</width>
+            <width>721</width>
             <height>281</height>
            </rect>
           </property>
@@ -2631,10 +2631,10 @@ QTableView::item:selected {
          <widget class="QLineEdit" name="texte">
           <property name="geometry">
            <rect>
-            <x>930</x>
-            <y>450</y>
-            <width>221</width>
-            <height>81</height>
+            <x>980</x>
+            <y>480</y>
+            <width>191</width>
+            <height>71</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -2649,10 +2649,10 @@ color: black;
          <widget class="QLabel" name="label_71">
           <property name="geometry">
            <rect>
-            <x>790</x>
-            <y>460</y>
-            <width>171</width>
-            <height>61</height>
+            <x>840</x>
+            <y>470</y>
+            <width>181</width>
+            <height>81</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -2665,6 +2665,22 @@ border: 0px;</string>
           </property>
           <property name="text">
            <string>Texte généré</string>
+          </property>
+         </widget>
+         <widget class="QFrame" name="map">
+          <property name="geometry">
+           <rect>
+            <x>1020</x>
+            <y>110</y>
+            <width>321</width>
+            <height>341</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Raised</enum>
           </property>
          </widget>
         </widget>
