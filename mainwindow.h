@@ -8,9 +8,7 @@
 #include <Qdebug>
 #include <QTimer>
 #include <opencv2/opencv.hpp>
-#include <opencv2/face.hpp> // For FaceRecognizerSF
-#include <opencv2/dnn.hpp>  // For FaceDetectorYN
-
+#include <opencv2/face.hpp>
 
 
 
@@ -30,7 +28,7 @@ public:
 private slots:
     void refreshEmployeeTable();
     void onEmployeeTableClicked(const QModelIndex &index);
-
+    void updateFrame();
     void on_ajouterEmp_clicked();
     void on_afficherEmp_clicked();
     void on_modiferEmp_clicked();
@@ -73,7 +71,6 @@ private slots:
     void on_LOGINBTN_clicked();
 
     void on_LOGINFACIAL_clicked();
-    void processFrameAndUpdateGUI();
 
 
 private:
@@ -83,13 +80,15 @@ private:
     bool newPhotoSelected;
     QString currentPhotoPath;
 
-    cv::VideoCapture *cap;
+
+    // FACE ID
+    cv::VideoCapture cap;
     QTimer *timer;
-    // Replace employeePhotos with knownFeatures
-    std::vector<std::pair<int, cv::Mat>> knownFeatures; // Employee ID and feature vector
-    cv::Ptr<cv::FaceDetectorYN> detector;              // DNN-based face detector
-    cv::Ptr<cv::FaceRecognizerSF> recognizer;          // DNN-based face recognizer
-    void loadKnownFeatures();                          // Load features from DB
+    cv::CascadeClassifier faceCascade;
+    cv::Ptr<cv::face::LBPHFaceRecognizer> recognizer;
+    std::vector<std::string> user_names;
+    bool faceRecognitionActive;
+    int consecutiveDetections;
 
 };
 #endif // MAINWINDOW_H

@@ -48,4 +48,3 @@ LIBS += C:\opencv_contrib-4.9.0\bin\libopencv_features2d490.dll
 LIBS += C:\opencv_contrib-4.9.0\bin\libopencv_flann490.dll
 LIBS += C:\opencv_contrib-4.9.0\bin\libopencv_dnn490.dll
 LIBS += C:\opencv_contrib-4.9.0\bin\libopencv_face490.dll
-

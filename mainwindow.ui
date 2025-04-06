@@ -33,7 +33,7 @@ QWidget { background: transparent; }  </string>
      <string notr="true">background: transparent;</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Login">
      <property name="styleSheet">
@@ -306,8 +306,8 @@ color:white;</string>
        <rect>
         <x>20</x>
         <y>120</y>
-        <width>320</width>
-        <height>240</height>
+        <width>1161</width>
+        <height>591</height>
        </rect>
       </property>
       <property name="text">
