@@ -4,7 +4,6 @@
 #include "QMessageBox"
 
 #include "etablissement.h"
-#include "speechdialog.h"
 
 #include <string>
 #include <QString>
@@ -250,10 +249,10 @@ void MainWindow::on_ajouterEtab_2_clicked()
         return;
     }
     else if (!longeValide) {
-        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Veuillez saisir une valeur valide pour longitude!"), QMessageBox::Ok);
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Veuillez saisir une valeur valide pour longitude entre 8.00 et 11.10!"), QMessageBox::Ok);
         return ;
     } else if (!latValide) {
-        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Veuillez saisir une valeur valide pour latitude!"), QMessageBox::Ok);
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Veuillez saisir une valeur valide pour latitude entre 32.80 et 37.35!"), QMessageBox::Ok);
         return ;
     } else if (!mailValide) {
         QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("L'email doit contenir '@' et '.'!"), QMessageBox::Ok);
@@ -671,7 +670,6 @@ void MainWindow::on_comboBox_3_activated(int index)
         // Set the new sorted model to the table view
 
         ui->tabV->setModel(model);
-
 
         if (oldModel) {
             delete oldModel;

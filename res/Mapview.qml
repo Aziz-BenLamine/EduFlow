@@ -15,77 +15,104 @@ ApplicationWindow {
         anchors.fill: parent
         center: QtPositioning.coordinate(36.8065, 10.1815)
         zoomLevel: 10
-        Behavior on zoomLevel {
-            NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
-        }
-        Behavior on center {
-            CoordinateAnimation { duration: 300; easing.type: Easing.InOutQuad }
-        }
         plugin: Plugin {
             name: "osm"
             PluginParameter { name: "osm.mapping.providersavailable"; value: "true" }
             PluginParameter { name: "osm.mapping.cache.directory"; value: "cache" }
             PluginParameter { name: "osm.mapping.highdpi_tiles"; value: "true" }
+            PluginParameter { name: "osm.mapping.host"; value: "https://tile.openstreetmap.org"}
         }
 
+        // Bouton Zoom In
         Button {
             id: zoomIn
             text: "+"
-            width: 40
-            height: 40
+            width: 48
+            height: 48
             anchors {
                 right: parent.right
-                rightMargin: 10
+                rightMargin: 15
                 top: parent.top
-                topMargin: 10
+                topMargin: 15
             }
+
+            z: 1 // bouton est au-dessus du MouseArea
+
             background: Rectangle {
+                radius: 24
                 color: "#4CAF50"
-                radius: 5
-                opacity: zoomIn.pressed ? 0.7 : 1.0
+                border.color: Qt.lighter("#4CAF50", 1.2)
+                border.width: 1
+                Rectangle {
+                    anchors.fill: parent
+                    radius: 24
+                    color: "black"
+                    opacity: 0.2
+                    z: -1
+                    anchors.margins: -4
+                    transform: Translate { y: 2 }
+                }
+                scale: zoomIn.pressed ? 0.95 : 1.0
+                Behavior on scale { NumberAnimation { duration: 100 } }
             }
             contentItem: Text {
                 text: zoomIn.text
                 color: "white"
+                font.pixelSize: 24
                 font.bold: true
-                font.pixelSize: 20
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
             onClicked: {
-                if (map.zoomLevel < map.maximumZoomLevel) {
-                    map.zoomLevel = map.zoomLevel + 1
+                console.log("Zoom In clicked, current zoom:", map.zoomLevel)
+                if (map.zoomLevel < 18) { // Valeur typique pour OSM, ajustable
+                    map.zoomLevel += 1
                 }
             }
         }
 
+        // Bouton Zoom Out
         Button {
             id: zoomOut
             text: "-"
-            width: 40
-            height: 40
+            width: 48
+            height: 48
             anchors {
                 right: parent.right
-                rightMargin: 10
+                rightMargin: 15
                 top: zoomIn.bottom
-                topMargin: 5
+                topMargin: 10
             }
+            z: 1 // S'assurer que le bouton est au-dessus du MouseArea
             background: Rectangle {
+                radius: 24
                 color: "#F44336"
-                radius: 5
-                opacity: zoomOut.pressed ? 0.7 : 1.0
+                border.color: Qt.lighter("#F44336", 1.2)
+                border.width: 1
+                Rectangle {
+                    anchors.fill: parent
+                    radius: 24
+                    color: "black"
+                    opacity: 0.2
+                    z: -1
+                    anchors.margins: -4
+                    transform: Translate { y: 2 }
+                }
+                scale: zoomOut.pressed ? 0.95 : 1.0
+                Behavior on scale { NumberAnimation { duration: 100 } }
             }
             contentItem: Text {
                 text: zoomOut.text
                 color: "white"
+                font.pixelSize: 24
                 font.bold: true
-                font.pixelSize: 20
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
             onClicked: {
-                if (map.zoomLevel > map.minimumZoomLevel) {
-                    map.zoomLevel = map.zoomLevel - 1
+                console.log("Zoom Out clicked, current zoom:", map.zoomLevel)
+                if (map.zoomLevel > 1) { // Valeur typique pour OSM, ajustable
+                    map.zoomLevel -= 1
                 }
             }
         }
@@ -94,8 +121,6 @@ ApplicationWindow {
             anchors.fill: parent
             property real lastX: 0
             property real lastY: 0
-
-            // Change le curseur pour indiquer que la carte peut être déplacée
             cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
 
             function handlePress(mouse) {
@@ -107,26 +132,7 @@ ApplicationWindow {
                 if (pressed) {
                     var dx = mouse.x - lastX
                     var dy = mouse.y - lastY
-                    map.pan(-dx, -dy) // Déplace la carte dans la direction opposée au mouvement
-
-                    // Vérifie les limites géographiques après le déplacement
-                    var newLat = map.center.latitude
-                    var newLon = map.center.longitude
-
-                    // Limite la latitude entre -90 et 90 degrés
-                    if (newLat > 90) {
-                        map.center = QtPositioning.coordinate(90, newLon)
-                    } else if (newLat < -90) {
-                        map.center = QtPositioning.coordinate(-90, newLon)
-                    }
-
-                    // Limite la longitude entre -180 et 180 degrés
-                    if (newLon > 180) {
-                        map.center = QtPositioning.coordinate(newLat, 180)
-                    } else if (newLon < -180) {
-                        map.center = QtPositioning.coordinate(newLat, -180)
-                    }
-
+                    map.pan(-dx, -dy)
                     lastX = mouse.x
                     lastY = mouse.y
                 }
