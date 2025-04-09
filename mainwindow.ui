@@ -1833,7 +1833,7 @@ border: 0px;</string>
        <widget class="QPushButton" name="modiferEtab">
         <property name="geometry">
          <rect>
-          <x>690</x>
+          <x>670</x>
           <y>10</y>
           <width>201</width>
           <height>61</height>
@@ -1899,7 +1899,7 @@ border: 0px;</string>
        <widget class="QPushButton" name="statsEtab">
         <property name="geometry">
          <rect>
-          <x>960</x>
+          <x>970</x>
           <y>10</y>
           <width>171</width>
           <height>61</height>
@@ -2649,19 +2649,20 @@ QTableView::item:selected {
          <widget class="QLabel" name="label_71">
           <property name="geometry">
            <rect>
-            <x>750</x>
+            <x>660</x>
             <y>460</y>
-            <width>181</width>
+            <width>281</width>
             <height>81</height>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
+           <string notr="true">background: transparent;  
+    border: none;  
+    color: white;  
+    font-weight: bold; 
+    font-size: 30px; 
+    padding: 10px 20px;  
+    border-radius: 8px;  </string>
           </property>
           <property name="text">
            <string>Texte généré :</string>
