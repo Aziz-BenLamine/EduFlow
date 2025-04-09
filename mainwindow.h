@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QtCharts>
-#include <QMainWindow>
-
+#include <QQmlApplicationEngine>
+#include <QtQuickWidgets/QQuickWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -100,8 +100,15 @@ private slots:
 
     void on_textSpchBTN_clicked();
 
+    void on_geoBTN_clicked();
+
+    void onMapWindowClosed(); // gérer la fermeture de la fenêtre
+
 private:
     Ui::MainWindow *ui;
     void setupStatsChart();
+    QQmlApplicationEngine * engine;
+    QObject *mapWindow; // stocker la fenêtre QML
+
 };
 #endif // MAINWINDOW_H

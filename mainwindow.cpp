@@ -32,11 +32,11 @@
 #include <QtCharts/QBarCategoryAxis>
 #include <QtCharts/QValueAxis>
 
-#include <QProcess>
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , engine(new QQmlApplicationEngine(this))
+    , mapWindow(nullptr)
 {
     ui->setupUi(this);
 
@@ -221,6 +221,7 @@ void MainWindow::on_ajouterEmp_4_clicked()
 
 void MainWindow::on_ajouterEtab_2_clicked()
 {
+
     QString nom = ui->nomEtabInput->text();
     QString gouv = ui->combo->currentText();
     float longe = ui->long_2->text().toFloat();
@@ -230,13 +231,12 @@ void MainWindow::on_ajouterEtab_2_clicked()
     QString tele = ui->tel->text();
     int tel = tele.toInt();
 
-
     QRegularExpression regexNom("^[a-zA-ZÀ-ÖØ-öø-ÿ ]+$");
     QRegularExpression regexTel("^[0-9]+$");
     bool nomValide = regexNom.match(nom).hasMatch();
     bool telValide = regexTel.match(tele).hasMatch() && tele.length()==8;
-    bool longeValide = longe > 0;
-    bool latValide = lat > 0;
+    bool longeValide = longe > 0 && longe >=8.00 && longe<=11.10;// Intervalle de longitude pour la Tunisie
+    bool latValide = lat > 0 && lat>=32.80 && lat<=37.35;// Intervalle de latitude pour la Tunisie
     bool mailValide = mail.contains("@") && mail.contains(".");
     bool capValide = cap > 0;
     bool gouvValide = gouv.isEmpty();
@@ -250,10 +250,10 @@ void MainWindow::on_ajouterEtab_2_clicked()
         return;
     }
     else if (!longeValide) {
-        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("La longitude doit être un nombre positif!"), QMessageBox::Ok);
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Veuillez saisir une valeur valide pour longitude!"), QMessageBox::Ok);
         return ;
     } else if (!latValide) {
-        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("La latitude doit être un nombre positif!"), QMessageBox::Ok);
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Veuillez saisir une valeur valide pour latitude!"), QMessageBox::Ok);
         return ;
     } else if (!mailValide) {
         QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("L'email doit contenir '@' et '.'!"), QMessageBox::Ok);
@@ -285,15 +285,6 @@ void MainWindow::on_ajouterEtab_2_clicked()
     }
 
 }
-
-// affichier les etablissements
-
-/*void MainWindow::on_affBtn_clicked()
-{
-    Etablissement E;
-    E.afficher(ui->tabV);
-}
-*/
 
 // supprimer les etablissements
 
@@ -386,6 +377,7 @@ void MainWindow::on_ajouterEmp_8_clicked()
 void MainWindow::on_charger_clicked()
 {
     int id = ui->tabV->model()->data(ui->tabV->model()->index(0, 0)).toInt();
+
     qDebug() << "ID récupéré:" << id;
 
     if (id == 0) {
@@ -394,7 +386,9 @@ void MainWindow::on_charger_clicked()
     }
 
     QSqlQuery query;
+
     query.prepare("SELECT NOM, GOUVERNORAT, LONGE, LAT, CAPACITE, MAIL, TEL FROM ETABLISSEMENTS WHERE ID_ETAB = :id");
+
     query.bindValue(":id", id);
 
     if (!query.exec()) {
@@ -527,6 +521,7 @@ void MainWindow::on_pdfEtab_clicked()
         painter.drawText(boundingRect, Qt::AlignLeft | Qt::TextWordWrap, headers[col]);
         xPos += colWidths[col] + columnSpacing;
     }
+
     yPos += rowHeight;
     painter.drawLine(margin, yPos, margin + pageWidth, yPos);
     yPos += headerSpacing;
@@ -638,27 +633,24 @@ void MainWindow::on_comboBox_3_activated(int index)
     qDebug() << "Slot on_comboBox_3_activated déclenché avec index :" << index;
 
     if (index == 0) {
+
         // Create a new QSqlQueryModel to hold the sorted data
+
         QSqlQueryModel* model = new QSqlQueryModel();
 
-        // Define the SQL query to select all columns and sort by GOUVERNORAT
+        // select all columns and sort by GOUVERNORAT
+
         QString queryString = "SELECT ID_ETAB, NOM, GOUVERNORAT, LONGE, LAT, CAPACITE, MAIL, TEL "
                               "FROM ETABLISSEMENTS ORDER BY GOUVERNORAT ASC";
 
         // Set the query to the model
+
         model->setQuery(queryString);
 
         if (model->lastError().isValid()) {
             qDebug() << "Erreur lors de l'exécution de la requête de tri :" << model->lastError().text();
             delete model;
             return;
-        }
-
-        // Afficher les données récupérées
-
-        qDebug() << "Requête exécutée :" << queryString;
-        for (int row = 0; row < model->rowCount(); ++row) {
-            qDebug() << "Ligne" << row << ":" << model->data(model->index(row, 2)).toString();
         }
 
         // Set the headers for the table view
@@ -673,9 +665,11 @@ void MainWindow::on_comboBox_3_activated(int index)
         model->setHeaderData(7, Qt::Horizontal, QString("Téléphone"));
 
         // Retrieve the old model from the table view
+
         QAbstractItemModel* oldModel = ui->tabV->model();
 
         // Set the new sorted model to the table view
+
         ui->tabV->setModel(model);
 
 
@@ -711,12 +705,14 @@ void MainWindow::setupStatsChart()
     }
 
     // Créer un graphique
+
     QChart *chart = new QChart();
     chart->setTitle("Statistiques des établissements par gouvernorat");
     chart->setAnimationOptions(QChart::AllAnimations);
     chart->setTheme(QChart::ChartThemeLight); // Style clair
 
     // Créer une série de données (courbe)
+
     QLineSeries *series = new QLineSeries();
 
     int index = 0;
@@ -737,11 +733,13 @@ void MainWindow::setupStatsChart()
     }
 
     barSeries->append(set);
+
     chart->addSeries(barSeries);
 
     // Configurer les axes
 
     QStringList categories;
+
     for (auto it = stats.begin(); it != stats.end(); ++it) {
         categories << it.key();
     }
@@ -798,11 +796,56 @@ void MainWindow::setupStatsChart()
         delete ui->frame_10->layout();
     }
 
-    // Configurer le layout pour frame_10
     // zone au le stat sera affichié
+
     QVBoxLayout *layout = new QVBoxLayout(ui->frame_10);
     layout->addWidget(chartView);
     ui->frame_10->setLayout(layout);
 }
 
 
+// geolocalisation
+
+void MainWindow::on_geoBTN_clicked()
+{
+    if (mapWindow) {
+
+        mapWindow->setProperty("visible", true);
+
+        return;
+    }
+
+    // Charger file Mapview.qml les ressources
+
+    const QUrl url(QStringLiteral("qrc:/Mapview.qml"));
+
+    engine->addImportPath("qrc:/res"); // Ajout du chemin d'import
+
+    qDebug() << "Tentative de chargement de l'URL :" << url.toString();
+
+    engine->load(url);
+
+    // Vérifier les erreurs
+
+    if (engine->rootObjects().isEmpty()) {
+
+        qDebug() << "Erreur : Impossible de charger Mapview.qml";
+
+        return;
+    }
+
+    mapWindow = engine->rootObjects().first();
+
+    if (!mapWindow) {
+
+        qDebug() << "Erreur : Aucune fenêtre QML n'a été trouvée";
+        return;
+    }
+
+    QObject::connect(mapWindow, SIGNAL(destroyed()), this, SLOT(onMapWindowClosed()));
+}
+
+void MainWindow::onMapWindowClosed()
+{
+    mapWindow = nullptr;
+}

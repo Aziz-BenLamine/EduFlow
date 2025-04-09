@@ -20,7 +20,6 @@ private:
     QSqlQueryModel *model;
 
 public:
-
     // constructeur
     Etablissement(std::string nom , std::string gouvernorat , float longe , float lat, int capacite , std::string email , int tel);
     Etablissement()
@@ -64,6 +63,7 @@ public:
     bool modifier(int id);
 
     //New method to get stats
+
     QMap<QString, int> getStatsByGovernorate();
 };
 

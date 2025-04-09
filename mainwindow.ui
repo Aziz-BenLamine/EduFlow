@@ -2631,26 +2631,26 @@ QTableView::item:selected {
          <widget class="QLineEdit" name="texte">
           <property name="geometry">
            <rect>
-            <x>980</x>
+            <x>900</x>
             <y>480</y>
-            <width>191</width>
-            <height>71</height>
+            <width>241</width>
+            <height>51</height>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: white;
-border: 1px solid #ccc;
-border-radius: 15px;
-font-size: 14px;
-color: black;
-</string>
+           <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    padding: 10px 20px;  
+    border-radius: 8px;  </string>
           </property>
          </widget>
          <widget class="QLabel" name="label_71">
           <property name="geometry">
            <rect>
-            <x>840</x>
-            <y>470</y>
+            <x>750</x>
+            <y>460</y>
             <width>181</width>
             <height>81</height>
            </rect>
@@ -2664,23 +2664,7 @@ background: transparent;
 border: 0px;</string>
           </property>
           <property name="text">
-           <string>Texte généré</string>
-          </property>
-         </widget>
-         <widget class="QFrame" name="map">
-          <property name="geometry">
-           <rect>
-            <x>1020</x>
-            <y>110</y>
-            <width>321</width>
-            <height>341</height>
-           </rect>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::Shape::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Raised</enum>
+           <string>Texte généré :</string>
           </property>
          </widget>
         </widget>
