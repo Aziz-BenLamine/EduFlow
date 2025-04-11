@@ -2,79 +2,53 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
+#include <QTextDocument>
+#include <QtPrintSupport/QPrinter>
+#include <QFile>
+#include <QTextStream>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
-    void on_ajouterEmp_clicked();
-
-    void on_afficherEmp_clicked();
-
-    void on_modiferEmp_clicked();
-
-    void on_statsEmp_clicked();
-
-    void on_etablissementBTN_clicked();
-
-    void on_employesBTN_clicked();
-
-    void on_ajouterEtab_clicked();
-
-    void on_modiferEtab_clicked();
-
-    void on_afficherEtab_clicked();
-
-    void on_statsEtab_clicked();
-
-    void on_distributionsBTN_clicked();
-
     void on_equipementsBTN_clicked();
-
-    void on_ajouterColis_clicked();
-
-    void on_afficherColis_clicked();
-
-    void on_modiferColis_clicked();
-
-    void on_statsColis_clicked();
-
     void on_ajouterEq_clicked();
-
     void on_afficherEq_clicked();
-
-    void on_modiferEq_clicked();
-
     void on_statsEq_clicked();
-
-    void on_examensBTN_clicked();
-
-    void on_ajouterExam_clicked();
-
-    void on_afficherExam_clicked();
-
-    void on_modiferExam_clicked();
-
-    void on_statsExam_clicked();
-
     void on_pushButton_clicked();
-
     void on_deconnexionBTN_clicked();
-
-    void on_ajouterEmp_4_clicked();
+    void on_AjouterEquipement_clicked();
+    void on_selectImageButton_clicked();
+    void on_supprimerEq_clicked();
+    void on_modifierEq_clicked();
+    void on_confirmerModification_clicked();
+    void on_pdfEmp_5_clicked();
+    void on_comboBox_6_currentIndexChanged(int index);
+    void on_champRecherche_6_textChanged(const QString &text);
+    void onClarifaiReplyFinished(QNetworkReply *reply);
 
 private:
     Ui::MainWindow *ui;
+    QString imagePathAjout;
+    QString imagePathModif;
+    int currentModificationId;
+    QNetworkAccessManager *networkManager;
 };
+
 #endif // MAINWINDOW_H

@@ -1,25 +1,37 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include <QMessageBox>
-#include "connection.h"
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
 
-
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    MainWindow w;
-    Connection c;
-    bool test=c.createconnect();
-    if(test)
-    {w.show();
-        QMessageBox::information(nullptr, QObject::tr("database is open"),
-                                 QObject::tr("connection successful.\n"
-                                             "Click Cancel to exit."), QMessageBox::Cancel);
 
+    // Configuration de la base de données SQLite
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("equipements.db");
+    if (!db.open()) {
+        qDebug() << "Erreur de connexion à la base :" << db.lastError().text();
+        return -1;
     }
-    else
-        QMessageBox::critical(nullptr, QObject::tr("database is not open"),
-                              QObject::tr("connection failed.\n"
-                                          "Click Cancel to exit."), QMessageBox::Cancel);
+
+    // Création de la table si elle n'existe pas
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS EQUIPEMENTS ("
+               "ID_EQ INTEGER PRIMARY KEY, "
+               "NOM_EQ TEXT NOT NULL, "
+               "TYPEEQ TEXT NOT NULL, "
+               "ETATEQ TEXT NOT NULL, "
+               "MARQUEEQ TEXT NOT NULL, "
+               "QT INTEGER NOT NULL, "
+               "DATEEQ TEXT NOT NULL, "
+               "IMAGE_EQ BLOB)");
+    if (!query.isActive()) {
+        qDebug() << "Erreur lors de la création de la table :" << query.lastError().text();
+    }
+
+    MainWindow w;
+    w.show();
     return a.exec();
 }
