@@ -122,7 +122,6 @@ bool Etablissement::ajouter()
 }
 
 void Etablissement::afficher(QTableView* tableView) {
-
     QSqlQueryModel* model = new QSqlQueryModel();
     model->setQuery("SELECT ID_ETAB, NOM, GOUVERNORAT, LONGE, LAT, CAPACITE, MAIL, TEL FROM ETABLISSEMENTS");
 
@@ -137,6 +136,7 @@ void Etablissement::afficher(QTableView* tableView) {
         qDebug() << "Aucune donnée à afficher : la table est vide.";
     }
 
+    // Définir les en-têtes
     model->setHeaderData(0, Qt::Horizontal, QString("ID"));
     model->setHeaderData(1, Qt::Horizontal, QString("Nom"));
     model->setHeaderData(2, Qt::Horizontal, QString("Gouvernorat"));
@@ -149,10 +149,22 @@ void Etablissement::afficher(QTableView* tableView) {
     // Assigner le modèle au QTableView
     tableView->setModel(model);
 
-
     // Ajuster les colonnes
     QHeaderView* header = tableView->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    // Forcer un redimensionnement explicite pour s'assurer que tout est visible
+    tableView->resizeColumnsToContents();
+
+    // Optionnel : Définir une largeur minimale pour la colonne ID si nécessaire
+    tableView->setColumnWidth(0, 60); // Ajustez la valeur selon vos besoins
+
+    // Optionnel : Activer le redimensionnement interactif pour permettre à l'utilisateur d'ajuster manuellement
+    header->setSectionResizeMode(QHeaderView::Interactive);
+
+    // Assurer que le texte ne soit pas tronqué
+    tableView->setWordWrap(false);
+    tableView->setTextElideMode(Qt::ElideNone);
 
     // Afficher le QTableView
     tableView->show();

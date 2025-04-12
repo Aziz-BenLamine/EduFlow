@@ -1,7 +1,9 @@
-QT       += core gui
-QT  += sql
+QT += core gui
+QT += sql
 QT += charts sql
-
+QT += location  # Ajout du module pour utiliser les cartes
+QT += core gui sql charts quick quickwidgets location positioning
+QT += location positioning quick quickcontrols2
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -14,17 +16,18 @@ SOURCES += \
     connection.cpp \
     etablissement.cpp \
     main.cpp \
-    mainwindow.cpp \
+    mainwindow.cpp
 
 HEADERS += \
     connection.h \
     etablissement.h \
-    mainwindow.h \
+    mainwindow.h
 
 FORMS += \
     mainwindow.ui
 
 # Default rules for deployment.
+
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
@@ -32,3 +35,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     res/res.qrc
 
+RESOURCES += resources.qrc
+
+DISTFILES += \
+    speech.py

@@ -94,8 +94,6 @@ private slots:
 
     void on_comboBox_3_currentIndexChanged(int index);
 
-    void on_comboBox_3_activated(int index);
-
     void on_champRecherche_3_textChanged(const QString &arg1);
 
     void on_textSpchBTN_clicked();
@@ -103,6 +101,8 @@ private slots:
     void on_geoBTN_clicked();
 
     void onMapWindowClosed(); // gérer la fermeture de la fenêtre
+
+    void on_comboBox_3_activated(int index);
 
 private:
     Ui::MainWindow *ui;

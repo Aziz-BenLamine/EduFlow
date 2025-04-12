@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+
 }
 
 MainWindow::~MainWindow()
@@ -99,6 +100,44 @@ void MainWindow::on_afficherEtab_clicked()
 void MainWindow::on_modiferEtab_clicked()
 {
     ui->etablissementsNavBar->setCurrentIndex(2);
+
+    // charger les donnés de l'etablissment selon id dans le formulaire de modification
+
+    int id = ui->tabV->model()->data(ui->tabV->model()->index(0, 0)).toInt();
+
+    qDebug() << "ID récupéré:" << id;
+
+    if (id == 0) {
+        QMessageBox::warning(this, "Erreur", "Aucun ID valide sélectionné pour modfier un etablissement.");
+        return;
+    }
+
+    QSqlQuery query;
+
+    query.prepare("SELECT NOM, GOUVERNORAT, LONGE, LAT, CAPACITE, MAIL, TEL FROM ETABLISSEMENTS WHERE ID_ETAB = :id");
+
+    query.bindValue(":id", id);
+
+    if (!query.exec()) {
+        qDebug() << "Erreur SQL:" << query.lastError().text();
+        return;
+    }
+
+    if (query.next()) {
+        ui->nom->setText(query.value(0).toString());
+        ui->gov3->setText(query.value(1).toString());
+        ui->long_3->setText(query.value(2).toString());
+        ui->lat_2->setText(query.value(3).toString());
+        ui->cap_2->setText(query.value(4).toString());
+        ui->mail_2->setText(query.value(5).toString());
+        ui->tel_2->setText(query.value(6).toString());
+        QMessageBox::information(this, "Information", "L'établissement a été chargé pour modification.");
+
+    }
+    else {
+        QMessageBox::warning(this, "Erreur", "Aucun établissement trouvé avec cet ID.");
+        return;
+    }
 }
 
 // stat etab
@@ -337,25 +376,101 @@ void MainWindow::on_ajouterEmp_8_clicked()
     qDebug() << "ID récupéré:" << id;
 
     if (id == 0) {
-        QMessageBox::warning(this, "Erreur", "Aucun ID valide sélectionné.");
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Aucun ID valide sélectionné."));
         return;
     }
 
-    QString nom1  = (ui->nom->text());
-    QString gouv2 = (ui->gov3->text());
-    float longe3 = (ui->long_3->text().toFloat());
-    float lat4 = (ui->lat_2->text().toFloat());
-    int cap5 = (ui->cap_2->text().toInt());
-    QString mail5 = (ui->mail_2->text());
-    int tel6 = (ui->tel_2->text().toInt());
+    // Récupération des données
 
-    Etablissement e(nom1.toStdString(), gouv2.toStdString() , longe3 , lat4 , cap5 , mail5.toStdString() , tel6);
+    QString nom = ui->nom->text();
+    QString gouv = ui->gov3->text();
+    QString longeText = ui->long_3->text();
+    QString latText = ui->lat_2->text();
+    QString capText = ui->cap_2->text();
+    QString mail = ui->mail_2->text();
+    QString tel = ui->tel_2->text();
+
+    // Expressions régulières
+
+    QRegularExpression regexNom("^[a-zA-ZÀ-ÖØ-öø-ÿ ]+$");
+    QRegularExpression regexTel("^[0-9]+$");
+
+    // Validation du nom
+
+    bool nomValide = regexNom.match(nom).hasMatch();
+    if (!nomValide) {
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Le nom doit contenir uniquement des lettres et des espaces!"));
+        return;
+    }
+
+    // Validation du gouvernorat
+
+    QStringList gouvernorats = {
+        "Ariana", "Béja", "Ben Arous", "Bizerte", "Gabès", "Gafsa", "Jendouba", "Kairouan",
+        "Kasserine", "Kébili", "Kef", "Mahdia", "Manouba", "Médenine", "Monastir", "Nabeul",
+        "Sfax", "Sidi Bouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan"
+    };
+    bool gouvValide = gouvernorats.contains(gouv, Qt::CaseInsensitive);
+    if (!gouvValide) {
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Veuillez taper un gouvernorat valide parmi les 24 gouvernorats de Tunisie!"));
+        return;
+    }
+
+    // Validation de la longitude
+
+    bool okLonge;
+    float longe = longeText.toFloat(&okLonge);
+    bool longeValide = okLonge && longe >= 8.00 && longe <= 11.10;
+    if (!longeValide) {
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Veuillez saisir une valeur valide pour la longitude entre 8.00 et 11.10!"));
+        return;
+    }
+
+    // Validation de la latitude
+
+    bool okLat;
+    float lat = latText.toFloat(&okLat);
+    bool latValide = okLat && lat >= 32.80 && lat <= 37.35;
+    if (!latValide) {
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Veuillez saisir une valeur valide pour la latitude entre 32.80 et 37.35!"));
+        return;
+    }
+
+    // Validation de l'email
+
+    bool mailValide = mail.contains("@") && mail.contains(".");
+    if (!mailValide) {
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("L'email doit contenir '@' et '.'!"));
+        return;
+    }
+
+    // Validation du téléphone
+
+    bool telValide = regexTel.match(tel).hasMatch() && tel.length() == 8;
+    if (!telValide) {
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Vérifiez le numéro de téléphone! Il doit contenir exactement 8 chiffres."));
+        return;
+    }
+
+    // Validation de la capacité
+
+    bool okCap;
+    int cap = capText.toInt(&okCap);
+    bool capValide = okCap && cap > 0;
+    if (!capValide) {
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("La capacité doit être un nombre positif!"));
+        return;
+    }
+
+    // Création de l'objet Etablissement
+
+    Etablissement e(nom.toStdString(), gouv.toStdString(), longe, lat, cap, mail.toStdString(), tel.toInt());
+
 
     bool test1 = e.modifier(id);
 
     if (test1) {
-
-        QMessageBox::information(this, "Succès", "L'établissement a été modifié avec succès.");
+        QMessageBox::information(this, QObject::tr("Succès"), QObject::tr("L'établissement a été modifié avec succès."));
         e.afficher(ui->tabV);
         ui->nom->clear();
         ui->gov3->clear();
@@ -364,59 +479,18 @@ void MainWindow::on_ajouterEmp_8_clicked()
         ui->cap_2->clear();
         ui->mail_2->clear();
         ui->tel_2->clear();
-    }
-
-    else {
-        QMessageBox::warning(this, "Erreur", "Échec de la modification.");
+    } else {
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Échec de la modification."));
     }
 }
 
-// charger les donnés de l'etablissment selon id dans le formulaire de modification
-
-void MainWindow::on_charger_clicked()
-{
-    int id = ui->tabV->model()->data(ui->tabV->model()->index(0, 0)).toInt();
-
-    qDebug() << "ID récupéré:" << id;
-
-    if (id == 0) {
-        QMessageBox::warning(this, "Erreur", "Aucun ID valide sélectionné.");
-        return;
-    }
-
-    QSqlQuery query;
-
-    query.prepare("SELECT NOM, GOUVERNORAT, LONGE, LAT, CAPACITE, MAIL, TEL FROM ETABLISSEMENTS WHERE ID_ETAB = :id");
-
-    query.bindValue(":id", id);
-
-    if (!query.exec()) {
-        qDebug() << "Erreur SQL:" << query.lastError().text();
-        return;
-    }
-
-    if (query.next()) {
-        ui->nom->setText(query.value(0).toString());
-        ui->gov3->setText(query.value(1).toString());
-        ui->long_3->setText(query.value(2).toString());
-        ui->lat_2->setText(query.value(3).toString());
-        ui->cap_2->setText(query.value(4).toString());
-        ui->mail_2->setText(query.value(5).toString());
-        ui->tel_2->setText(query.value(6).toString());
-        QMessageBox::information(this, "Information", "L'établissement a été chargé pour modification.");
-
-    }
-    else {
-        QMessageBox::warning(this, "Erreur", "Aucun établissement trouvé avec cet ID.");
-        return;
-    }
-
-}
 
 // export pdf
 
 void MainWindow::on_pdfEtab_clicked()
 {
+    int currentPageNumber = 1; // Compteur de pages
+
     Etablissement E;
     E.afficher(ui->tabV);
 
@@ -434,43 +508,43 @@ void MainWindow::on_pdfEtab_clicked()
     QPainter painter(&pdfWriter);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    const int margin = 300;
-    const int rowHeight = 250;
+    const int margin = 300; // Marges réduites
+    int rowHeight = 500; // Hauteur des lignes augmentée pour le wrapping
     const int colCountExpected = 8;
     const int pageWidth = pdfWriter.width() - 2 * margin;
+    const int pageHeight = pdfWriter.height() - 2 * margin;
 
     QVector<int> colWidths(colCountExpected);
-    colWidths[0] = pageWidth * 0.05;  // ID
-    colWidths[1] = pageWidth * 0.15;  // Nom
-    colWidths[2] = pageWidth * 0.15;  // Gouvernorat
-    colWidths[3] = pageWidth * 0.15;  // Longitude
-    colWidths[4] = pageWidth * 0.15;  // Latitude
-    colWidths[5] = pageWidth * 0.15;  // Capacité
-    colWidths[6] = pageWidth * 0.15;  // Email
-    colWidths[7] = pageWidth * 0.15;  // Téléphone
+    colWidths[0] = pageWidth * 0.04;  // ID
+    colWidths[1] = pageWidth * 0.12;  // Nom
+    colWidths[2] = pageWidth * 0.20;  // Gouvernorat
+    colWidths[3] = pageWidth * 0.08;  // Longitude
+    colWidths[4] = pageWidth * 0.08;  // Latitude
+    colWidths[5] = pageWidth * 0.08;  // Capacité
+    colWidths[6] = pageWidth * 0.22;  // Email
+    colWidths[7] = pageWidth * 0.11;  // Téléphone
 
-    const int columnSpacing = 30;
+    const int columnSpacing = 5; // Espacement réduit entre colonnes
     int totalWidth = 0;
     for (int i = 0; i < colCountExpected; ++i) {
         totalWidth += colWidths[i];
     }
     totalWidth += columnSpacing * (colCountExpected - 1);
     if (totalWidth > pageWidth) {
-        qDebug() << "Total width exceeds page width, adjusting proportionally.";
         float scaleFactor = static_cast<float>(pageWidth) / totalWidth;
         for (int i = 0; i < colCountExpected; ++i) {
             colWidths[i] = static_cast<int>(colWidths[i] * scaleFactor);
         }
     }
 
-    const int fontSize = 8;
-    const int headerFontSize = 10;
-    const int maxRowsPerPage = 30;
-    const int headerSpacing = 300;
+    const int fontSize = 9; // Taille de police pour le corps
+    const int headerFontSize = 9; // Taille de police pour les en-têtes
+    const int titleFontSize = 16; // Taille de police pour le titre
+    const int headerSpacing = 150; // Espacement après les en-têtes
 
-    QFont headerFont("Arial", headerFontSize, QFont::Bold);
-    QFont bodyFont("Arial", fontSize);
-    painter.setPen(Qt::black);
+    QFont headerFont("Arial", headerFontSize, QFont::Bold); // Police Arial pour un look moderne
+    QFont bodyFont("Arial", fontSize); // Police claire pour le corps
+    QFont titleFont("Arial", titleFontSize, QFont::Bold); // Titre en gras
 
     QSqlQueryModel* model = qobject_cast<QSqlQueryModel*>(ui->tabV->model());
     if (!model) {
@@ -484,6 +558,17 @@ void MainWindow::on_pdfEtab_clicked()
         qDebug() << "Nombre de colonnes inattendu :" << colCount;
     }
 
+    // Calculer la hauteur totale pour ajustement
+    int totalHeight = rowHeight * (rowCount + 1) + headerSpacing + 600;
+    float scaleFactor = 1.0;
+    if (totalHeight > pageHeight) {
+        scaleFactor = static_cast<float>(pageHeight) / totalHeight;
+        for (int i = 0; i < colCountExpected; ++i) {
+            colWidths[i] = static_cast<int>(colWidths[i] * scaleFactor);
+        }
+        rowHeight = static_cast<int>(rowHeight * scaleFactor);
+    }
+
     QMap<QString, int> columnMap;
     columnMap["ID"] = -1;
     columnMap["Nom"] = -1;
@@ -494,74 +579,257 @@ void MainWindow::on_pdfEtab_clicked()
     columnMap["Email"] = -1;
     columnMap["Téléphone"] = -1;
 
+    // Mappage des colonnes avec débogage
     for (int col = 0; col < colCount; ++col) {
         QString header = model->headerData(col, Qt::Horizontal).toString().toLower();
+        qDebug() << "En-tête de la colonne" << col << ":" << header;
         if (header.contains("id")) columnMap["ID"] = col;
         else if (header.contains("nom")) columnMap["Nom"] = col;
         else if (header.contains("gouvernorat")) columnMap["Gouvernorat"] = col;
         else if (header.contains("longitude")) columnMap["Longitude"] = col;
         else if (header.contains("latitude")) columnMap["Latitude"] = col;
-        else if (header.contains("capacité")) columnMap["Capacité"] = col;
+        else if (header.contains("capacite")) columnMap["Capacité"] = col;
         else if (header.contains("email")) columnMap["Email"] = col;
-        else if (header.contains("téléphone")) columnMap["Téléphone"] = col;
+        else if (header.contains("telephone")) columnMap["Téléphone"] = col;
     }
 
-    painter.setFont(QFont("Arial", 14, QFont::Bold));
-    painter.drawText(margin, margin, tr("Liste des Établissements - %1")
-                                         .arg(QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm")));
-    int yPos = margin + 600;
+    // Titre
+    painter.setFont(titleFont);
+    painter.setPen(Qt::black);
+    QString title = tr("Liste des Établissements - %1")
+                        .arg(QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm"));
+    QRect titleRect = QRect(margin, margin, pageWidth, 400);
+    painter.drawText(titleRect, Qt::AlignCenter, title);
+    int yPos = margin + 500;
 
+    // En-têtes avec fond coloré
     painter.setFont(headerFont);
+    painter.setPen(Qt::white); // Texte blanc pour contraste
+    painter.setBrush(QColor(33, 97, 140)); // Fond bleu foncé pour les en-têtes
     QStringList headers = {"ID", "Nom", "Gouvernorat", "Longitude", "Latitude",
                            "Capacité", "Email", "Téléphone"};
     int xPos = margin;
     for (int col = 0; col < colCountExpected; ++col) {
         QRect boundingRect = QRect(xPos, yPos, colWidths[col], rowHeight);
-        painter.drawText(boundingRect, Qt::AlignLeft | Qt::TextWordWrap, headers[col]);
+        painter.drawRect(boundingRect);
+        painter.drawText(boundingRect.adjusted(5, 5, -5, -5), Qt::AlignCenter | Qt::TextWordWrap, headers[col]);
         xPos += colWidths[col] + columnSpacing;
     }
-
+    painter.setBrush(Qt::NoBrush);
     yPos += rowHeight;
+
+    // Ligne séparatrice
+    painter.setPen(QPen(Qt::black, 2));
     painter.drawLine(margin, yPos, margin + pageWidth, yPos);
     yPos += headerSpacing;
 
+    // Corps du tableau avec alternance de couleurs
     painter.setFont(bodyFont);
-    int currentRowOnPage = 0;
+    painter.setPen(QPen(Qt::black, 1));
     for (int row = 0; row < rowCount; ++row) {
-        if (currentRowOnPage >= maxRowsPerPage || (yPos + rowHeight) > pdfWriter.height() - margin) {
-            pdfWriter.newPage();
-            yPos = margin;
-            painter.setFont(headerFont);
-            xPos = margin;
-            for (int col = 0; col < colCountExpected; ++col) {
-                QRect boundingRect = QRect(xPos, yPos, colWidths[col], rowHeight);
-                painter.drawText(boundingRect, Qt::AlignLeft | Qt::TextWordWrap, headers[col]);
-                xPos += colWidths[col] + columnSpacing;
-            }
-            yPos += rowHeight;
-            painter.drawLine(margin, yPos, margin + pageWidth, yPos);
-            yPos += headerSpacing;
-            painter.setFont(bodyFont);
-            currentRowOnPage = 0;
-        }
-
         xPos = margin;
+        // Fond alternant pour les lignes
+        painter.setBrush(row % 2 == 0 ? QColor(245, 245, 245) : Qt::white); // Gris clair / blanc
         for (int col = 0; col < colCountExpected; ++col) {
             QString header = headers[col];
             int modelCol = columnMap[header];
             QString text = (modelCol != -1) ? model->data(model->index(row, modelCol)).toString() : "N/A";
             QRect boundingRect = QRect(xPos, yPos, colWidths[col], rowHeight);
-            painter.drawText(boundingRect, Qt::AlignLeft | Qt::TextWordWrap, text);
+            painter.drawRect(boundingRect);
+            painter.setPen(Qt::black); // Texte noir pour le corps
+            painter.drawText(boundingRect.adjusted(5, 5, -5, -5), Qt::AlignLeft | Qt::TextWordWrap, text);
             xPos += colWidths[col] + columnSpacing;
         }
+        painter.setBrush(Qt::NoBrush);
         yPos += rowHeight;
-        currentRowOnPage++;
     }
 
+    // Pied de page
+    painter.setFont(QFont("Arial", 8));
+    painter.setPen(Qt::gray);
     painter.end();
 
     QMessageBox::information(this, tr("Succès"), tr("Le fichier PDF a été généré avec succès."));
 }
+
+
+// statistique etablissement
+
+void MainWindow::setupStatsChart()
+{
+    // Récupérer les statistiques par gouvernorat
+    QMap<QString, int> stats;
+
+    QSqlQuery query;
+    query.prepare("SELECT GOUVERNORAT, COUNT(*) as count FROM ETABLISSEMENTS GROUP BY GOUVERNORAT");
+
+    if (query.exec()) {
+        while (query.next()) {
+            stats.insert(query.value(0).toString(), query.value(1).toInt());
+        }
+    } else {
+        qDebug() << "Erreur lors de la récupération des statistiques:" << query.lastError().text();
+        return;
+    }
+
+    // Calculer le total pour les pourcentages
+
+    int total = 0;
+    for (auto it = stats.begin(); it != stats.end(); ++it) {
+        total += it.value();
+    }
+
+    // Créer un graphique
+
+    QChart *chart = new QChart();
+    chart->setTitle("Statistiques des établissements par gouvernorat");
+    chart->setAnimationOptions(QChart::AllAnimations);
+    chart->setTheme(QChart::ChartThemeDark); // Changement pour un thème sombre et moderne
+
+    // Créer une série de données (courbe)
+
+    QLineSeries *series = new QLineSeries();
+
+    int index = 0;
+    for (auto it = stats.begin(); it != stats.end(); ++it) {
+        // Convertir en pourcentage
+        double percentage = (it.value() * 100.0) / total;
+        series->append(index, percentage);
+        index++;
+    }
+
+    chart->addSeries(series);
+
+    // Un diagramme en barres pour une meilleure visualisation
+
+    QBarSeries *barSeries = new QBarSeries();
+    QBarSet *set = new QBarSet("Nombre d'établissements");
+
+    for (auto it = stats.begin(); it != stats.end(); ++it) {
+        // Convertir en pourcentage
+        double percentage = (it.value() * 100.0) / total;
+        *set << percentage;
+    }
+
+    barSeries->append(set);
+
+    chart->addSeries(barSeries);
+
+    // Configurer les axes
+
+    QStringList categories;
+
+    for (auto it = stats.begin(); it != stats.end(); ++it) {
+        categories << it.key();
+    }
+
+    QBarCategoryAxis *axisX = new QBarCategoryAxis();
+    axisX->append(categories);
+    chart->addAxis(axisX, Qt::AlignBottom);
+    series->attachAxis(axisX);
+    barSeries->attachAxis(axisX);
+
+    QValueAxis *axisY = new QValueAxis();
+    axisY->setLabelFormat("%.1f%%"); // Afficher les pourcentages avec une décimale
+    axisY->setTitleText("Pourcentage d'établissements par gouvernorat ");
+    axisY->setRange(0, 100); // Plage de 0 à 100 pour les pourcentages
+    chart->addAxis(axisY, Qt::AlignLeft);
+    series->attachAxis(axisY);
+    barSeries->attachAxis(axisY);
+
+    // Ajouter une légende
+
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+
+    // Personnalisation des couleurs
+
+    series->setColor(QColor(255, 165, 0)); // Orange vif pour la courbe
+    set->setColor(QColor(50, 205, 50)); // Vert lime pour les barres
+
+    // Personnalisation du fond
+
+    chart->setBackgroundBrush(QBrush(QColor(30, 30, 30))); // Fond sombre pour un contraste moderne
+    chart->setBackgroundRoundness(15); // Coins plus arrondis
+
+    // Personnalisation des polices
+
+    QFont font;
+    font.setPixelSize(14); // Augmenter la taille pour plus de lisibilité
+    font.setBold(true); // Police en gras pour un look plus affirmé
+    chart->setTitleFont(font);
+    axisX->setLabelsFont(font);
+    axisY->setLabelsFont(font);
+
+    // Créer la vue du graphique
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    // Supprimer l'ancien widget s'il existe
+
+    if (ui->frame_10->layout()) {
+        QLayoutItem* item;
+        while ((item = ui->frame_10->layout()->takeAt(0)) != nullptr) {
+            delete item->widget();
+            delete item;
+        }
+        delete ui->frame_10->layout();
+    }
+
+    // Zone où le stat sera affiché
+
+    QVBoxLayout *layout = new QVBoxLayout(ui->frame_10);
+    layout->addWidget(chartView);
+    ui->frame_10->setLayout(layout);
+}
+
+// geolocalisation
+
+void MainWindow::on_geoBTN_clicked()
+{
+    if (mapWindow) {
+
+        mapWindow->setProperty("visible", true);
+
+        return;
+    }
+
+    // Charger file Mapview.qml les ressources
+
+    const QUrl url(QStringLiteral("qrc:/Mapview.qml"));
+
+    engine->addImportPath("qrc:/res"); // Ajout du chemin d'import
+
+    qDebug() << "Tentative de chargement de l'URL :" << url.toString();
+
+    engine->load(url);
+
+    // Vérifier les erreurs
+
+    if (engine->rootObjects().isEmpty()) {
+
+        qDebug() << "Erreur : Impossible de charger Mapview.qml";
+
+        return;
+    }
+
+    mapWindow = engine->rootObjects().first();
+
+    if (!mapWindow) {
+
+        qDebug() << "Erreur : Aucune fenêtre QML n'a été trouvée";
+        return;
+    }
+
+    QObject::connect(mapWindow, SIGNAL(destroyed()), this, SLOT(onMapWindowClosed()));
+}
+
+void MainWindow::onMapWindowClosed()
+{
+    mapWindow = nullptr;
+}
+
 
 // rechercher un etablissment
 
@@ -620,12 +888,24 @@ void MainWindow::on_champRecherche_3_textChanged(const QString &arg1)
 
     QHeaderView* header = ui->tabV->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+
+    // Forcer un redimensionnement explicite pour s'assurer que tout est visible
+    ui->tabV->resizeColumnsToContents();
+
+    //Définir une largeur minimale pour la colonne ID si nécessaire
+
+    ui->tabV->setColumnWidth(0, 60); // Ajustez la valeur selon vos besoins
+
+    // Optionnel : Activer le redimensionnement interactif pour permettre à l'utilisateur d'ajuster manuellement
+    header->setSectionResizeMode(QHeaderView::Interactive);
+
+    // Assurer que le texte ne soit pas tronqué
+    ui->tabV->setWordWrap(false);
+    ui->tabV->setTextElideMode(Qt::ElideNone);
 }
 
-
-
 // tri etablissement
-
 
 void MainWindow::on_comboBox_3_activated(int index)
 {
@@ -633,27 +913,25 @@ void MainWindow::on_comboBox_3_activated(int index)
 
     if (index == 0) {
 
-        // Create a new QSqlQueryModel to hold the sorted data
+        // Créer un nouveau modèle pour les données triées
 
         QSqlQueryModel* model = new QSqlQueryModel();
 
-        // select all columns and sort by GOUVERNORAT
-
+        // Requête pour sélectionner toutes les colonnes et trier par GOUVERNORAT
         QString queryString = "SELECT ID_ETAB, NOM, GOUVERNORAT, LONGE, LAT, CAPACITE, MAIL, TEL "
                               "FROM ETABLISSEMENTS ORDER BY GOUVERNORAT ASC";
 
-        // Set the query to the model
-
+        // Appliquer la requête au modèle
         model->setQuery(queryString);
 
+        // Vérifier les erreurs d'exécution de la requête
         if (model->lastError().isValid()) {
             qDebug() << "Erreur lors de l'exécution de la requête de tri :" << model->lastError().text();
             delete model;
             return;
         }
 
-        // Set the headers for the table view
-
+        // Définir les en-têtes du tableau
         model->setHeaderData(0, Qt::Horizontal, QString("ID"));
         model->setHeaderData(1, Qt::Horizontal, QString("Nom"));
         model->setHeaderData(2, Qt::Horizontal, QString("Gouvernorat"));
@@ -663,187 +941,96 @@ void MainWindow::on_comboBox_3_activated(int index)
         model->setHeaderData(6, Qt::Horizontal, QString("Email"));
         model->setHeaderData(7, Qt::Horizontal, QString("Téléphone"));
 
-        // Retrieve the old model from the table view
-
+        // Récupérer l'ancien modèle du tableau
         QAbstractItemModel* oldModel = ui->tabV->model();
 
-        // Set the new sorted model to the table view
-
+        // Appliquer le nouveau modèle trié au tableau
         ui->tabV->setModel(model);
 
-        if (oldModel) {
+        // Ajuster les colonnes pour s'adapter au contenu
+        QHeaderView* header = ui->tabV->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+        // Forcer un redimensionnement explicite pour s'assurer que tout est visible
+        ui->tabV->resizeColumnsToContents();
+
+        // Optionnel : Définir une largeur minimale pour la colonne ID si nécessaire
+        ui->tabV->setColumnWidth(0, 60); // Ajustez la valeur selon vos besoins
+
+        // Optionnel : Activer le redimensionnement interactif pour permettre à l'utilisateur d'ajuster manuellement
+        header->setSectionResizeMode(QHeaderView::Interactive);
+
+        // Assurer que le texte ne soit pas tronqué
+        ui->tabV->setWordWrap(false);
+        ui->tabV->setTextElideMode(Qt::ElideNone);
+
+        // Supprimer l'ancien modèle s'il existe et n'est pas le modèle courant
+        if (oldModel && oldModel != model) {
             delete oldModel;
         }
-        else
-        {
-            QHeaderView* header = ui->tabV->horizontalHeader();
-            header->setSectionResizeMode(QHeaderView::ResizeToContents);
+    }
+    else if (index == 1) {
+
+        // Créer un nouveau modèle pour les données triées
+
+        QSqlQueryModel* model = new QSqlQueryModel();
+
+        // Requête pour sélectionner toutes les colonnes et trier par ID_ETAB
+        QString queryString = "SELECT ID_ETAB, NOM, GOUVERNORAT, LONGE, LAT, CAPACITE, MAIL, TEL "
+                              "FROM ETABLISSEMENTS ORDER BY ID_ETAB ASC";
+
+        // Appliquer la requête au modèle
+        model->setQuery(queryString);
+
+        // Vérifier les erreurs d'exécution de la requête
+        if (model->lastError().isValid()) {
+            qDebug() << "Erreur lors de l'exécution de la requête de tri :" << model->lastError().text();
+            delete model;
+            return;
+        }
+
+        // Définir les en-têtes du tableau
+        model->setHeaderData(0, Qt::Horizontal, QString("ID"));
+        model->setHeaderData(1, Qt::Horizontal, QString("Nom"));
+        model->setHeaderData(2, Qt::Horizontal, QString("Gouvernorat"));
+        model->setHeaderData(3, Qt::Horizontal, QString("Longitude"));
+        model->setHeaderData(4, Qt::Horizontal, QString("Latitude"));
+        model->setHeaderData(5, Qt::Horizontal, QString("Capacité"));
+        model->setHeaderData(6, Qt::Horizontal, QString("Email"));
+        model->setHeaderData(7, Qt::Horizontal, QString("Téléphone"));
+
+        // Récupérer l'ancien modèle du tableau
+        QAbstractItemModel* oldModel = ui->tabV->model();
+
+        // Appliquer le nouveau modèle trié au tableau
+        ui->tabV->setModel(model);
+
+        // Ajuster les colonnes pour s'adapter au contenu
+        QHeaderView* header = ui->tabV->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+
+        // Forcer un redimensionnement explicite pour s'assurer que tout est visible
+        ui->tabV->resizeColumnsToContents();
+
+        // Optionnel : Définir une largeur minimale pour la colonne ID si nécessaire
+        ui->tabV->setColumnWidth(0, 60); // Ajustez la valeur selon vos besoins
+
+        // Optionnel : Activer le redimensionnement interactif pour permettre à l'utilisateur d'ajuster manuellement
+        header->setSectionResizeMode(QHeaderView::Interactive);
+
+        // Assurer que le texte ne soit pas tronqué
+        ui->tabV->setWordWrap(false);
+        ui->tabV->setTextElideMode(Qt::ElideNone);
+
+
+        // Supprimer l'ancien modèle s'il existe et n'est pas le modèle courant
+        if (oldModel && oldModel != model) {
+            delete oldModel;
         }
     }
 }
 
-// statistique etablissement
-
-void MainWindow::setupStatsChart()
-{
-    // Récupérer les statistiques par gouvernorat
-
-    QMap<QString, int> stats;
-
-    QSqlQuery query;
-    query.prepare("SELECT GOUVERNORAT, COUNT(*) as count FROM ETABLISSEMENTS GROUP BY GOUVERNORAT");
-
-    if (query.exec()) {
-        while (query.next()) {
-            stats.insert(query.value(0).toString(), query.value(1).toInt());
-        }
-    } else {
-        qDebug() << "Erreur lors de la récupération des statistiques:" << query.lastError().text();
-        return;
-    }
-
-    // Créer un graphique
-
-    QChart *chart = new QChart();
-    chart->setTitle("Statistiques des établissements par gouvernorat");
-    chart->setAnimationOptions(QChart::AllAnimations);
-    chart->setTheme(QChart::ChartThemeLight); // Style clair
-
-    // Créer une série de données (courbe)
-
-    QLineSeries *series = new QLineSeries();
-
-    int index = 0;
-    for (auto it = stats.begin(); it != stats.end(); ++it) {
-        series->append(index, it.value());
-        index++;
-    }
-
-    chart->addSeries(series);
-
-    // un diagramme en barres pour une meilleure visualisation
-
-    QBarSeries *barSeries = new QBarSeries();
-    QBarSet *set = new QBarSet("Nombre d'établissements");
-
-    for (auto it = stats.begin(); it != stats.end(); ++it) {
-        *set << it.value();
-    }
-
-    barSeries->append(set);
-
-    chart->addSeries(barSeries);
-
-    // Configurer les axes
-
-    QStringList categories;
-
-    for (auto it = stats.begin(); it != stats.end(); ++it) {
-        categories << it.key();
-    }
-
-    QBarCategoryAxis *axisX = new QBarCategoryAxis();
-    axisX->append(categories);
-    chart->addAxis(axisX, Qt::AlignBottom);
-    series->attachAxis(axisX);
-    barSeries->attachAxis(axisX);
-
-    QValueAxis *axisY = new QValueAxis();
-    axisY->setLabelFormat("%d");
-    axisY->setTitleText("Nombre d'établissements");
-    chart->addAxis(axisY, Qt::AlignLeft);
-    series->attachAxis(axisY);
-    barSeries->attachAxis(axisY);
-
-    // Ajouter une légende
-
-    chart->legend()->setVisible(true);
-    chart->legend()->setAlignment(Qt::AlignBottom);
-
-    // Personnalisation des couleurs
-
-    series->setColor(QColor(65, 105, 225)); // Bleu royal
-    set->setColor(QColor(100, 149, 237)); // Bleu ciel
-
-    // Personnalisation du fond
-
-    chart->setBackgroundBrush(QBrush(QColor(240, 240, 240)));
-    chart->setBackgroundRoundness(10);
-
-    // Personnalisation des polices
-
-    QFont font;
-    font.setPixelSize(12);
-    chart->setTitleFont(font);
-    axisX->setLabelsFont(font);
-    axisY->setLabelsFont(font);
-
-    // Créer la vue du graphique
-
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    // Supprimer l'ancien widget s'il existe
-
-    if (ui->frame_10->layout()) {
-        QLayoutItem* item;
-        while ((item = ui->frame_10->layout()->takeAt(0)) != nullptr) {
-            delete item->widget();
-            delete item;
-        }
-        delete ui->frame_10->layout();
-    }
-
-    // zone au le stat sera affichié
-
-    QVBoxLayout *layout = new QVBoxLayout(ui->frame_10);
-    layout->addWidget(chartView);
-    ui->frame_10->setLayout(layout);
-}
 
 
-// geolocalisation
 
-void MainWindow::on_geoBTN_clicked()
-{
-    if (mapWindow) {
-
-        mapWindow->setProperty("visible", true);
-
-        return;
-    }
-
-    // Charger file Mapview.qml les ressources
-
-    const QUrl url(QStringLiteral("qrc:/Mapview.qml"));
-
-    engine->addImportPath("qrc:/res"); // Ajout du chemin d'import
-
-    qDebug() << "Tentative de chargement de l'URL :" << url.toString();
-
-    engine->load(url);
-
-    // Vérifier les erreurs
-
-    if (engine->rootObjects().isEmpty()) {
-
-        qDebug() << "Erreur : Impossible de charger Mapview.qml";
-
-        return;
-    }
-
-    mapWindow = engine->rootObjects().first();
-
-    if (!mapWindow) {
-
-        qDebug() << "Erreur : Aucune fenêtre QML n'a été trouvée";
-        return;
-    }
-
-    QObject::connect(mapWindow, SIGNAL(destroyed()), this, SLOT(onMapWindowClosed()));
-}
-
-void MainWindow::onMapWindowClosed()
-{
-    mapWindow = nullptr;
-}
