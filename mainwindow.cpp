@@ -31,6 +31,7 @@
 #include <QtCharts/QBarCategoryAxis>
 #include <QtCharts/QValueAxis>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -39,14 +40,13 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
 
+}
 void MainWindow::on_ajouterEmp_clicked()
 {
     ui->employeesNavBar->setCurrentIndex(0);
@@ -410,6 +410,7 @@ void MainWindow::on_ajouterEmp_8_clicked()
         "Kasserine", "Kébili", "Kef", "Mahdia", "Manouba", "Médenine", "Monastir", "Nabeul",
         "Sfax", "Sidi Bouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan"
     };
+
     bool gouvValide = gouvernorats.contains(gouv, Qt::CaseInsensitive);
     if (!gouvValide) {
         QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Veuillez taper un gouvernorat valide parmi les 24 gouvernorats de Tunisie!"));
@@ -462,8 +463,6 @@ void MainWindow::on_ajouterEmp_8_clicked()
         return;
     }
 
-    // Création de l'objet Etablissement
-
     Etablissement e(nom.toStdString(), gouv.toStdString(), longe, lat, cap, mail.toStdString(), tel.toInt());
 
 
@@ -514,17 +513,18 @@ void MainWindow::on_pdfEtab_clicked()
     const int pageWidth = pdfWriter.width() - 2 * margin;
     const int pageHeight = pdfWriter.height() - 2 * margin;
 
+    // Adjusted column widths to prevent truncation of "Longitude"
     QVector<int> colWidths(colCountExpected);
     colWidths[0] = pageWidth * 0.04;  // ID
     colWidths[1] = pageWidth * 0.12;  // Nom
-    colWidths[2] = pageWidth * 0.20;  // Gouvernorat
-    colWidths[3] = pageWidth * 0.08;  // Longitude
-    colWidths[4] = pageWidth * 0.08;  // Latitude
-    colWidths[5] = pageWidth * 0.08;  // Capacité
-    colWidths[6] = pageWidth * 0.22;  // Email
+    colWidths[2] = pageWidth * 0.18;  // Gouvernorat (slightly reduced)
+    colWidths[3] = pageWidth * 0.12;  // Longitude (increased)
+    colWidths[4] = pageWidth * 0.12;  // Latitude (increased)
+    colWidths[5] = pageWidth * 0.10;  // Capacité
+    colWidths[6] = pageWidth * 0.20;  // Email (slightly reduced)
     colWidths[7] = pageWidth * 0.11;  // Téléphone
 
-    const int columnSpacing = 5; // Espacement réduit entre colonnes
+    const int columnSpacing = 15; // Espacement augmenté entre colonnes
     int totalWidth = 0;
     for (int i = 0; i < colCountExpected; ++i) {
         totalWidth += colWidths[i];
@@ -579,18 +579,28 @@ void MainWindow::on_pdfEtab_clicked()
     columnMap["Email"] = -1;
     columnMap["Téléphone"] = -1;
 
-    // Mappage des colonnes avec débogage
+    // Mappage des colonnes sans traitement des accents
+
     for (int col = 0; col < colCount; ++col) {
-        QString header = model->headerData(col, Qt::Horizontal).toString().toLower();
+        QString header = model->headerData(col, Qt::Horizontal).toString();
         qDebug() << "En-tête de la colonne" << col << ":" << header;
-        if (header.contains("id")) columnMap["ID"] = col;
-        else if (header.contains("nom")) columnMap["Nom"] = col;
-        else if (header.contains("gouvernorat")) columnMap["Gouvernorat"] = col;
-        else if (header.contains("longitude")) columnMap["Longitude"] = col;
-        else if (header.contains("latitude")) columnMap["Latitude"] = col;
-        else if (header.contains("capacite")) columnMap["Capacité"] = col;
-        else if (header.contains("email")) columnMap["Email"] = col;
-        else if (header.contains("telephone")) columnMap["Téléphone"] = col;
+
+        // Use more flexible matching for column names, accepting accents
+        if (header.contains("ID", Qt::CaseInsensitive) || header == "id_etablissement") columnMap["ID"] = col;
+        else if (header.contains("Nom", Qt::CaseInsensitive) || header == "nom_etablissement") columnMap["Nom"] = col;
+        else if (header.contains("Gouvernorat", Qt::CaseInsensitive)) columnMap["Gouvernorat"] = col;
+        else if (header.contains("Longitude", Qt::CaseInsensitive) || header.contains("long", Qt::CaseInsensitive)) columnMap["Longitude"] = col;
+        else if (header.contains("Latitude", Qt::CaseInsensitive) || header.contains("lat", Qt::CaseInsensitive)) columnMap["Latitude"] = col;
+        else if (header.contains("Capacité", Qt::CaseInsensitive) || header.contains("capacity", Qt::CaseInsensitive)) columnMap["Capacité"] = col;
+        else if (header.contains("Email", Qt::CaseInsensitive) || header.contains("mail", Qt::CaseInsensitive)) columnMap["Email"] = col;
+        else if (header.contains("Téléphone", Qt::CaseInsensitive) || header.contains("phone", Qt::CaseInsensitive) || header.contains("tel", Qt::CaseInsensitive)) columnMap["Téléphone"] = col;
+    }
+
+    // Verify mapping and warn if any columns are unmapped
+    for (const QString& key : columnMap.keys()) {
+        if (columnMap[key] == -1) {
+            qDebug() << "Avertissement : Colonne non mappée pour" << key;
+        }
     }
 
     // Titre
@@ -633,7 +643,11 @@ void MainWindow::on_pdfEtab_clicked()
         for (int col = 0; col < colCountExpected; ++col) {
             QString header = headers[col];
             int modelCol = columnMap[header];
-            QString text = (modelCol != -1) ? model->data(model->index(row, modelCol)).toString() : "N/A";
+            QString text = "";
+            if (modelCol != -1) {
+                QVariant data = model->data(model->index(row, modelCol));
+                text = data.toString(); // Direct conversion, no "N/A" replacement
+            }
             QRect boundingRect = QRect(xPos, yPos, colWidths[col], rowHeight);
             painter.drawRect(boundingRect);
             painter.setPen(Qt::black); // Texte noir pour le corps
@@ -651,7 +665,6 @@ void MainWindow::on_pdfEtab_clicked()
 
     QMessageBox::information(this, tr("Succès"), tr("Le fichier PDF a été généré avec succès."));
 }
-
 
 // statistique etablissement
 
@@ -954,10 +967,9 @@ void MainWindow::on_comboBox_3_activated(int index)
         // Forcer un redimensionnement explicite pour s'assurer que tout est visible
         ui->tabV->resizeColumnsToContents();
 
-        // Optionnel : Définir une largeur minimale pour la colonne ID si nécessaire
-        ui->tabV->setColumnWidth(0, 60); // Ajustez la valeur selon vos besoins
+        ui->tabV->setColumnWidth(0, 60); //Ajustez la valeur selon vos besoins
 
-        // Optionnel : Activer le redimensionnement interactif pour permettre à l'utilisateur d'ajuster manuellement
+        // Oredimensionnement interactif pour permettre à l'utilisateur d'ajuster manuellement
         header->setSectionResizeMode(QHeaderView::Interactive);
 
         // Assurer que le texte ne soit pas tronqué
@@ -1030,7 +1042,4 @@ void MainWindow::on_comboBox_3_activated(int index)
         }
     }
 }
-
-
-
 
