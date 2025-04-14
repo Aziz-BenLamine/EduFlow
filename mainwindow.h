@@ -3,7 +3,10 @@
 #include <QtCharts>
 #include <QQmlApplicationEngine>
 #include <QtQuickWidgets/QQuickWidget>
-
+#include <QTextToSpeech> // Ajout pour la synthèse vocale
+#include <QDialog>       // Pour la fenêtre modale
+#include <QLineEdit>     // Pour le champ de saisie
+#include <QPushButton>   // Pour les boutons
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -104,11 +107,18 @@ private slots:
 
     void on_comboBox_3_activated(int index);
 
+    void on_speakButtonClicked();
+
+    void on_closeSpeechDialogClicked();
+
+
 private:
     Ui::MainWindow *ui;
     void setupStatsChart();
     QQmlApplicationEngine * engine;
     QObject *mapWindow; // stocker la fenêtre QML
-
+    QTextToSpeech *speech; // Pointeur pour la synthèse vocale
+    QDialog *speechDialog; // Fenêtre modale pour l'interface
+    QLineEdit *textInput;  // Champ de saisie du texte
 };
 #endif // MAINWINDOW_H

@@ -4,6 +4,10 @@ QT += charts sql
 QT += location  # Ajout du module pour utiliser les cartes
 QT += core gui sql charts quick quickwidgets location positioning
 QT += location positioning quick quickcontrols2
+QT += multimedia
+QT += texttospeech
+
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17

@@ -31,22 +31,49 @@
 #include <QtCharts/QBarCategoryAxis>
 #include <QtCharts/QValueAxis>
 
+#include <QTextToSpeech>
+#include <QVoice>
+#include <QThread>
+
+#include <QVBoxLayout>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , engine(new QQmlApplicationEngine(this))
     , mapWindow(nullptr)
+    , speech(new QTextToSpeech(this)) // Initialisation de QTextToSpeech
+    , speechDialog(nullptr)           // Initialisation du dialogue
+    , textInput(nullptr)
+
 {
     ui->setupUi(this);
 
+    // Configuration de QTextToSpeech
+    speech->setVolume(0.7); // Volume à 70%
+    speech->setRate(0.0);   // Vitesse normale
+    speech->setPitch(0.0);  // Tonalité normale
+
+    // Vérifier si des voix sont disponibles
+
+    if (speech->availableVoices().isEmpty()) {
+        qDebug() << "Aucune voix disponible pour la synthèse vocale.";
+    } else {
+        // Sélectionner la première voix disponible
+        speech->setVoice(speech->availableVoices().first());
+    }
 }
+
+
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete speech; // Libérer QTextToSpeech
 
 }
+
 void MainWindow::on_ajouterEmp_clicked()
 {
     ui->employeesNavBar->setCurrentIndex(0);
@@ -1043,3 +1070,149 @@ void MainWindow::on_comboBox_3_activated(int index)
     }
 }
 
+// texte to speech
+
+void MainWindow::on_textSpchBTN_clicked()
+{
+    // Créer une fenêtre modale
+    speechDialog = new QDialog(this);
+    speechDialog->setWindowTitle("Synthèse Vocale");
+    speechDialog->setFixedSize(400, 200); // Taille fixe pour une apparence soignée
+    speechDialog->setModal(true); // Fenêtre modale
+
+    // Créer une mise en page verticale
+    QVBoxLayout *layout = new QVBoxLayout(speechDialog);
+
+    // Ajouter une étiquette
+    QLabel *label = new QLabel("Entrez le texte à lire :", speechDialog);
+    label->setStyleSheet("font-size: 14px; font-weight: bold; color: black;");
+    layout->addWidget(label);
+
+    // Ajouter le champ de saisie
+    textInput = new QLineEdit(speechDialog);
+    textInput->setPlaceholderText("Saisissez votre texte ici...");
+    textInput->setStyleSheet(
+        "QLineEdit {"
+        "    border: 2px solid #d0d0d0;" // Bordure légèrement plus douce
+        "    border-radius: 8px;"        // Coins plus arrondis pour un look moderne
+        "    padding: 10px;"             // Plus d'espace interne pour la lisibilité
+        "    font-family: 'Segoe UI', Arial, sans-serif;" // Police moderne et lisible
+        "    font-size: 16px;"           // Taille augmentée pour plus de clarté
+        "    font-weight: 400;"          // Poids normal pour éviter la lourdeur
+        "    color: #1a1a1a;"            // Texte sombre pour un bon contraste
+        "    background-color: #fafafa;" // Fond clair et propre
+        "    selection-background-color: #90caf9;" // Sélection en bleu clair
+        "    selection-color: #ffffff;"  // Texte sélectionné en blanc
+        "}"
+        "QLineEdit:focus {"
+        "    border-color: #42a5f5;"    // Bordure bleue vive en focus
+        "    background-color: #ffffff;" // Fond blanc pur en focus
+        "    box-shadow: 0 0 5px rgba(66, 165, 245, 0.5);" // Ombre subtile
+        "}"
+        "QLineEdit:hover {"
+        "    border-color: #90caf9;"    // Bordure légèrement bleue au survol
+        "}"
+        );
+    layout->addWidget(textInput);
+
+    // Ajouter un bouton pour lire le texte
+    QPushButton *speakButton = new QPushButton("Lire le texte", speechDialog);
+    speakButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #2196F3;"
+        "    color: white;"
+        "    border: none;"
+        "    padding: 10px;"
+        "    border-radius: 5px;"
+        "    font-size: 14px;"
+        "    font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #1976D2;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #1565C0;"
+        "}"
+        );
+    layout->addWidget(speakButton);
+
+    // Ajouter un bouton pour fermer
+    QPushButton *closeButton = new QPushButton("Fermer", speechDialog);
+    closeButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #f44336;"
+        "    color: white;"
+        "    border: none;"
+        "    padding: 10px;"
+        "    border-radius: 5px;"
+        "    font-size: 14px;"
+        "    font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #d32f2f;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #b71c1c;"
+        "}"
+        );
+
+    layout->addWidget(closeButton);
+
+    // Ajouter un espaceur pour centrer les éléments
+
+    layout->addStretch();
+
+    // Appliquer un style à la fenêtre
+
+    speechDialog->setStyleSheet(
+        "QDialog {"
+        "    background-color: #ffffff;"
+        "    border: 1px solid #ccc;"
+        "    border-radius: 10px;"
+        "}"
+        );
+
+    // Connexions des signaux
+
+    connect(speakButton, &QPushButton::clicked, this, &MainWindow::on_speakButtonClicked);
+    connect(closeButton, &QPushButton::clicked, this, &MainWindow::on_closeSpeechDialogClicked);
+
+    // Afficher la fenêtre
+    speechDialog->show();
+}
+
+void MainWindow::on_speakButtonClicked()
+{
+    if (!textInput || textInput->text().isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez saisir un texte à lire.");
+        return;
+    }
+
+    // Arrêter la lecture en cours, si nécessaire
+
+    if (speech->state() == QTextToSpeech::Speaking) {
+        speech->stop();
+    }
+
+    // Lire le texte saisi
+
+    speech->say(textInput->text());
+}
+
+void MainWindow::on_closeSpeechDialogClicked()
+{
+    // Arrêter la lecture si elle est en cours
+
+    if (speech->state() == QTextToSpeech::Speaking) {
+        speech->stop();
+    }
+
+    // Fermer et supprimer la fenêtre
+
+    if (speechDialog) {
+        speechDialog->close();
+        delete speechDialog;
+        speechDialog = nullptr;
+        textInput = nullptr;
+    }
+}
