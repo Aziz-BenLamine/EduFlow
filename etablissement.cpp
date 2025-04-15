@@ -163,7 +163,7 @@ void Etablissement::afficher(QTableView* tableView) {
     header->setSectionResizeMode(QHeaderView::Interactive);
 
     // Assurer que le texte ne soit pas tronqué
-    tableView->setWordWrap(false);
+    tableView->setWordWrap(true);
     tableView->setTextElideMode(Qt::ElideNone);
 
     // Afficher le QTableView

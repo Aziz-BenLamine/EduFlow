@@ -128,14 +128,22 @@ void MainWindow::on_modiferEtab_clicked()
 {
     ui->etablissementsNavBar->setCurrentIndex(2);
 
-    // charger les donnés de l'etablissment selon id dans le formulaire de modification
+    // Récupérer l'index de la ligne sélectionnée
+    QModelIndexList selectedIndexes = ui->tabV->selectionModel()->selectedRows();
 
-    int id = ui->tabV->model()->data(ui->tabV->model()->index(0, 0)).toInt();
+    // Vérifier si une ligne est sélectionnée
+    if (selectedIndexes.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Aucune ligne sélectionnée pour modifier un établissement.");
+        return;
+    }
+
+    // Prendre la première ligne sélectionnée (colonne 0 pour l'ID)
+    int id = ui->tabV->model()->data(selectedIndexes.at(0)).toInt();
 
     qDebug() << "ID récupéré:" << id;
 
     if (id == 0) {
-        QMessageBox::warning(this, "Erreur", "Aucun ID valide sélectionné pour modfier un etablissement.");
+        QMessageBox::warning(this, "Erreur", "Aucun ID valide sélectionné pour modifier un établissement.");
         return;
     }
 
@@ -159,14 +167,12 @@ void MainWindow::on_modiferEtab_clicked()
         ui->mail_2->setText(query.value(5).toString());
         ui->tel_2->setText(query.value(6).toString());
         QMessageBox::information(this, "Information", "L'établissement a été chargé pour modification.");
-
     }
     else {
         QMessageBox::warning(this, "Erreur", "Aucun établissement trouvé avec cet ID.");
         return;
     }
 }
-
 // stat etab
 
 void MainWindow::on_statsEtab_clicked()
@@ -325,7 +331,7 @@ void MainWindow::on_ajouterEtab_2_clicked()
         return ;
     }
     else if (!telValide) {
-        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("verifier Le numéro de téléphone!"), QMessageBox::Ok);
+        QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("numéro doit étre de 8 chiffres!"), QMessageBox::Ok);
         return ;
     } else if (!capValide) {
         QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("La capacité doit être un nombre positif!"), QMessageBox::Ok);
@@ -398,7 +404,17 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
 
 void MainWindow::on_ajouterEmp_8_clicked()
 {
-    int id = ui->tabV->model()->data(ui->tabV->model()->index(0, 0)).toInt();
+    // Récupérer l'index de la ligne sélectionnée
+    QModelIndexList selectedIndexes = ui->tabV->selectionModel()->selectedRows();
+
+    // Vérifier si une ligne est sélectionnée
+    if (selectedIndexes.isEmpty()) {
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Aucune ligne sélectionnée pour modifier un établissement."));
+        return;
+    }
+
+    // Prendre la première ligne sélectionnée (colonne 0 pour l'ID)
+    int id = ui->tabV->model()->data(selectedIndexes.at(0)).toInt();
 
     qDebug() << "ID récupéré:" << id;
 
@@ -408,7 +424,6 @@ void MainWindow::on_ajouterEmp_8_clicked()
     }
 
     // Récupération des données
-
     QString nom = ui->nom->text();
     QString gouv = ui->gov3->text();
     QString longeText = ui->long_3->text();
@@ -418,12 +433,10 @@ void MainWindow::on_ajouterEmp_8_clicked()
     QString tel = ui->tel_2->text();
 
     // Expressions régulières
-
     QRegularExpression regexNom("^[a-zA-ZÀ-ÖØ-öø-ÿ ]+$");
     QRegularExpression regexTel("^[0-9]+$");
 
     // Validation du nom
-
     bool nomValide = regexNom.match(nom).hasMatch();
     if (!nomValide) {
         QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Le nom doit contenir uniquement des lettres et des espaces!"));
@@ -431,7 +444,6 @@ void MainWindow::on_ajouterEmp_8_clicked()
     }
 
     // Validation du gouvernorat
-
     QStringList gouvernorats = {
         "Ariana", "Béja", "Ben Arous", "Bizerte", "Gabès", "Gafsa", "Jendouba", "Kairouan",
         "Kasserine", "Kébili", "Kef", "Mahdia", "Manouba", "Médenine", "Monastir", "Nabeul",
@@ -445,7 +457,6 @@ void MainWindow::on_ajouterEmp_8_clicked()
     }
 
     // Validation de la longitude
-
     bool okLonge;
     float longe = longeText.toFloat(&okLonge);
     bool longeValide = okLonge && longe >= 8.00 && longe <= 11.10;
@@ -455,7 +466,6 @@ void MainWindow::on_ajouterEmp_8_clicked()
     }
 
     // Validation de la latitude
-
     bool okLat;
     float lat = latText.toFloat(&okLat);
     bool latValide = okLat && lat >= 32.80 && lat <= 37.35;
@@ -465,7 +475,6 @@ void MainWindow::on_ajouterEmp_8_clicked()
     }
 
     // Validation de l'email
-
     bool mailValide = mail.contains("@") && mail.contains(".");
     if (!mailValide) {
         QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("L'email doit contenir '@' et '.'!"));
@@ -473,15 +482,13 @@ void MainWindow::on_ajouterEmp_8_clicked()
     }
 
     // Validation du téléphone
-
     bool telValide = regexTel.match(tel).hasMatch() && tel.length() == 8;
     if (!telValide) {
-        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Vérifiez le numéro de téléphone! Il doit contenir exactement 8 chiffres."));
+        QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("numéro doit étre de 8 chiffres."));
         return;
     }
 
     // Validation de la capacité
-
     bool okCap;
     int cap = capText.toInt(&okCap);
     bool capValide = okCap && cap > 0;
@@ -491,7 +498,6 @@ void MainWindow::on_ajouterEmp_8_clicked()
     }
 
     Etablissement e(nom.toStdString(), gouv.toStdString(), longe, lat, cap, mail.toStdString(), tel.toInt());
-
 
     bool test1 = e.modifier(id);
 
@@ -509,7 +515,6 @@ void MainWindow::on_ajouterEmp_8_clicked()
         QMessageBox::warning(this, QObject::tr("Erreur"), QObject::tr("Échec de la modification."));
     }
 }
-
 
 // export pdf
 
@@ -692,6 +697,7 @@ void MainWindow::on_pdfEtab_clicked()
 
     QMessageBox::information(this, tr("Succès"), tr("Le fichier PDF a été généré avec succès."));
 }
+
 
 // statistique etablissement
 
@@ -1039,12 +1045,15 @@ void MainWindow::on_comboBox_3_activated(int index)
         model->setHeaderData(7, Qt::Horizontal, QString("Téléphone"));
 
         // Récupérer l'ancien modèle du tableau
+
         QAbstractItemModel* oldModel = ui->tabV->model();
 
         // Appliquer le nouveau modèle trié au tableau
+
         ui->tabV->setModel(model);
 
         // Ajuster les colonnes pour s'adapter au contenu
+
         QHeaderView* header = ui->tabV->horizontalHeader();
         header->setSectionResizeMode(QHeaderView::ResizeToContents);
 
@@ -1052,7 +1061,6 @@ void MainWindow::on_comboBox_3_activated(int index)
         // Forcer un redimensionnement explicite pour s'assurer que tout est visible
         ui->tabV->resizeColumnsToContents();
 
-        // Optionnel : Définir une largeur minimale pour la colonne ID si nécessaire
         ui->tabV->setColumnWidth(0, 60); // Ajustez la valeur selon vos besoins
 
         // Optionnel : Activer le redimensionnement interactif pour permettre à l'utilisateur d'ajuster manuellement
@@ -1064,6 +1072,7 @@ void MainWindow::on_comboBox_3_activated(int index)
 
 
         // Supprimer l'ancien modèle s'il existe et n'est pas le modèle courant
+
         if (oldModel && oldModel != model) {
             delete oldModel;
         }

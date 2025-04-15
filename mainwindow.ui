@@ -1931,14 +1931,14 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterEtablissements">
          <widget class="QFrame" name="frame_2">
           <property name="geometry">
            <rect>
-            <x>180</x>
-            <y>10</y>
+            <x>110</x>
+            <y>20</y>
             <width>971</width>
             <height>561</height>
            </rect>
@@ -2403,8 +2403,8 @@ color: black;</string>
          <widget class="QLabel" name="label_45">
           <property name="geometry">
            <rect>
-            <x>-20</x>
-            <y>30</y>
+            <x>-10</x>
+            <y>10</y>
             <width>241</width>
             <height>71</height>
            </rect>
@@ -2425,8 +2425,8 @@ color: black;</string>
          <widget class="QLineEdit" name="champRecherche_3">
           <property name="geometry">
            <rect>
-            <x>190</x>
-            <y>40</y>
+            <x>200</x>
+            <y>20</y>
             <width>481</width>
             <height>51</height>
            </rect>
@@ -2448,10 +2448,10 @@ box-sizing: border-box;   outline: none; </string>
          <widget class="QLabel" name="label_46">
           <property name="geometry">
            <rect>
-            <x>660</x>
-            <y>30</y>
+            <x>670</x>
+            <y>20</y>
             <width>111</width>
-            <height>71</height>
+            <height>61</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -2470,8 +2470,8 @@ box-sizing: border-box;   outline: none; </string>
          <widget class="QComboBox" name="comboBox_3">
           <property name="geometry">
            <rect>
-            <x>760</x>
-            <y>50</y>
+            <x>770</x>
+            <y>30</y>
             <width>151</width>
             <height>41</height>
            </rect>
@@ -2494,8 +2494,8 @@ color: black;</string>
          <widget class="QPushButton" name="geoBTN">
           <property name="geometry">
            <rect>
-            <x>800</x>
-            <y>120</y>
+            <x>860</x>
+            <y>130</y>
             <width>271</width>
             <height>61</height>
            </rect>
@@ -2516,8 +2516,8 @@ color: black;</string>
          <widget class="QPushButton" name="pdfEtab">
           <property name="geometry">
            <rect>
-            <x>800</x>
-            <y>230</y>
+            <x>860</x>
+            <y>250</y>
             <width>271</width>
             <height>61</height>
            </rect>
@@ -2538,8 +2538,8 @@ color: black;</string>
          <widget class="QPushButton" name="textSpchBTN">
           <property name="geometry">
            <rect>
-            <x>800</x>
-            <y>340</y>
+            <x>860</x>
+            <y>370</y>
             <width>271</width>
             <height>61</height>
            </rect>
@@ -2554,14 +2554,14 @@ color: black;</string>
     border-radius: 8px;  </string>
           </property>
           <property name="text">
-           <string>Speech-To-Text</string>
+           <string>Text-To-Speech</string>
           </property>
          </widget>
          <widget class="QCheckBox" name="checkBox">
           <property name="geometry">
            <rect>
             <x>940</x>
-            <y>30</y>
+            <y>20</y>
             <width>291</width>
             <height>26</height>
            </rect>
@@ -2578,7 +2578,7 @@ color: black;</string>
           <property name="geometry">
            <rect>
             <x>940</x>
-            <y>70</y>
+            <y>60</y>
             <width>351</width>
             <height>26</height>
            </rect>
@@ -2595,9 +2595,9 @@ color: black;</string>
           <property name="geometry">
            <rect>
             <x>30</x>
-            <y>120</y>
-            <width>731</width>
-            <height>281</height>
+            <y>130</y>
+            <width>771</width>
+            <height>291</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -2631,46 +2631,6 @@ QTableView::item:selected {
           </property>
           <property name="sortingEnabled">
            <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="texte">
-          <property name="geometry">
-           <rect>
-            <x>900</x>
-            <y>480</y>
-            <width>321</width>
-            <height>51</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    padding: 10px 20px;  
-    border-radius: 8px;  </string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_71">
-          <property name="geometry">
-           <rect>
-            <x>660</x>
-            <y>460</y>
-            <width>281</width>
-            <height>81</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 30px; 
-    padding: 10px 20px;  
-    border-radius: 8px;  </string>
-          </property>
-          <property name="text">
-           <string>Texte généré :</string>
           </property>
          </widget>
         </widget>
