@@ -10,5 +10,8 @@
         <file>equipmentIcon.png</file>
         <file>examIcon.png</file>
         <file>shutdownIcon.png</file>
+        <file>loupe.png</file>
+        <file>modify.png</file>
+        <file>trash.png</file>
     </qresource>
 </RCC>

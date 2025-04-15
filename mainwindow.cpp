@@ -81,15 +81,11 @@ void MainWindow::refreshStats() {
 
 void MainWindow::refreshEmployeeTable()
 {
-    // Get the original QSqlQueryModel from afficher()
     QSqlQueryModel *sqlModelEmployee = emp.afficher();
-
-    // Create a new editable QStandardItemModel for employees
     QStandardItemModel *modelEmployee = new QStandardItemModel(this);
-    modelEmployee->setColumnCount(10); // 8 columns (excluding photo) + 2 for Delete/Modify
+    modelEmployee->setColumnCount(10);
     modelEmployee->setRowCount(sqlModelEmployee->rowCount());
 
-    // Define headers explicitly, omitting photo
     modelEmployee->setHeaderData(0, Qt::Horizontal, tr("ID"));
     modelEmployee->setHeaderData(1, Qt::Horizontal, tr("Nom"));
     modelEmployee->setHeaderData(2, Qt::Horizontal, tr("Prenom"));
@@ -98,48 +94,45 @@ void MainWindow::refreshEmployeeTable()
     modelEmployee->setHeaderData(5, Qt::Horizontal, tr("Date de naissance"));
     modelEmployee->setHeaderData(6, Qt::Horizontal, tr("Role"));
     modelEmployee->setHeaderData(7, Qt::Horizontal, tr("Password"));
-    modelEmployee->setHeaderData(8, Qt::Horizontal, tr("Delete"));
-    modelEmployee->setHeaderData(9, Qt::Horizontal, tr("Modify"));
+    modelEmployee->setHeaderData(8, Qt::Horizontal, tr("Supprimer"));
+    modelEmployee->setHeaderData(9, Qt::Horizontal, tr("Modifier"));
 
-    // Copy data from sqlModelEmployee to the new model, skipping photo (column 7 in DB)
     for (int row = 0; row < sqlModelEmployee->rowCount(); ++row) {
-        // Column mappings: DB column -> Model column
-        // 0: id_employe -> 0
-        modelEmployee->setData(modelEmployee->index(row, 0),
-                               sqlModelEmployee->data(sqlModelEmployee->index(row, 0)).toInt());
-        // 1: nomEmp -> 1
-        modelEmployee->setData(modelEmployee->index(row, 1),
-                               sqlModelEmployee->data(sqlModelEmployee->index(row, 1)));
-        // 2: prenomEmp -> 2
-        modelEmployee->setData(modelEmployee->index(row, 2),
-                               sqlModelEmployee->data(sqlModelEmployee->index(row, 2)));
-        // 3: email -> 3
-        modelEmployee->setData(modelEmployee->index(row, 3),
-                               sqlModelEmployee->data(sqlModelEmployee->index(row, 3)));
-        // 4: telephone -> 4
-        modelEmployee->setData(modelEmployee->index(row, 4),
-                               sqlModelEmployee->data(sqlModelEmployee->index(row, 4)));
-        // 5: dateN -> 5
-        modelEmployee->setData(modelEmployee->index(row, 5),
-                               sqlModelEmployee->data(sqlModelEmployee->index(row, 5)));
-        // 6: role -> 6
-        modelEmployee->setData(modelEmployee->index(row, 6),
-                               sqlModelEmployee->data(sqlModelEmployee->index(row, 6)));
-        // 8: password -> 7 (skip 7: photo)
-        modelEmployee->setData(modelEmployee->index(row, 7),
-                               sqlModelEmployee->data(sqlModelEmployee->index(row, 8)));
+        modelEmployee->setData(modelEmployee->index(row, 0), sqlModelEmployee->data(sqlModelEmployee->index(row, 0)).toInt());
+        modelEmployee->setData(modelEmployee->index(row, 1), sqlModelEmployee->data(sqlModelEmployee->index(row, 1)));
+        modelEmployee->setData(modelEmployee->index(row, 2), sqlModelEmployee->data(sqlModelEmployee->index(row, 2)));
+        modelEmployee->setData(modelEmployee->index(row, 3), sqlModelEmployee->data(sqlModelEmployee->index(row, 3)));
+        modelEmployee->setData(modelEmployee->index(row, 4), sqlModelEmployee->data(sqlModelEmployee->index(row, 4)));
+        modelEmployee->setData(modelEmployee->index(row, 5), sqlModelEmployee->data(sqlModelEmployee->index(row, 5)));
+        modelEmployee->setData(modelEmployee->index(row, 6), sqlModelEmployee->data(sqlModelEmployee->index(row, 6)));
 
-        // Add Delete and Modify text
-        modelEmployee->setData(modelEmployee->index(row, 8), "[Delete]");
-        modelEmployee->setData(modelEmployee->index(row, 9), "[Modify]");
+        // Password: Store in UserRole, display asterisks
+        QString password = sqlModelEmployee->data(sqlModelEmployee->index(row, 8)).toString();
+        modelEmployee->setData(modelEmployee->index(row, 7), password, Qt::UserRole);
+        modelEmployee->setData(modelEmployee->index(row, 7), "****", Qt::DisplayRole);
+        modelEmployee->setData(modelEmployee->index(row, 7), false, Qt::UserRole + 1); // Not revealed
+
+        QIcon deleteIcon(":/trash.png");
+        QIcon modifyIcon(":/modify.png");
+
+        modelEmployee->setData(modelEmployee->index(row, 8), deleteIcon, Qt::DecorationRole);
+        modelEmployee->setData(modelEmployee->index(row, 9), modifyIcon, Qt::DecorationRole);
+
+        modelEmployee->setData(modelEmployee->index(row, 8), "", Qt::DisplayRole);
+        modelEmployee->setData(modelEmployee->index(row, 9), "", Qt::DisplayRole);
+
+        modelEmployee->setData(modelEmployee->index(row, 8), Qt::AlignCenter, Qt::TextAlignmentRole);
+        modelEmployee->setData(modelEmployee->index(row, 9), Qt::AlignCenter, Qt::TextAlignmentRole);
+
     }
 
-    // Set the new model to the employee table
     ui->tableEmploye->setModel(modelEmployee);
 
-    // Adjust column widths
+
+    ui->tableEmploye->setColumnWidth(8, 30);
+    ui->tableEmploye->setColumnWidth(9, 30);
     ui->tableEmploye->resizeColumnsToContents();
-    refreshStats(); // Update stats after refreshing the table
+    refreshStats();
 }
 
 void MainWindow::onEmployeeTableClicked(const QModelIndex &index)
@@ -147,14 +140,20 @@ void MainWindow::onEmployeeTableClicked(const QModelIndex &index)
     int row = index.row();
     int idEmployee = ui->tableEmploye->model()->data(ui->tableEmploye->model()->index(row, 0)).toInt();
 
-    if (index.column() == 8) { // Delete column
+    if (index.column() == 7) {
+        QAbstractItemModel *model = ui->tableEmploye->model();
+        bool isRevealed = model->data(index, Qt::UserRole + 1).toBool();
+        QString password = model->data(index, Qt::UserRole).toString();
+        model->setData(index, isRevealed ? "****" : password, Qt::DisplayRole);
+        model->setData(index, !isRevealed, Qt::UserRole + 1);
+    } else if (index.column() == 8) { // Delete column
         QMessageBox::StandardButton reply = QMessageBox::question(this, "Confirm Delete",
                                                                   "Are you sure you want to delete this employee?",
                                                                   QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes) {
             if (emp.supprimer(idEmployee)) {
-                refreshEmployeeTable(); // Refresh employee table
-                refreshStats(); // Refresh stats after deleting
+                refreshEmployeeTable();
+                refreshStats();
                 QMessageBox::information(this, "Success", "Employee deleted successfully.");
             } else {
                 QMessageBox::warning(this, "Error", "Failed to delete employee.");
@@ -168,14 +167,12 @@ void MainWindow::onEmployeeTableClicked(const QModelIndex &index)
         int telephone = modelEmployee->data(modelEmployee->index(row, 4)).toInt();
         QString dateN = modelEmployee->data(modelEmployee->index(row, 5)).toString();
         QString role = modelEmployee->data(modelEmployee->index(row, 6)).toString();
-        QString password = modelEmployee->data(modelEmployee->index(row, 7)).toString();
+        QString password = modelEmployee->data(modelEmployee->index(row, 7), Qt::UserRole).toString();
         newPhotoSelected = false;
         currentPhotoPath = "";
 
-        // Switch to the modify form (index 2)
         ui->employeesNavBar->setCurrentIndex(2);
 
-        // Populate the modify form fields
         ui->cinInputM->setText(QString::number(idEmployee));
         ui->nameInputM->setText(nom);
         ui->prenomInputM->setText(prenom);
@@ -189,14 +186,10 @@ void MainWindow::onEmployeeTableClicked(const QModelIndex &index)
 
 void MainWindow::filterEmployeeTable(const QString &searchText)
 {
-    // Get the original data from the database
     QSqlQueryModel *sqlModelEmployee = emp.afficher();
-
-    // Create a new editable QStandardItemModel for employees
     QStandardItemModel *modelEmployee = new QStandardItemModel(this);
-    modelEmployee->setColumnCount(10); // 8 columns (excluding photo) + 2 for Delete/Modify
+    modelEmployee->setColumnCount(10);
 
-    // Set headers (same as refreshEmployeeTable)
     modelEmployee->setHeaderData(0, Qt::Horizontal, tr("ID"));
     modelEmployee->setHeaderData(1, Qt::Horizontal, tr("Nom"));
     modelEmployee->setHeaderData(2, Qt::Horizontal, tr("Prenom"));
@@ -205,12 +198,11 @@ void MainWindow::filterEmployeeTable(const QString &searchText)
     modelEmployee->setHeaderData(5, Qt::Horizontal, tr("Date de naissance"));
     modelEmployee->setHeaderData(6, Qt::Horizontal, tr("Role"));
     modelEmployee->setHeaderData(7, Qt::Horizontal, tr("Password"));
-    modelEmployee->setHeaderData(8, Qt::Horizontal, tr("Delete"));
-    modelEmployee->setHeaderData(9, Qt::Horizontal, tr("Modify"));
+    modelEmployee->setHeaderData(8, Qt::Horizontal, tr("Supprimer"));
+    modelEmployee->setHeaderData(9, Qt::Horizontal, tr("Modifier"));
 
-    // Filter rows based on search text
     int rowCount = 0;
-    QString searchLower = searchText.toLower(); // Case-insensitive search
+    QString searchLower = searchText.toLower();
     for (int row = 0; row < sqlModelEmployee->rowCount(); ++row) {
         QString id = sqlModelEmployee->data(sqlModelEmployee->index(row, 0)).toString();
         QString nom = sqlModelEmployee->data(sqlModelEmployee->index(row, 1)).toString();
@@ -221,7 +213,6 @@ void MainWindow::filterEmployeeTable(const QString &searchText)
         QString role = sqlModelEmployee->data(sqlModelEmployee->index(row, 6)).toString();
         QString password = sqlModelEmployee->data(sqlModelEmployee->index(row, 8)).toString();
 
-        // Check if any field contains the search text (case-insensitive)
         if (id.contains(searchLower, Qt::CaseInsensitive) ||
             nom.contains(searchLower, Qt::CaseInsensitive) ||
             prenom.contains(searchLower, Qt::CaseInsensitive) ||
@@ -230,8 +221,7 @@ void MainWindow::filterEmployeeTable(const QString &searchText)
             dateN.contains(searchLower, Qt::CaseInsensitive) ||
             role.contains(searchLower, Qt::CaseInsensitive) ||
             password.contains(searchLower, Qt::CaseInsensitive)) {
-            // Add matching row to the model
-            modelEmployee->setRowCount(rowCount + 1); // Increment row count
+            modelEmployee->setRowCount(rowCount + 1);
             modelEmployee->setData(modelEmployee->index(rowCount, 0), id.toInt());
             modelEmployee->setData(modelEmployee->index(rowCount, 1), nom);
             modelEmployee->setData(modelEmployee->index(rowCount, 2), prenom);
@@ -239,15 +229,32 @@ void MainWindow::filterEmployeeTable(const QString &searchText)
             modelEmployee->setData(modelEmployee->index(rowCount, 4), telephone.toInt());
             modelEmployee->setData(modelEmployee->index(rowCount, 5), dateN);
             modelEmployee->setData(modelEmployee->index(rowCount, 6), role);
-            modelEmployee->setData(modelEmployee->index(rowCount, 7), password);
-            modelEmployee->setData(modelEmployee->index(rowCount, 8), "[Delete]");
-            modelEmployee->setData(modelEmployee->index(rowCount, 9), "[Modify]");
+
+            // Password: Store in UserRole, display asterisks
+            modelEmployee->setData(modelEmployee->index(rowCount, 7), password, Qt::UserRole);
+            modelEmployee->setData(modelEmployee->index(rowCount, 7), "****", Qt::DisplayRole);
+            modelEmployee->setData(modelEmployee->index(rowCount, 7), false, Qt::UserRole + 1);
+
+            QIcon deleteIcon(":/trash.png");
+            QIcon modifyIcon(":/modify.png");
+
+            modelEmployee->setData(modelEmployee->index(rowCount, 8), deleteIcon, Qt::DecorationRole);
+            modelEmployee->setData(modelEmployee->index(rowCount, 9), modifyIcon, Qt::DecorationRole);
+
+            modelEmployee->setData(modelEmployee->index(rowCount, 8), "", Qt::DisplayRole);
+            modelEmployee->setData(modelEmployee->index(rowCount, 9), "", Qt::DisplayRole);
+
+            modelEmployee->setData(modelEmployee->index(rowCount, 8), Qt::AlignCenter, Qt::TextAlignmentRole);
+            modelEmployee->setData(modelEmployee->index(rowCount, 9), Qt::AlignCenter, Qt::TextAlignmentRole);
+
             rowCount++;
         }
     }
 
-    // Set the filtered model to the table
     ui->tableEmploye->setModel(modelEmployee);
+
+    ui->tableEmploye->setColumnWidth(8, 30);
+    ui->tableEmploye->setColumnWidth(9, 30);
     ui->tableEmploye->resizeColumnsToContents();
 }
 
@@ -618,30 +625,29 @@ void MainWindow::on_pdfEmp_clicked()
     QString prenom = model->data(model->index(row, 2)).toString();
     QString email = model->data(model->index(row, 3)).toString();
     int telephone = model->data(model->index(row, 4)).toInt();
-    QString dateNRaw = model->data(model->index(row, 5)).toString(); // Raw date from table
+    QString dateNRaw = model->data(model->index(row, 5)).toString();
     QString role = model->data(model->index(row, 6)).toString();
-    QString password = model->data(model->index(row, 7)).toString();
+    QString password = model->data(model->index(row, 7), Qt::UserRole).toString();
 
     // Parse the date and strip time
     QString dateN;
-    if (dateNRaw.contains("T")) { // Check for ISO 8601 format like "2000-01-01T00:00:00.000"
-        QDateTime dateTime = QDateTime::fromString(dateNRaw, Qt::ISODate); // Parse ISO 8601
+    if (dateNRaw.contains("T")) {
+        QDateTime dateTime = QDateTime::fromString(dateNRaw, Qt::ISODate);
         dateN = dateTime.isValid() ? dateTime.date().toString("MM/dd/yyyy") : dateNRaw;
-    } else if (dateNRaw.contains("-") && !dateNRaw.contains(":")) { // Check for "DD-MON-RR" or "YYYY-MM-DD"
-        QDate date = QDate::fromString(dateNRaw, "yyyy-MM-dd"); // Try "YYYY-MM-DD"
+    } else if (dateNRaw.contains("-") && !dateNRaw.contains(":")) {
+        QDate date = QDate::fromString(dateNRaw, "yyyy-MM-dd");
         if (!date.isValid()) {
-            date = QDate::fromString(dateNRaw, "dd-MMM-yy"); // Fallback to "DD-MON-RR"
+            date = QDate::fromString(dateNRaw, "dd-MMM-yy");
             if (date.year() < 1970 && date.isValid()) {
-                date = date.addYears(100); // Adjust for 20xx century
+                date = date.addYears(100);
             }
         }
         dateN = date.isValid() ? date.toString("MM/dd/yyyy") : dateNRaw;
     } else {
-        dateN = dateNRaw; // Fallback to raw if unrecognized
+        dateN = dateNRaw;
     }
     qDebug() << "Raw date from table:" << dateNRaw << "Formatted date:" << dateN;
 
-    // Fetch photo
     QSqlQuery query;
     query.prepare("SELECT photo FROM employe WHERE id_employe = :id_employee");
     query.bindValue(":id_employee", idEmployee);
@@ -663,31 +669,27 @@ void MainWindow::on_pdfEmp_clicked()
 
     QPdfWriter pdfWriter(fileName);
     pdfWriter.setPageSize(QPageSize(QPageSize::A4));
-    pdfWriter.setResolution(300); // 300 DPI
+    pdfWriter.setResolution(300);
 
     QPainter painter(&pdfWriter);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    // Page dimensions
-    const int pageWidth = pdfWriter.width();  // ~2480 pixels
-    const int pageHeight = pdfWriter.height(); // ~3508 pixels
-    const int margin = 500;  // ~1.67 cm
-    const int lineSpacing = 250; // ~0.83 cm
-    const int maxPhotoWidth = 450;  // ~1.5 cm
-    const int maxPhotoHeight = 450; // ~1.5 cm
+    const int pageWidth = pdfWriter.width();
+    const int pageHeight = pdfWriter.height();
+    const int margin = 500;
+    const int lineSpacing = 250;
+    const int maxPhotoWidth = 450;
+    const int maxPhotoHeight = 450;
 
-    // Header background (light blue)
     painter.setBrush(QBrush(QColor(200, 220, 255)));
     painter.setPen(Qt::NoPen);
     painter.drawRect(0, 0, pageWidth, 800);
 
-    // Header title
     QFont titleFont("Arial", 18, QFont::Bold);
     painter.setFont(titleFont);
     painter.setPen(Qt::black);
     painter.drawText(margin, 400, "Employee Profile");
 
-    // Photo (top-right corner, no margin)
     if (!photo.isNull()) {
         int photoWidth = photo.width();
         int photoHeight = photo.height();
@@ -711,20 +713,17 @@ void MainWindow::on_pdfEmp_clicked()
         painter.drawText(pageWidth - 200, 100, "No photo");
     }
 
-    // Employee details section
-    int yPos = 800; // Start below header
+    int yPos = 800;
     QFont labelFont("Arial", 12, QFont::Bold);
     QFont valueFont("Arial", 12);
-    const int labelX = margin + 50;      // ~550 pixels
-    const int valueX = margin + 600;     // ~950 pixels
-    const int maxValueWidth = pageWidth - valueX - margin; // ~1030 pixels
+    const int labelX = margin + 50;
+    const int valueX = margin + 600;
+    const int maxValueWidth = pageWidth - valueX - margin;
 
-    // Draw a box around details
     painter.setPen(QPen(Qt::gray, 5));
     painter.setBrush(Qt::NoBrush);
     painter.drawRect(margin, yPos - lineSpacing / 2, pageWidth - 2 * margin, 8 * lineSpacing + 50);
 
-    // Details with labels
     painter.setPen(Qt::black);
 
     painter.setFont(labelFont);
@@ -772,7 +771,7 @@ void MainWindow::on_pdfEmp_clicked()
     painter.setFont(labelFont);
     painter.drawText(labelX, yPos, "Date de naissance:");
     painter.setFont(valueFont);
-    QString dateNText = dateN; // Formatted as MM/DD/YYYY
+    QString dateNText = dateN;
     if (painter.fontMetrics().boundingRect(dateNText).width() > maxValueWidth) {
         dateNText = painter.fontMetrics().elidedText(dateN, Qt::ElideRight, maxValueWidth);
     }
@@ -799,7 +798,6 @@ void MainWindow::on_pdfEmp_clicked()
     painter.drawText(valueX, yPos, passwordText);
     yPos += lineSpacing;
 
-    // Footer
     QFont footerFont("Arial", 10, QFont::Light);
     painter.setFont(footerFont);
     painter.setPen(Qt::gray);

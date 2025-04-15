@@ -33,7 +33,7 @@ QWidget { background: transparent; }  </string>
      <string notr="true">background: transparent;</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Login">
      <property name="styleSheet">
@@ -248,10 +248,10 @@ color:white;</string>
       <widget class="QLabel" name="label_25">
        <property name="geometry">
         <rect>
-         <x>530</x>
-         <y>440</y>
-         <width>71</width>
-         <height>61</height>
+         <x>500</x>
+         <y>450</y>
+         <width>91</width>
+         <height>71</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -284,8 +284,8 @@ font: 400 12pt &quot;Segoe UI&quot;;</string>
       <widget class="QPushButton" name="LOGINFACIAL">
        <property name="geometry">
         <rect>
-         <x>520</x>
-         <y>430</y>
+         <x>500</x>
+         <y>450</y>
          <width>91</width>
          <height>71</height>
         </rect>
@@ -300,19 +300,19 @@ color:white;</string>
         <string>Se connecter</string>
        </property>
       </widget>
-     </widget>
-     <widget class="QLabel" name="cameraLabel">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>120</y>
-        <width>1161</width>
-        <height>591</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
+      <widget class="QLabel" name="cameraLabel">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1051</width>
+         <height>591</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="EduFlow">
@@ -1240,6 +1240,22 @@ QTableView {
            <bool>false</bool>
           </attribute>
          </widget>
+         <widget class="QLabel" name="label_32">
+          <property name="geometry">
+           <rect>
+            <x>640</x>
+            <y>40</y>
+            <width>71</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">image: url(:/loupe.png);</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="ModifierEmployes">
          <widget class="QFrame" name="formBackground_2">
@@ -1643,7 +1659,7 @@ border: 0px;
 qproperty-alignment: AlignCenter;</string>
            </property>
            <property name="text">
-            <string>AFD</string>
+            <string/>
            </property>
           </widget>
           <widget class="QLineEdit" name="mdpInputM">
@@ -1696,8 +1712,8 @@ border: 0px;</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1181</width>
-            <height>721</height>
+            <width>1001</width>
+            <height>681</height>
            </rect>
           </property>
          </widget>
@@ -2621,7 +2637,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="ajouterExams">
          <widget class="QFrame" name="frame_4">
@@ -3772,7 +3788,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="ajouterCollis">
          <widget class="QFrame" name="frame_7">
