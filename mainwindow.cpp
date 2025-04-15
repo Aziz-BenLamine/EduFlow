@@ -22,14 +22,17 @@ MainWindow::MainWindow(QWidget *parent)
     , newPhotoSelected(false)
     , faceRecognitionActive(false)
     , consecutiveDetections(0)
-
+    , emotionRecognitionActive(false)
+    , neutralFrameCount(0)
+    , lastSentiment("None")
+    , cheerUpQuote("")
+    ,happyFrameCount(0)
 {
     ui->setupUi(this);
     ui->cameraLabel->hide();
     refreshEmployeeTable();
     connect(ui->tableEmploye, &QTableView::clicked, this, &MainWindow::onEmployeeTableClicked);
     refreshStats();
-
 
     qDebug() << "Qt Version:" << QT_VERSION_STR;
 
@@ -49,6 +52,28 @@ MainWindow::MainWindow(QWidget *parent)
     user_names = {"Aziz"}; // Match your trained model
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateFrame);
+    // Initialize smile detection
+    if (!smileCascade.load("C:/opencv_contrib-4.9.0/install/etc/haarcascades/haarcascade_smile.xml")) {
+        qDebug() << "Error: Could not load smile cascade.";
+    }
+
+    // Initialize cheer-up messages
+    cheerMessages << "Keep Pushing Forward!"
+                  << "You're Making Progress!"
+                  << "Stay Focused, Stay Strong!"
+                  << "One Step at a Time!"
+                  << "You've Got This!"
+                  << "Turn Challenges into Wins!"
+                  << "Your Effort Counts!"
+                  << "Keep Up the Momentum!";
+    // Style labels
+    ui->cameraLabel->setScaledContents(true);
+    ui->emotionLabel->setScaledContents(true);
+
+    // Initialize toggle timer
+    toggleTimer = new QTimer(this);
+    connect(toggleTimer, &QTimer::timeout, this, &MainWindow::toggleEmotionRecognition);
+    toggleTimer->start(60000); // Start toggling every 60 seconds
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +82,7 @@ MainWindow::~MainWindow()
         cap.release();
     }
     delete timer;
+    delete toggleTimer;
     delete ui;
 }
 
@@ -894,67 +920,229 @@ void MainWindow::on_LOGINFACIAL_clicked()
 
 void MainWindow::updateFrame()
 {
-    if (!faceRecognitionActive || !cap.isOpened()) return;
+    if (!cap.isOpened()) return;
 
     cv::Mat frame;
     cap >> frame;
-    if (frame.empty()) return;
+    if (frame.empty()) {
+        qDebug() << "Empty frame captured";
+        return;
+    }
 
     cv::Mat gray;
     cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
 
     std::vector<cv::Rect> faces;
-    faceCascade.detectMultiScale(gray, faces, 1.1, 3, 0, cv::Size(30, 30));
+    faceCascade.detectMultiScale(gray, faces, 1.1, 5, 0, cv::Size(30, 30));
 
-    bool azizDetected = false;
+    if (faceRecognitionActive) {
+        bool azizDetected = false;
+        for (const auto& face : faces) {
+            cv::Mat faceROI = gray(face);
+            cv::resize(faceROI, faceROI, cv::Size(100, 100));
+            int label = -1;
+            double confidence = 0.0;
+            recognizer->predict(faceROI, label, confidence);
+            qDebug() << "Predicted Label:" << label << "Confidence:" << confidence;
+            cv::rectangle(frame, face, cv::Scalar(0, 255, 0), 2);
+            std::string name = (label >= 0 && label < user_names.size() && confidence < 80)
+                                   ? user_names[label] : "Unknown";
+            cv::putText(frame, name + " (" + std::to_string((int)confidence) + ")",
+                        cv::Point(face.x, face.y - 10), cv::FONT_HERSHEY_SIMPLEX, 0.9, cv::Scalar(0, 255, 0), 2);
+            if (name == "Aziz") {
+                azizDetected = true;
+                consecutiveDetections++;
+                qDebug() << "Consecutive Detections:" << consecutiveDetections;
+            } else {
+                consecutiveDetections = 0;
+            }
+            if (consecutiveDetections >= 60) {
+                QMessageBox::information(this, "Connexion réussie", "Bienvenue, Aziz !");
+                ui->login_app->setCurrentIndex(1);
+                timer->stop();
+                cap.release();
+                ui->cameraLabel->clear();
+                ui->cameraLabel->hide();
+                ui->LOGINFACIAL->setText("LOGINFACIAL");
+                faceRecognitionActive = false;
+                consecutiveDetections = 0;
+                break;
+            }
+        }
+        if (!azizDetected) {
+            consecutiveDetections = 0;
+            qDebug() << "Reset Consecutive Detections: No Aziz detected";
+        }
+        cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
+        QImage qimg(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
+        ui->cameraLabel->setPixmap(QPixmap::fromImage(qimg));
+    } else if (emotionRecognitionActive) {
+        cv::resize(frame, frame, cv::Size(640, 480));
+        cv::equalizeHist(gray, gray);
+        QString currentSentiment = "Neutral";
 
-    for (const auto& face : faces) {
-        cv::Mat faceROI = gray(face);
-        cv::resize(faceROI, faceROI, cv::Size(100, 100), 0, 0, cv::INTER_LINEAR);
+        for (const auto& face : faces) {
+            cv::rectangle(frame, face, cv::Scalar(0, 255, 0), 2);
+            cv::Mat faceROI = gray(face);
+            std::vector<cv::Rect> smiles;
+            smileCascade.detectMultiScale(faceROI, smiles, 1.7, 25, 0, cv::Size(20, 20));
 
-        int label = -1;
-        double confidence = 0.0;
-        recognizer->predict(faceROI, label, confidence);
-
-        qDebug() << "Predicted Label:" << label << "Confidence:" << confidence;
-
-        cv::rectangle(frame, face, cv::Scalar(0, 255, 0), 2);
-        std::string name = (label >= 0 && label < user_names.size() && confidence < 80)
-                               ? user_names[label] : "Unknown";
-        cv::putText(frame, name + " (" + std::to_string((int)confidence) + ")",
-                    cv::Point(face.x, face.y - 10), cv::FONT_HERSHEY_SIMPLEX, 0.9, cv::Scalar(0, 255, 0), 2);
-
-        if (name == "Aziz") {
-            azizDetected = true;
-            consecutiveDetections++;
-            qDebug() << "Consecutive Detections:" << consecutiveDetections;
-        } else {
-            consecutiveDetections = 0; // Reset if not Aziz
-            qDebug() << "Reset Consecutive Detections: Unknown or high confidence";
+            if (!smiles.empty()) {
+                currentSentiment = "Happy";
+                for (const auto& smile : smiles) {
+                    cv::rectangle(frame, cv::Point(face.x + smile.x, face.y + smile.y),
+                                  cv::Point(face.x + smile.x + smile.width, face.y + smile.y + smile.height),
+                                  cv::Scalar(255, 0, 0), 2);
+                }
+            }
         }
 
-        // Check if 3 seconds (90 frames at 30 FPS) have passed
-        if (consecutiveDetections >= 60) {
-            QMessageBox::information(this, "Connexion réussie", "Bienvenue, Aziz !");
-            ui->login_app->setCurrentIndex(1); // Switch to main app view
+        if (currentSentiment == "Neutral") {
+            neutralFrameCount++;
+            happyFrameCount = 0;
+            if (neutralFrameCount >= 5 && lastSentiment != "Neutral") {
+                lastSentiment = "Neutral";
+                displayCheerUpContent();
+                qDebug() << "Neutral detected, quote set to:" << cheerUpQuote;
+            }
+        } else {
+            neutralFrameCount = 0;
+            happyFrameCount++;
+            if (lastSentiment != "Happy") {
+                lastSentiment = "Happy";
+                cheerUpQuote = "";
+                qDebug() << "Happy detected, cleared quote";
+            }
+        }
+
+        // Stop after 3 seconds (90 frames at ~30 FPS) of happy
+        if (happyFrameCount >= 30) {
+            qDebug() << "3 seconds of happy detected, stopping emotion recognition";
             timer->stop();
-            cap.release();
+            if (cap.isOpened()) {
+                cap.release();
+            }
+            ui->emotionLabel->clear();
+            ui->emotionLabel->setText("Emotion Feed");
+            emotionRecognitionActive = false;
+            neutralFrameCount = 0;
+            happyFrameCount = 0;
+            lastSentiment = "None";
+            cheerUpQuote = "";
+            ui->emotionLabel->hide();
+            ui->facialEmotion->setText("FACIAL EMOTION");
+            toggleTimer->start(60000); // Resume auto-toggle
+            return; // Exit to avoid updating label after stopping
+        }
+
+        cv::putText(frame, "Sentiment: " + lastSentiment.toStdString(),
+                    cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.9, cv::Scalar(0, 255, 255), 2);
+        if (!cheerUpQuote.isEmpty()) {
+            cv::putText(frame, cheerUpQuote.toStdString(),
+                        cv::Point(10, frame.rows - 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(255, 255, 0), 2);
+        }
+        cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
+        QImage qimg(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
+        ui->emotionLabel->setPixmap(QPixmap::fromImage(qimg));
+    }
+}
+
+//SENTIMENTS
+
+void MainWindow::displayCheerUpContent()
+{
+    if (cheerMessages.isEmpty()) {
+        cheerUpQuote = "";
+        return;
+    }
+
+    int index = QRandomGenerator::global()->bounded(cheerMessages.size());
+    cheerUpQuote = cheerMessages[index];
+}
+
+void MainWindow::on_facialEmotion_clicked()
+{
+    if (!emotionRecognitionActive) {
+        if (!cap.isOpened()) {
+            cap.open(0);
+            if (!cap.isOpened()) {
+                QMessageBox::critical(this, "Error", "Could not open camera.");
+                return;
+            }
+        }
+        timer->start(33);
+        ui->facialEmotion->setText("STOP EMOTION");
+        ui->emotionLabel->show();
+        emotionRecognitionActive = true;
+        if (faceRecognitionActive) {
+            faceRecognitionActive = false;
+            ui->LOGINFACIAL->setText("LOGINFACIAL");
             ui->cameraLabel->clear();
             ui->cameraLabel->hide();
-            ui->LOGINFACIAL->setText("LOGINFACIAL");
-            faceRecognitionActive = false;
-            consecutiveDetections = 0; // Reset after login
-            break; // Exit loop after successful login
+            consecutiveDetections = 0;
         }
+        neutralFrameCount = 0;
+        happyFrameCount = 0;
+        lastSentiment = "None";
+        cheerUpQuote = "";
+        toggleTimer->stop();
+        qDebug() << "Emotion recognition started manually";
+    } else {
+        timer->stop();
+        if (cap.isOpened()) {
+            cap.release();
+        }
+        ui->emotionLabel->clear();
+        ui->emotionLabel->setText("Emotion Feed");
+        ui->facialEmotion->setText("FACIAL EMOTION");
+        emotionRecognitionActive = false;
+        neutralFrameCount = 0;
+        happyFrameCount = 0;
+        lastSentiment = "None";
+        cheerUpQuote = "";
+        toggleTimer->start(60000);
+        ui->emotionLabel->hide();
+        qDebug() << "Emotion recognition stopped manually";
     }
-
-    // If no face or no Aziz detected in this frame, reset counter
-    if (!azizDetected) {
-        consecutiveDetections = 0;
-        qDebug() << "Reset Consecutive Detections: No Aziz detected";
+}
+void MainWindow::toggleEmotionRecognition()
+{
+    if (!emotionRecognitionActive) {
+        if (!cap.isOpened()) {
+            cap.open(0);
+            if (!cap.isOpened()) {
+                qDebug() << "Auto-toggle: Could not open camera.";
+                return;
+            }
+        }
+        timer->start(33);
+        ui->emotionLabel->show();
+        emotionRecognitionActive = true;
+        if (faceRecognitionActive) {
+            faceRecognitionActive = false;
+            ui->LOGINFACIAL->setText("LOGINFACIAL");
+            ui->cameraLabel->clear();
+            ui->cameraLabel->hide();
+            consecutiveDetections = 0;
+        }
+        neutralFrameCount = 0;
+        happyFrameCount = 0;
+        lastSentiment = "None";
+        cheerUpQuote = "";
+        qDebug() << "Auto-toggle: Emotion recognition started";
+    } else {
+        timer->stop();
+        if (cap.isOpened()) {
+            cap.release();
+        }
+        ui->emotionLabel->clear();
+        ui->emotionLabel->setText("Emotion Feed");
+        emotionRecognitionActive = false;
+        neutralFrameCount = 0;
+        happyFrameCount = 0;
+        lastSentiment = "None";
+        cheerUpQuote = "";
+        ui->emotionLabel->hide();
+        qDebug() << "Auto-toggle: Emotion recognition stopped";
     }
-
-    cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
-    QImage qimg(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
-    ui->cameraLabel->setPixmap(QPixmap::fromImage(qimg));
 }

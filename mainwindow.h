@@ -9,7 +9,8 @@
 #include <QTimer>
 #include <opencv2/opencv.hpp>
 #include <opencv2/face.hpp>
-
+#include <QStringList>
+#include <QRandomGenerator>
 
 
 QT_BEGIN_NAMESPACE
@@ -26,6 +27,7 @@ public:
     void refreshStats();
 
 private slots:
+    void toggleEmotionRecognition();
     void refreshEmployeeTable();
     void onEmployeeTableClicked(const QModelIndex &index);
     void updateFrame();
@@ -73,12 +75,15 @@ private slots:
     void on_LOGINFACIAL_clicked();
 
 
+    void on_facialEmotion_clicked();
+
 private:
     Ui::MainWindow *ui;
     Employe emp;
     void filterEmployeeTable(const QString &searchText);
     bool newPhotoSelected;
     QString currentPhotoPath;
+
 
 
     // FACE ID
@@ -89,6 +94,19 @@ private:
     std::vector<std::string> user_names;
     bool faceRecognitionActive;
     int consecutiveDetections;
+
+    // Emotion recognition (smile detection)
+    cv::CascadeClassifier smileCascade;
+    bool emotionRecognitionActive;
+    QStringList cheerMessages;
+    int neutralFrameCount;
+    QString lastSentiment;
+    QString cheerUpQuote;
+    void displayCheerUpContent();
+    QTimer *toggleTimer;
+    int happyFrameCount;
+
+    //STAT
 
 };
 #endif // MAINWINDOW_H

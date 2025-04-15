@@ -12,11 +12,11 @@ QT_USE_NAMESPACE
     Q_OBJECT
 public:
     explicit StatsWidgetEmp(QWidget *parent = nullptr);
-    void updateStats(); // Method to refresh statistics
+    void updateStats();
 
 private:
-    QChartView *roleChartView; // Pie chart for roles
-    QChartView *ageChartView;  // Bar chart for age groups
+    QChartView *roleChartView;
+    QChartView *ageChartView;
     void createRoleChart();
     void createAgeChart();
 };
