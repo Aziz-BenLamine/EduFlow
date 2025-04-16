@@ -20,7 +20,7 @@ public:
     Equipements();
     Equipements(int idEq, std::string nomEq, std::string etatEq, std::string typeEq, int quantiteEq,
                 std::vector<unsigned char> photoEq, std::string dateEq, std::string marqueEq);
-
+    std::map<std::string, int> getQuantiteStatistics();
     // Getters
     int getIdEq() const { return idEq; }
     std::string getNomEq() const { return nomEq; }

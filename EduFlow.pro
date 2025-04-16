@@ -1,6 +1,8 @@
 QT       += core gui
 QT  += sql
 QT += network
+QT += charts
+QT += core gui widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,13 +14,13 @@ CONFIG += c++17
 
 SOURCES += \
     connection.cpp \
-    employe.cpp \
+    equipements.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     connection.h \
-    employe.h \
+    equipements.h \
     mainwindow.h
 
 FORMS += \

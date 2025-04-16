@@ -144,6 +144,7 @@ void MainWindow::on_AjouterEquipement_clicked() {
 void MainWindow::on_AjouterEquipement_clicked() {
     ui->AjouterEquipement->setEnabled(false);
 
+    // Récupérer les données des champs
     QString idQstr = ui->idEqinput->text();
     QString nomQStr = ui->nomEqinput->text();
     QString typeQStr = ui->typeEqInput->text();
@@ -152,6 +153,7 @@ void MainWindow::on_AjouterEquipement_clicked() {
     QString quantiteQStr = ui->quantiteEqinput->text();
     QDate date = ui->dateEqinput->date();
 
+    // Validation des champs
     if (idQstr.isEmpty() || nomQStr.isEmpty() || typeQStr.isEmpty() || etatQStr.isEmpty() ||
         marqueQStr.isEmpty() || quantiteQStr.isEmpty() || !date.isValid()) {
         QMessageBox::warning(this, "Erreur", "Tous les champs doivent être remplis.");
@@ -179,70 +181,67 @@ void MainWindow::on_AjouterEquipement_clicked() {
         return;
     }
 
-    QString dateSqlite = date.toString("yyyy-MM-dd");
-    std::string nom = nomQStr.toStdString();
-    std::string type = typeQStr.toStdString();
-    std::string etat = etatQStr.toStdString();
-    std::string marque = marqueQStr.toStdString();
-    std::vector<unsigned char> photo;
-
-    if (!imagePathAjout.isEmpty()) {
-        QFile file(imagePathAjout);
-        if (file.open(QIODevice::ReadOnly)) {
-            QByteArray imageData = file.readAll();
-            if (imageData.isEmpty()) {
-                QMessageBox::warning(this, "Erreur", "L'image est vide ou corrompue.");
-                ui->AjouterEquipement->setEnabled(true);
-                return;
-            }
-            photo = std::vector<unsigned char>(imageData.begin(), imageData.end());
-            file.close();
-
-            // Call Clarifai API to identify the object in the image
-            QNetworkRequest request(QUrl("https://api.clarifai.com/v2/models/aaa03c23b3724a16a56b629203edc62c/outputs"));
-            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-            request.setRawHeader("Authorization", "Key 3f3ae40e6ca7461c80c2b4c707ba11ec"); // Replace with your API key
-
-            QJsonObject json;
-            QJsonObject dataObj;
-            dataObj["bytes"] = QString(imageData.toBase64());
-            QJsonArray inputsArray;
-            QJsonObject inputObj;
-            inputObj["data"] = QJsonObject{{"image", dataObj}};
-            inputsArray.append(inputObj);
-            json["inputs"] = inputsArray;
-
-            networkManager->post(request, QJsonDocument(json).toJson());
-            // Store the expected name for comparison later
-            ui->AjouterEquipement->setProperty("expectedName", nomQStr.toLower());
-            return; // Wait for API response before proceeding
-        } else {
-            QMessageBox::warning(this, "Erreur", "Impossible de charger l'image.");
-            ui->AjouterEquipement->setEnabled(true);
-            return;
-        }
+    // Charger l'image si elle existe
+    if (imagePathAjout.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez sélectionner une image.");
+        ui->AjouterEquipement->setEnabled(true);
+        return;
     }
 
-    Equipements eq(id, nom, etat, type, quantite, photo, dateSqlite.toStdString(), marque);
-    if (eq.ajouterEq()) {
-        QMessageBox::information(this, "Succès", "Équipement ajouté avec succès !");
-        ui->idEqinput->clear();
-        ui->nomEqinput->clear();
-        ui->typeEqInput->clear();
-        ui->etatEqinput->setCurrentIndex(0);
-        ui->marqueEqinput->clear();
-        ui->quantiteEqinput->clear();
-        ui->dateEqinput->setDate(QDate::currentDate());
-        imagePathAjout = "";
-        if (ui->imagePreviewLabel) {
-            ui->imagePreviewLabel->clear();
-        }
-        on_afficherEq_clicked();
-    } else {
-        QMessageBox::warning(this, "Erreur", "Échec de l'ajout de l'équipement.");
+    QFile file(imagePathAjout);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, "Erreur", "Impossible de charger l'image.");
+        ui->AjouterEquipement->setEnabled(true);
+        return;
     }
 
-    ui->AjouterEquipement->setEnabled(true);
+    QByteArray imageData = file.readAll();
+    file.close();
+
+    if (imageData.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "L'image est vide ou corrompue.");
+        ui->AjouterEquipement->setEnabled(true);
+        return;
+    }
+
+    // Préparer la requête pour Clarifai
+    QNetworkRequest request(QUrl("https://api.clarifai.com/v2/models/aaa03c23b3724a16a56b629203edc62c/outputs"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Authorization", "Key cd1da61feecc4fc4a08514fb2150130c"); // Remplacez par votre clé API valide si nécessaire
+
+    // Convertir l'image en base64
+    QString base64Image = imageData.toBase64();
+    qDebug() << "Base64 Image (premier 100 caractères) :" << base64Image.left(100) << "...";
+
+    // Construire le JSON pour Clarifai
+    QJsonObject mainObj;
+    QJsonArray inputsArray;
+    QJsonObject inputObj;
+    QJsonObject dataObj;
+    QJsonObject imageObj;
+
+    imageObj["base64"] = base64Image;
+    dataObj["image"] = imageObj;
+    inputObj["data"] = dataObj;
+    inputsArray.append(inputObj);
+    mainObj["inputs"] = inputsArray;
+
+    QJsonDocument doc(mainObj);
+    QByteArray jsonData = doc.toJson(QJsonDocument::Indented);
+    qDebug() << "Requête JSON envoyée à Clarifai :" << jsonData;
+
+    // Envoyer la requête à Clarifai
+    networkManager->post(request, jsonData);
+
+    // Stocker les données pour utilisation après la réponse de Clarifai
+    ui->AjouterEquipement->setProperty("id", id);
+    ui->AjouterEquipement->setProperty("nom", nomQStr);
+    ui->AjouterEquipement->setProperty("type", typeQStr);
+    ui->AjouterEquipement->setProperty("etat", etatQStr);
+    ui->AjouterEquipement->setProperty("marque", marqueQStr);
+    ui->AjouterEquipement->setProperty("quantite", quantite);
+    ui->AjouterEquipement->setProperty("dateSqlite", date.toString("yyyy-MM-dd"));
+    ui->AjouterEquipement->setProperty("imageData", imageData);
 }
 
 void MainWindow::on_afficherEq_clicked() {
@@ -689,10 +688,14 @@ void MainWindow::on_champRecherche_6_textChanged(const QString &text) {
         ui->tableWidgetEq->setRowHidden(row, !match);
     }
 }
-
+/*
 void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
     if (reply->error() != QNetworkReply::NoError) {
-        QMessageBox::warning(this, "Erreur", "Erreur lors de la vérification de l'image : " + reply->errorString());
+        QString errorMsg = reply->errorString();
+        QString serverResponse = reply->readAll();
+        qDebug() << "Erreur Clarifai :" << errorMsg;
+        qDebug() << "Réponse du serveur :" << serverResponse;
+        QMessageBox::warning(this, "Erreur", "Erreur lors de la vérification de l'image :\n" + errorMsg + "\nRéponse du serveur : " + serverResponse);
         ui->AjouterEquipement->setEnabled(true);
         reply->deleteLater();
         return;
@@ -752,6 +755,101 @@ void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
         photo = std::vector<unsigned char>(imageData.begin(), imageData.end());
         file.close();
     }
+
+    Equipements eq(id, nom, etat, type, quantite, photo, dateSqlite.toStdString(), marque);
+    if (eq.ajouterEq()) {
+        QMessageBox::information(this, "Succès", "Équipement ajouté avec succès !");
+        ui->idEqinput->clear();
+        ui->nomEqinput->clear();
+        ui->typeEqInput->clear();
+        ui->etatEqinput->setCurrentIndex(0);
+        ui->marqueEqinput->clear();
+        ui->quantiteEqinput->clear();
+        ui->dateEqinput->setDate(QDate::currentDate());
+        imagePathAjout = "";
+        if (ui->imagePreviewLabel) {
+            ui->imagePreviewLabel->clear();
+        }
+        on_afficherEq_clicked();
+    } else {
+        QMessageBox::warning(this, "Erreur", "Échec de l'ajout de l'équipement.");
+    }
+
+    ui->AjouterEquipement->setEnabled(true);
+    reply->deleteLater();
+}
+*/
+
+void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
+    if (reply->error() != QNetworkReply::NoError) {
+        QString errorMsg = reply->errorString();
+        QString serverResponse = reply->readAll();
+        qDebug() << "Erreur Clarifai :" << errorMsg;
+        qDebug() << "Réponse du serveur :" << serverResponse;
+        QMessageBox::warning(this, "Erreur", "Erreur lors de la vérification de l'image :\n" + errorMsg + "\nRéponse du serveur : " + serverResponse);
+        ui->AjouterEquipement->setEnabled(true);
+        reply->deleteLater();
+        return;
+    }
+
+    // Lire et analyser la réponse de Clarifai
+    QByteArray response = reply->readAll();
+    qDebug() << "Réponse de Clarifai :" << response;
+
+    QJsonDocument doc = QJsonDocument::fromJson(response);
+    if (doc.isNull()) {
+        QMessageBox::warning(this, "Erreur", "Réponse invalide de Clarifai (JSON incorrect).");
+        ui->AjouterEquipement->setEnabled(true);
+        reply->deleteLater();
+        return;
+    }
+
+    QJsonObject json = doc.object();
+    QJsonArray outputs = json["outputs"].toArray();
+    if (outputs.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Aucune donnée renvoyée par Clarifai.");
+        ui->AjouterEquipement->setEnabled(true);
+        reply->deleteLater();
+        return;
+    }
+
+    // Vérifier si l'image correspond au nom attendu
+    QJsonArray concepts = outputs[0].toObject()["data"].toObject()["concepts"].toArray();
+    QString expectedName = ui->AjouterEquipement->property("nom").toString().toLower();
+    bool matchFound = false;
+
+    for (const QJsonValue &concept : concepts) {
+        QString detectedName = concept.toObject()["name"].toString().toLower();
+        double confidence = concept.toObject()["value"].toDouble();
+        qDebug() << "Concept détecté :" << detectedName << " (confiance :" << confidence << ")";
+        if (detectedName.contains(expectedName) && confidence > 0.9) { // Seuil de confiance à 90%
+            matchFound = true;
+            break;
+        }
+    }
+
+    if (!matchFound) {
+        QMessageBox::warning(this, "Erreur", "L'image ne correspond pas au nom de l'équipement (" + expectedName + ").");
+        ui->AjouterEquipement->setEnabled(true);
+        reply->deleteLater();
+        return;
+    }
+
+    // Si la vérification est réussie, ajouter l'équipement
+    int id = ui->AjouterEquipement->property("id").toInt();
+    QString nomQStr = ui->AjouterEquipement->property("nom").toString();
+    QString typeQStr = ui->AjouterEquipement->property("type").toString();
+    QString etatQStr = ui->AjouterEquipement->property("etat").toString();
+    QString marqueQStr = ui->AjouterEquipement->property("marque").toString();
+    int quantite = ui->AjouterEquipement->property("quantite").toInt();
+    QString dateSqlite = ui->AjouterEquipement->property("dateSqlite").toString();
+    QByteArray imageData = ui->AjouterEquipement->property("imageData").toByteArray();
+
+    std::string nom = nomQStr.toStdString();
+    std::string type = typeQStr.toStdString();
+    std::string etat = etatQStr.toStdString();
+    std::string marque = marqueQStr.toStdString();
+    std::vector<unsigned char> photo(imageData.begin(), imageData.end());
 
     Equipements eq(id, nom, etat, type, quantite, photo, dateSqlite.toStdString(), marque);
     if (eq.ajouterEq()) {

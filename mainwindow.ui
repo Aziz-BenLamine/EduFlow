@@ -288,14 +288,7 @@ font: 400 12pt &quot;Segoe UI&quot;;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">/*background-color: rgb(255, 255, 0);*/
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, 
-                            stop:0 rgba(11, 61, 145, 1),  /* Solid Dark Blue */
-                            stop:0.7 rgba(11, 61, 145, 0.3), /* Fading earlier */
-                            stop:1 rgba(11, 61, 145, 0));  /* Fully Transparent */
-
-
-</string>
+         <string notr="true"/>
         </property>
         <property name="frameShape">
          <enum>QFrame::Shape::StyledPanel</enum>
@@ -538,6 +531,19 @@ background-color:transparent;</string>
           <string/>
          </property>
         </widget>
+        <zorder>label_19</zorder>
+        <zorder>equipementsBTN</zorder>
+        <zorder>deconnexionBTN</zorder>
+        <zorder>label_33</zorder>
+        <zorder>distributionsBTN</zorder>
+        <zorder>examensBTN</zorder>
+        <zorder>etablissementBTN</zorder>
+        <zorder>employesBTN</zorder>
+        <zorder>label_26</zorder>
+        <zorder>label_27</zorder>
+        <zorder>label_28</zorder>
+        <zorder>label_29</zorder>
+        <zorder>label_30</zorder>
        </widget>
        <widget class="QStackedWidget" name="mainApp">
         <property name="geometry">
@@ -4821,6 +4827,66 @@ border: 0px;</string>
              </property>
             </widget>
            </widget>
+           <widget class="QPushButton" name="zoomInButton">
+            <property name="geometry">
+             <rect>
+              <x>20</x>
+              <y>10</y>
+              <width>80</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+   </string>
+            </property>
+            <property name="text">
+             <string>+</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="zoomOutButton">
+            <property name="geometry">
+             <rect>
+              <x>20</x>
+              <y>60</y>
+              <width>80</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+   </string>
+            </property>
+            <property name="text">
+             <string>-</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="fullScreenButton">
+            <property name="geometry">
+             <rect>
+              <x>20</x>
+              <y>140</y>
+              <width>80</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+   </string>
+            </property>
+            <property name="text">
+             <string>FULLSCREEN</string>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="AfficherEquip">
            <widget class="QLabel" name="label_75">
@@ -4924,7 +4990,7 @@ color: black;</string>
              <rect>
               <x>830</x>
               <y>200</y>
-              <width>401</width>
+              <width>261</width>
               <height>61</height>
              </rect>
             </property>
@@ -4941,39 +5007,17 @@ color: black;</string>
              <string>Generer PDF</string>
             </property>
            </widget>
-           <widget class="QPushButton" name="sentEMP_5">
-            <property name="geometry">
-             <rect>
-              <x>830</x>
-              <y>310</y>
-              <width>401</width>
-              <height>61</height>
-             </rect>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
-    border-radius: 8px;  </string>
-            </property>
-            <property name="text">
-             <string>Reconaissance AI</string>
-            </property>
-           </widget>
            <widget class="QPushButton" name="supprimerEq">
             <property name="geometry">
              <rect>
-              <x>910</x>
-              <y>430</y>
+              <x>860</x>
+              <y>300</y>
               <width>211</width>
               <height>61</height>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">background: #0E3B52;  
+             <string notr="true">background: #FF0000;  
     border: none;  
     color: skyblue;  
     font-weight: bold; 
@@ -4988,25 +5032,30 @@ color: black;</string>
            <widget class="QTableWidget" name="tableWidgetEq">
             <property name="geometry">
              <rect>
-              <x>30</x>
-              <y>160</y>
+              <x>60</x>
+              <y>150</y>
               <width>731</width>
               <height>301</height>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">
-        QTableWidget {
-           border: none;
-           gridline-color: #e0e0e0;
-           font-family: 'Roboto', sans-serif;
-           font-size: 16px;
-          background : grey;
-           selection-background-color: #4CAF50;
-           selection-color: white;
-           border-radius: 10px;
-        }
-     </string>
+             <string notr="true">/* Header styling (works for both QTableWidget and QTableView) */
+QHeaderView::section {
+    background-color: #0E3B52;
+    padding: 4px;
+    border: 1px solid #fffff8;
+    font-size: 14pt;
+}
+
+/* Styling for QTableView */
+QTableView {
+    color: black;
+    background-color: #F7F9FB;
+    border: 2px solid #2a82da;
+    gridline-color: #ddd;
+    selection-background-color: #2a82da;
+    selection-color: white;
+}</string>
             </property>
             <column>
              <property name="text">
@@ -5057,8 +5106,8 @@ color: black;</string>
            <widget class="QPushButton" name="modifierEq">
             <property name="geometry">
              <rect>
-              <x>910</x>
-              <y>520</y>
+              <x>860</x>
+              <y>380</y>
               <width>211</width>
               <height>61</height>
              </rect>
@@ -5081,10 +5130,10 @@ color: black;</string>
            <widget class="QFrame" name="photoinputEq_2">
             <property name="geometry">
              <rect>
-              <x>-190</x>
-              <y>130</y>
-              <width>1884</width>
-              <height>66</height>
+              <x>250</x>
+              <y>0</y>
+              <width>279</width>
+              <height>614</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -5100,60 +5149,9 @@ border-radius: 15px;
             <property name="frameShadow">
              <enum>QFrame::Shadow::Raised</enum>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout">
+            <layout class="QVBoxLayout" name="verticalLayout">
              <item>
-              <widget class="QLineEdit" name="MessageForme_13">
-               <property name="styleSheet">
-                <string notr="true">background: transparent;
-font: 600 22pt &quot;Segoe UI&quot;;
-border: 0px;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="etatEqinput_3"/>
-             </item>
-             <item>
-              <widget class="QDateEdit" name="dateEqinput_3">
-               <property name="styleSheet">
-                <string notr="true">color: black;
-background-color: white</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="typeEqInput_3">
-               <property name="styleSheet">
-                <string notr="true">background: white;
-border: 1px solid #ccc;
-border-radius: 15px;
-font-size: 14px;
-color: black;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="nomEqinput_3">
-               <property name="styleSheet">
-                <string notr="true">background: white;
-border: 1px solid #ccc;
-border-radius: 15px;
-font-size: 14px;
-color: black;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_100">
+              <widget class="QLabel" name="imagePreviewLabel_3">
                <property name="styleSheet">
                 <string notr="true">color: black;
 font-size: 20px;
@@ -5163,12 +5161,12 @@ background: transparent;
 border: 0px;</string>
                </property>
                <property name="text">
-                <string>Date:</string>
+                <string>photo</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_99">
+              <widget class="QLabel" name="label_101">
                <property name="styleSheet">
                 <string notr="true">color: black;
 font-size: 20px;
@@ -5178,7 +5176,52 @@ background: transparent;
 border: 0px;</string>
                </property>
                <property name="text">
-                <string>Type:</string>
+                <string>ID</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_102">
+               <property name="styleSheet">
+                <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+               </property>
+               <property name="text">
+                <string>marque</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_103">
+               <property name="styleSheet">
+                <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+               </property>
+               <property name="text">
+                <string>Quantite:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_97">
+               <property name="styleSheet">
+                <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+               </property>
+               <property name="text">
+                <string>Nom Equipement:</string>
                </property>
               </widget>
              </item>
@@ -5198,7 +5241,7 @@ border: 0px;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_97">
+              <widget class="QLabel" name="label_99">
                <property name="styleSheet">
                 <string notr="true">color: black;
 font-size: 20px;
@@ -5208,7 +5251,22 @@ background: transparent;
 border: 0px;</string>
                </property>
                <property name="text">
-                <string>Nom Equipement:</string>
+                <string>Type:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_100">
+               <property name="styleSheet">
+                <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+               </property>
+               <property name="text">
+                <string>Date:</string>
                </property>
               </widget>
              </item>
@@ -5229,7 +5287,19 @@ border: 0px;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="quantiteEqinput_3">
+              <widget class="QLineEdit" name="MessageForme_13">
+               <property name="styleSheet">
+                <string notr="true">background: transparent;
+font: 600 22pt &quot;Segoe UI&quot;;
+border: 0px;</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="idEqinput_3">
                <property name="styleSheet">
                 <string notr="true">background: white;
 border: 1px solid #ccc;
@@ -5257,7 +5327,7 @@ color: black;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="idEqinput_3">
+              <widget class="QLineEdit" name="quantiteEqinput_3">
                <property name="styleSheet">
                 <string notr="true">background: white;
 border: 1px solid #ccc;
@@ -5271,64 +5341,43 @@ color: black;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_103">
+              <widget class="QLineEdit" name="nomEqinput_3">
                <property name="styleSheet">
-                <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
+                <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
                </property>
                <property name="text">
-                <string>Quantite:</string>
+                <string/>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_102">
+              <widget class="QLineEdit" name="typeEqInput_3">
                <property name="styleSheet">
-                <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
+                <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
                </property>
                <property name="text">
-                <string>marque</string>
+                <string/>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_101">
+              <widget class="QDateEdit" name="dateEqinput_3">
                <property name="styleSheet">
                 <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-               </property>
-               <property name="text">
-                <string>ID</string>
+background-color: white</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="imagePreviewLabel_3">
-               <property name="styleSheet">
-                <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-               </property>
-               <property name="text">
-                <string>photo</string>
-               </property>
-              </widget>
+              <widget class="QComboBox" name="etatEqinput_3"/>
              </item>
              <item>
               <widget class="QPushButton" name="selectImageButton_3">

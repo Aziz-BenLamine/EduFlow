@@ -3,6 +3,7 @@
 #include <QSqlError>
 #include <QVariant>
 #include <QDebug>
+#include <map>
 
 Equipements::Equipements()
     : idEq(0), nomEq(""), etatEq(""), typeEq(""), quantiteEq(0), photoEq(), dateEq(""), marqueEq("") {}
@@ -112,3 +113,59 @@ bool Equipements::supprimerEq(int id) {
     }
     return true;
 }
+
+// equipements.cpp
+#include "equipements.h"
+#include <map>
+
+// Constructor and other methods...
+/*
+std::map<std::string, int> Equipements::getQuantiteStatistics() {
+    std::map<std::string, int> stats;
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+
+    if (sqlite3_open("equipements.db", &db) != SQLITE_OK) {
+        return stats; // Return empty map on error
+    }
+
+    const char *sql = "SELECT quantite FROM equipements;";
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        sqlite3_close(db);
+        return stats;
+    }
+
+    // Define quantity ranges
+    std::map<std::string, int> ranges = {
+        {"1-5", 0},
+        {"6-10", 0},
+        {"11-20", 0},
+        {"21+", 0}
+    };
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int quantite = sqlite3_column_int(stmt, 0);
+        if (quantite >= 1 && quantite <= 5) {
+            ranges["1-5"]++;
+        } else if (quantite >= 6 && quantite <= 10) {
+            ranges["6-10"]++;
+        } else if (quantite >= 11 && quantite <= 20) {
+            ranges["11-20"]++;
+        } else if (quantite >= 21) {
+            ranges["21+"]++;
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    // Only include non-zero ranges in the final stats
+    for (const auto &pair : ranges) {
+        if (pair.second > 0) {
+            stats[pair.first] = pair.second;
+        }
+    }
+
+    return stats;
+}
+*/
