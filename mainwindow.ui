@@ -1833,7 +1833,7 @@ border: 0px;</string>
        <widget class="QPushButton" name="modiferEtab">
         <property name="geometry">
          <rect>
-          <x>690</x>
+          <x>680</x>
           <y>10</y>
           <width>201</width>
           <height>61</height>
@@ -1850,6 +1850,16 @@ border: 0px;</string>
         </property>
         <property name="text">
          <string>Modifier </string>
+        </property>
+        <property name="icon">
+         <iconset resource="res/res.qrc">
+          <normaloff>:/modif.jpeg</normaloff>:/modif.jpeg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>40</height>
+         </size>
         </property>
        </widget>
        <widget class="QPushButton" name="afficherEtab">
@@ -1873,6 +1883,16 @@ border: 0px;</string>
         <property name="text">
          <string>Afficher </string>
         </property>
+        <property name="icon">
+         <iconset resource="res/res.qrc">
+          <normaloff>:/affichier.jpeg</normaloff>:/affichier.jpeg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>40</height>
+         </size>
+        </property>
        </widget>
        <widget class="QPushButton" name="ajouterEtab">
         <property name="geometry">
@@ -1895,13 +1915,23 @@ border: 0px;</string>
         <property name="text">
          <string>Ajouter </string>
         </property>
+        <property name="icon">
+         <iconset resource="res/res.qrc">
+          <normaloff>:/add.jpeg</normaloff>:/add.jpeg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>40</height>
+         </size>
+        </property>
        </widget>
        <widget class="QPushButton" name="statsEtab">
         <property name="geometry">
          <rect>
-          <x>1000</x>
+          <x>990</x>
           <y>10</y>
-          <width>171</width>
+          <width>201</width>
           <height>61</height>
          </rect>
         </property>
@@ -1916,6 +1946,16 @@ border: 0px;</string>
         </property>
         <property name="text">
          <string>Statistiques</string>
+        </property>
+        <property name="icon">
+         <iconset resource="res/res.qrc">
+          <normaloff>:/stat.jpeg</normaloff>:/stat.jpeg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>40</height>
+         </size>
         </property>
        </widget>
        <widget class="QStackedWidget" name="etablissementsNavBar">
@@ -2002,7 +2042,7 @@ color: black;</string>
             <rect>
              <x>50</x>
              <y>190</y>
-             <width>331</width>
+             <width>151</width>
              <height>41</height>
             </rect>
            </property>
@@ -2085,7 +2125,7 @@ border: 0px;</string>
             <rect>
              <x>50</x>
              <y>310</y>
-             <width>331</width>
+             <width>151</width>
              <height>41</height>
             </rect>
            </property>
@@ -2103,9 +2143,9 @@ color: black;</string>
           <widget class="QPushButton" name="ajouterEtab_2">
            <property name="geometry">
             <rect>
-             <x>370</x>
+             <x>330</x>
              <y>490</y>
-             <width>281</width>
+             <width>321</width>
              <height>61</height>
             </rect>
            </property>
@@ -2120,6 +2160,16 @@ color: black;</string>
            </property>
            <property name="text">
             <string>Ajouter Etablissement</string>
+           </property>
+           <property name="icon">
+            <iconset resource="res/res.qrc">
+             <normaloff>:/add.jpeg</normaloff>:/add.jpeg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
            </property>
           </widget>
           <widget class="QLineEdit" name="MessageForme_5">
@@ -2143,8 +2193,8 @@ border: 0px;</string>
           <widget class="QLabel" name="label_65">
            <property name="geometry">
             <rect>
-             <x>560</x>
-             <y>170</y>
+             <x>570</x>
+             <y>160</y>
              <width>131</width>
              <height>21</height>
             </rect>
@@ -2164,9 +2214,9 @@ border: 0px;</string>
           <widget class="QLineEdit" name="lat">
            <property name="geometry">
             <rect>
-             <x>560</x>
-             <y>200</y>
-             <width>331</width>
+             <x>570</x>
+             <y>190</y>
+             <width>161</width>
              <height>41</height>
             </rect>
            </property>
@@ -2184,8 +2234,8 @@ color: black;</string>
           <widget class="QLabel" name="label_66">
            <property name="geometry">
             <rect>
-             <x>560</x>
-             <y>300</y>
+             <x>570</x>
+             <y>280</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -2205,9 +2255,9 @@ border: 0px;</string>
           <widget class="QLineEdit" name="mail">
            <property name="geometry">
             <rect>
-             <x>560</x>
-             <y>330</y>
-             <width>331</width>
+             <x>570</x>
+             <y>310</y>
+             <width>321</width>
              <height>41</height>
             </rect>
            </property>
@@ -2403,8 +2453,8 @@ color: black;</string>
          <widget class="QLabel" name="label_45">
           <property name="geometry">
            <rect>
-            <x>-10</x>
-            <y>10</y>
+            <x>-20</x>
+            <y>30</y>
             <width>241</width>
             <height>71</height>
            </rect>
@@ -2425,9 +2475,9 @@ color: black;</string>
          <widget class="QLineEdit" name="champRecherche_3">
           <property name="geometry">
            <rect>
-            <x>200</x>
-            <y>20</y>
-            <width>481</width>
+            <x>190</x>
+            <y>40</y>
+            <width>421</width>
             <height>51</height>
            </rect>
           </property>
@@ -2448,8 +2498,8 @@ box-sizing: border-box;   outline: none; </string>
          <widget class="QLabel" name="label_46">
           <property name="geometry">
            <rect>
-            <x>670</x>
-            <y>20</y>
+            <x>660</x>
+            <y>30</y>
             <width>111</width>
             <height>61</height>
            </rect>
@@ -2470,9 +2520,9 @@ box-sizing: border-box;   outline: none; </string>
          <widget class="QComboBox" name="comboBox_3">
           <property name="geometry">
            <rect>
-            <x>770</x>
-            <y>30</y>
-            <width>151</width>
+            <x>760</x>
+            <y>40</y>
+            <width>141</width>
             <height>41</height>
            </rect>
           </property>
@@ -2496,7 +2546,7 @@ color: black;</string>
            <rect>
             <x>860</x>
             <y>130</y>
-            <width>271</width>
+            <width>311</width>
             <height>61</height>
            </rect>
           </property>
@@ -2512,13 +2562,23 @@ color: black;</string>
           <property name="text">
            <string>Geolocalisation</string>
           </property>
+          <property name="icon">
+           <iconset resource="res/res.qrc">
+            <normaloff>:/map.png</normaloff>:/map.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>50</height>
+           </size>
+          </property>
          </widget>
          <widget class="QPushButton" name="pdfEtab">
           <property name="geometry">
            <rect>
             <x>860</x>
             <y>250</y>
-            <width>271</width>
+            <width>311</width>
             <height>61</height>
            </rect>
           </property>
@@ -2534,13 +2594,23 @@ color: black;</string>
           <property name="text">
            <string>Generer PDF</string>
           </property>
+          <property name="icon">
+           <iconset resource="res/res.qrc">
+            <normaloff>:/pdf.png</normaloff>:/pdf.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>50</height>
+           </size>
+          </property>
          </widget>
          <widget class="QPushButton" name="textSpchBTN">
           <property name="geometry">
            <rect>
             <x>860</x>
             <y>370</y>
-            <width>271</width>
+            <width>311</width>
             <height>61</height>
            </rect>
           </property>
@@ -2556,13 +2626,23 @@ color: black;</string>
           <property name="text">
            <string>Text-To-Speech</string>
           </property>
+          <property name="icon">
+           <iconset resource="res/res.qrc">
+            <normaloff>:/text.png</normaloff>:/text.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>50</height>
+           </size>
+          </property>
          </widget>
          <widget class="QCheckBox" name="checkBox">
           <property name="geometry">
            <rect>
-            <x>940</x>
+            <x>930</x>
             <y>20</y>
-            <width>291</width>
+            <width>321</width>
             <height>26</height>
            </rect>
           </property>
@@ -2573,13 +2653,16 @@ color: black;</string>
           <property name="text">
            <string>supprimer un etablissement</string>
           </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+          </property>
          </widget>
          <widget class="QCheckBox" name="checkBox_2">
           <property name="geometry">
            <rect>
-            <x>940</x>
-            <y>60</y>
-            <width>351</width>
+            <x>930</x>
+            <y>70</y>
+            <width>371</width>
             <height>26</height>
            </rect>
           </property>
@@ -2590,6 +2673,9 @@ color: black;</string>
           <property name="text">
            <string>supprimer tous les etablissements</string>
           </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+          </property>
          </widget>
          <widget class="QTableView" name="tabV">
           <property name="geometry">
@@ -2597,7 +2683,7 @@ color: black;</string>
             <x>30</x>
             <y>130</y>
             <width>771</width>
-            <height>291</height>
+            <height>301</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -2633,6 +2719,32 @@ QTableView::item:selected {
            <bool>true</bool>
           </property>
          </widget>
+         <widget class="QPushButton" name="modiferEtab_2">
+          <property name="geometry">
+           <rect>
+            <x>550</x>
+            <y>40</y>
+            <width>181</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="res/res.qrc">
+            <normaloff>:/search.png</normaloff>:/search.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="ModifierEtablissements">
          <widget class="QFrame" name="frame_3">
@@ -2661,7 +2773,7 @@ border-radius: 15px;
            <property name="geometry">
             <rect>
              <x>50</x>
-             <y>40</y>
+             <y>50</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -2703,7 +2815,7 @@ color: black;</string>
             <rect>
              <x>40</x>
              <y>200</y>
-             <width>331</width>
+             <width>141</width>
              <height>41</height>
             </rect>
            </property>
@@ -2784,9 +2896,9 @@ border: 0px;</string>
           <widget class="QLineEdit" name="lat_2">
            <property name="geometry">
             <rect>
-             <x>530</x>
+             <x>540</x>
              <y>200</y>
-             <width>331</width>
+             <width>151</width>
              <height>41</height>
             </rect>
            </property>
@@ -2804,9 +2916,9 @@ color: black;</string>
           <widget class="QPushButton" name="ajouterEmp_8">
            <property name="geometry">
             <rect>
-             <x>330</x>
+             <x>320</x>
              <y>520</y>
-             <width>311</width>
+             <width>351</width>
              <height>51</height>
             </rect>
            </property>
@@ -2822,13 +2934,23 @@ color: black;</string>
            <property name="text">
             <string>Modifier Etablissement</string>
            </property>
+           <property name="icon">
+            <iconset resource="res/res.qrc">
+             <normaloff>:/modif.jpeg</normaloff>:/modif.jpeg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
+           </property>
           </widget>
           <widget class="QLineEdit" name="cap_2">
            <property name="geometry">
             <rect>
              <x>40</x>
              <y>330</y>
-             <width>331</width>
+             <width>141</width>
              <height>41</height>
             </rect>
            </property>
@@ -5481,6 +5603,8 @@ color: black;</string>
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="res/res.qrc"/>
+ </resources>
  <connections/>
 </ui>
