@@ -16,12 +16,14 @@ SOURCES += \
     connection.cpp \
     equipements.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    statistics_window.cpp
 
 HEADERS += \
     connection.h \
     equipements.h \
-    mainwindow.h
+    mainwindow.h \
+    statistics_window.h
 
 FORMS += \
     mainwindow.ui

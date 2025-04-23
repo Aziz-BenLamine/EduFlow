@@ -15,34 +15,32 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QtGlobal>
+#include "statistics_window.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow) {
+    : QMainWindow(parent), ui(new Ui::MainWindow), statsWindow(nullptr) {
     ui->setupUi(this);
 
     imagePathAjout = "";
     imagePathModif = "";
     currentModificationId = -1;
 
-    networkManager = new QNetworkAccessManager(this); // Initialize network manager
+    networkManager = new QNetworkAccessManager(this);
     connect(networkManager, &QNetworkAccessManager::finished, this, &MainWindow::onClarifaiReplyFinished);
 
-    // Vérification des widgets
     if (!ui->imagePreviewLabel) qDebug() << "imagePreviewLabel est manquant";
     if (!ui->imagePreviewLabel_3) qDebug() << "imagePreviewLabel_3 est manquant";
     if (!ui->tableWidgetEq) qDebug() << "tableWidgetEq est manquant";
 
-    // Configuration des champs de date
     ui->dateEqinput->setDisplayFormat("dd/MM/yyyy");
     ui->dateEqinput->setDate(QDate::currentDate());
     ui->dateEqinput_3->setDisplayFormat("dd/MM/yyyy");
     ui->dateEqinput_3->setDate(QDate::currentDate());
 
-    // Configuration des comboBox pour état
     ui->etatEqinput->addItems({"Neuf", "Utilisé", "En panne"});
     ui->etatEqinput_3->addItems({"Neuf", "Utilisé", "En panne"});
 
-    // Configuration du tableau
     ui->tableWidgetEq->setColumnCount(8);
     ui->tableWidgetEq->setHorizontalHeaderLabels(
         QStringList() << "ID" << "Nom" << "Type" << "État" << "Marque" << "Quantité" << "Date" << "Photo");
@@ -52,99 +50,36 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() {
+    delete statsWindow;
     delete ui;
 }
-/*
-void MainWindow::on_AjouterEquipement_clicked() {
-    ui->AjouterEquipement->setEnabled(false);
 
-    QString idQstr = ui->idEqinput->text();
-    QString nomQStr = ui->nomEqinput->text();
-    QString typeQStr = ui->typeEqInput->text();
-    QString etatQStr = ui->etatEqinput->currentText();
-    QString marqueQStr = ui->marqueEqinput->text();
-    QString quantiteQStr = ui->quantiteEqinput->text();
-    QDate date = ui->dateEqinput->date();
-
-    if (idQstr.isEmpty() || nomQStr.isEmpty() || typeQStr.isEmpty() || etatQStr.isEmpty() ||
-        marqueQStr.isEmpty() || quantiteQStr.isEmpty() || !date.isValid()) {
-        QMessageBox::warning(this, "Erreur", "Tous les champs doivent être remplis.");
-        ui->AjouterEquipement->setEnabled(true);
+void MainWindow::on_statsEq_clicked() {
+    qDebug() << "on_statsEq_clicked called";
+    qDebug() << "Number of tabs in equipementsNavBar:" << ui->equipementsNavBar->count();
+    if (ui->equipementsNavBar->count() <= 3) {
+        qDebug() << "Tab index 3 does not exist";
+        QMessageBox::warning(this, "Erreur", "L'onglet Statistiques n'existe pas (index 3).");
         return;
     }
 
-    bool okId, okQt;
-    int id = idQstr.toInt(&okId);
-    int quantite = quantiteQStr.toInt(&okQt);
+    ui->equipementsNavBar->setCurrentIndex(3);
+    qDebug() << "Set tab index to 3";
 
-    if (!okId || id <= 0) {
-        QMessageBox::warning(this, "Erreur", "L'ID doit être un nombre valide positif.");
-        ui->AjouterEquipement->setEnabled(true);
-        return;
+    if (!statsWindow) {
+        qDebug() << "Creating new StatisticsWindow";
+        statsWindow = new StatisticsWindow(this);
     }
-    if (!okQt || quantite <= 0) {
-        QMessageBox::warning(this, "Erreur", "La quantité doit être un nombre valide positif.");
-        ui->AjouterEquipement->setEnabled(true);
-        return;
-    }
-    if (date > QDate::currentDate()) {
-        QMessageBox::warning(this, "Erreur", "La date ne peut pas être dans le futur.");
-        ui->AjouterEquipement->setEnabled(true);
-        return;
-    }
-
-    QString dateSqlite = date.toString("yyyy-MM-dd");
-    std::string nom = nomQStr.toStdString();
-    std::string type = typeQStr.toStdString();
-    std::string etat = etatQStr.toStdString();
-    std::string marque = marqueQStr.toStdString();
-
-    std::vector<unsigned char> photo;
-    if (!imagePathAjout.isEmpty()) {
-        QFile file(imagePathAjout);
-        if (file.open(QIODevice::ReadOnly)) {
-            QByteArray imageData = file.readAll();
-            if (imageData.isEmpty()) {
-                QMessageBox::warning(this, "Erreur", "L'image est vide ou corrompue.");
-                ui->AjouterEquipement->setEnabled(true);
-                return;
-            }
-            photo = std::vector<unsigned char>(imageData.begin(), imageData.end());
-            file.close();
-        } else {
-            QMessageBox::warning(this, "Erreur", "Impossible de charger l'image.");
-            ui->AjouterEquipement->setEnabled(true);
-            return;
-        }
-    }
-
-    Equipements eq(id, nom, etat, type, quantite, photo, dateSqlite.toStdString(), marque);
-    if (eq.ajouterEq()) {
-        QMessageBox::information(this, "Succès", "Équipement ajouté avec succès !");
-        ui->idEqinput->clear();
-        ui->nomEqinput->clear();
-        ui->typeEqInput->clear();
-        ui->etatEqinput->setCurrentIndex(0);
-        ui->marqueEqinput->clear();
-        ui->quantiteEqinput->clear();
-        ui->dateEqinput->setDate(QDate::currentDate());
-        imagePathAjout = "";
-        if (ui->imagePreviewLabel) {
-            ui->imagePreviewLabel->clear();
-        }
-        on_afficherEq_clicked();
-    } else {
-        QMessageBox::warning(this, "Erreur", "Échec de l'ajout de l'équipement.");
-    }
-
-    ui->AjouterEquipement->setEnabled(true);
+    qDebug() << "Calling updatePieChart";
+    statsWindow->updatePieChart();
+    qDebug() << "Showing StatisticsWindow";
+    statsWindow->show();
+    statsWindow->raise();
 }
-*/
 
 void MainWindow::on_AjouterEquipement_clicked() {
     ui->AjouterEquipement->setEnabled(false);
 
-    // Récupérer les données des champs
     QString idQstr = ui->idEqinput->text();
     QString nomQStr = ui->nomEqinput->text();
     QString typeQStr = ui->typeEqInput->text();
@@ -153,7 +88,6 @@ void MainWindow::on_AjouterEquipement_clicked() {
     QString quantiteQStr = ui->quantiteEqinput->text();
     QDate date = ui->dateEqinput->date();
 
-    // Validation des champs
     if (idQstr.isEmpty() || nomQStr.isEmpty() || typeQStr.isEmpty() || etatQStr.isEmpty() ||
         marqueQStr.isEmpty() || quantiteQStr.isEmpty() || !date.isValid()) {
         QMessageBox::warning(this, "Erreur", "Tous les champs doivent être remplis.");
@@ -181,7 +115,6 @@ void MainWindow::on_AjouterEquipement_clicked() {
         return;
     }
 
-    // Charger l'image si elle existe
     if (imagePathAjout.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Veuillez sélectionner une image.");
         ui->AjouterEquipement->setEnabled(true);
@@ -204,16 +137,13 @@ void MainWindow::on_AjouterEquipement_clicked() {
         return;
     }
 
-    // Préparer la requête pour Clarifai
     QNetworkRequest request(QUrl("https://api.clarifai.com/v2/models/aaa03c23b3724a16a56b629203edc62c/outputs"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization", "Key cd1da61feecc4fc4a08514fb2150130c"); // Remplacez par votre clé API valide si nécessaire
+    request.setRawHeader("Authorization", "Key cd1da61feecc4fc4a08514fb2150130c");
 
-    // Convertir l'image en base64
     QString base64Image = imageData.toBase64();
     qDebug() << "Base64 Image (premier 100 caractères) :" << base64Image.left(100) << "...";
 
-    // Construire le JSON pour Clarifai
     QJsonObject mainObj;
     QJsonArray inputsArray;
     QJsonObject inputObj;
@@ -230,10 +160,8 @@ void MainWindow::on_AjouterEquipement_clicked() {
     QByteArray jsonData = doc.toJson(QJsonDocument::Indented);
     qDebug() << "Requête JSON envoyée à Clarifai :" << jsonData;
 
-    // Envoyer la requête à Clarifai
     networkManager->post(request, jsonData);
 
-    // Stocker les données pour utilisation après la réponse de Clarifai
     ui->AjouterEquipement->setProperty("id", id);
     ui->AjouterEquipement->setProperty("nom", nomQStr);
     ui->AjouterEquipement->setProperty("type", typeQStr);
@@ -259,7 +187,7 @@ void MainWindow::on_afficherEq_clicked() {
     while (query.next()) {
         ui->tableWidgetEq->insertRow(row);
         for (int col = 0; col < 8; col++) {
-            if (col == 7) { // Colonne Photo
+            if (col == 7) {
                 QByteArray imageData = query.value("IMAGE_EQ").toByteArray();
                 if (!imageData.isEmpty()) {
                     QPixmap pixmap;
@@ -297,49 +225,7 @@ void MainWindow::on_supprimerEq_clicked() {
         QMessageBox::warning(this, "Erreur", "Échec de la suppression de l'équipement.");
     }
 }
-/*
-void MainWindow::on_modifierEq_clicked() {
-    int row = ui->tableWidgetEq->currentRow();
-    if (row == -1) {
-        QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un équipement à modifier.");
-        return;
-    }
 
-    ui->equipementsNavBar->setCurrentIndex(2);
-    currentModificationId = ui->tableWidgetEq->item(row, 0)->text().toInt();
-
-    QSqlQuery query;
-    query.prepare("SELECT * FROM EQUIPEMENTS WHERE ID_EQ = :id");
-    query.bindValue(":id", currentModificationId);
-
-    if (!query.exec() || !query.next()) {
-        QMessageBox::warning(this, "Erreur", "Impossible de récupérer les données de l'équipement : " + query.lastError().text());
-        return;
-    }
-
-    ui->idEqinput_3->setText(QString::number(currentModificationId));
-    ui->nomEqinput_3->setText(query.value("NOM_EQ").toString());
-    ui->typeEqInput_3->setText(query.value("TYPEEQ").toString());
-    ui->etatEqinput_3->setCurrentText(query.value("ETATEQ").toString());
-    ui->marqueEqinput_3->setText(query.value("MARQUEEQ").toString());
-    ui->quantiteEqinput_3->setText(query.value("QT").toString());
-    ui->dateEqinput_3->setDate(QDate::fromString(query.value("DATEEQ").toString(), "yyyy-MM-dd"));
-
-    QByteArray imageData = query.value("IMAGE_EQ").toByteArray();
-    if (!imageData.isEmpty() && ui->imagePreviewLabel_3) {
-        QPixmap pixmap;
-        if (pixmap.loadFromData(imageData)) {
-            ui->imagePreviewLabel_3->setPixmap(pixmap.scaled(300, 300, Qt::KeepAspectRatio));
-        } else {
-            ui->imagePreviewLabel_3->clear();
-            QMessageBox::warning(this, "Erreur", "Impossible de charger l'image pour la modification.");
-        }
-    } else {
-        ui->imagePreviewLabel_3->clear();
-    }
-    imagePathModif = "";
-}
-*/
 void MainWindow::on_confirmerModification_clicked() {
     if (currentModificationId == -1) {
         QMessageBox::warning(this, "Erreur", "Aucun équipement sélectionné pour modification.");
@@ -407,7 +293,6 @@ void MainWindow::on_confirmerModification_clicked() {
     }
 }
 
-
 void MainWindow::on_modifierEq_clicked() {
     int row = ui->tableWidgetEq->currentRow();
     if (row == -1) {
@@ -415,13 +300,9 @@ void MainWindow::on_modifierEq_clicked() {
         return;
     }
 
-    // Récupérer l'ID de la ligne sélectionnée
     currentModificationId = ui->tableWidgetEq->item(row, 0)->text().toInt();
-
-    // Passer à l'onglet de modification
     ui->equipementsNavBar->setCurrentIndex(2);
 
-    // Récupérer les données de l'équipement depuis la base de données
     QSqlQuery query;
     query.prepare("SELECT * FROM EQUIPEMENTS WHERE ID_EQ = :id");
     query.bindValue(":id", currentModificationId);
@@ -431,7 +312,6 @@ void MainWindow::on_modifierEq_clicked() {
         return;
     }
 
-    // Remplir les champs de modification avec les données
     ui->idEqinput_3->setText(QString::number(currentModificationId));
     ui->nomEqinput_3->setText(query.value("NOM_EQ").toString());
     ui->typeEqInput_3->setText(query.value("TYPEEQ").toString());
@@ -440,7 +320,6 @@ void MainWindow::on_modifierEq_clicked() {
     ui->quantiteEqinput_3->setText(query.value("QT").toString());
     ui->dateEqinput_3->setDate(QDate::fromString(query.value("DATEEQ").toString(), "yyyy-MM-dd"));
 
-    // Charger l'image (si présente)
     QByteArray imageData = query.value("IMAGE_EQ").toByteArray();
     if (!imageData.isEmpty() && ui->imagePreviewLabel_3) {
         QPixmap pixmap;
@@ -453,7 +332,7 @@ void MainWindow::on_modifierEq_clicked() {
     } else {
         ui->imagePreviewLabel_3->clear();
     }
-    imagePathModif = ""; // Réinitialiser le chemin de la nouvelle image
+    imagePathModif = "";
 }
 
 void MainWindow::on_selectImageButton_clicked() {
@@ -488,95 +367,12 @@ void MainWindow::on_ajouterEq_clicked() {
     ui->equipementsNavBar->setCurrentIndex(0);
 }
 
-void MainWindow::on_statsEq_clicked() {
-    QSqlQuery query("SELECT ETATEQ, COUNT(*) as count FROM EQUIPEMENTS GROUP BY ETATEQ");
-    if (!query.exec()) {
-        QMessageBox::critical(this, "Erreur", "Erreur lors du calcul des statistiques : " + query.lastError().text());
-        return;
-    }
-
-    QString stats;
-    while (query.next()) {
-        stats += QString("%1 : %2\n").arg(query.value("ETATEQ").toString()).arg(query.value("count").toInt());
-    }
-    QMessageBox::information(this, "Statistiques des équipements", stats.isEmpty() ? "Aucune donnée disponible." : stats);
-}
-
-/* void MainWindow::on_pdfEmp_5_clicked() {
-    // Créer un document
-    QTextDocument doc;
-
-    // Style CSS pour le tableau
-    QString html = "<html><head>"
-                   "<style>"
-                   "table { border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; }"
-                   "th, td { border: 1px solid black; padding: 8px; text-align: left; }"
-                   "th { background-color: #0E3B52; color: white; }"
-                   "tr:nth-child(even) { background-color: #f2f2f2; }"
-                   "</style>"
-                   "</head><body>"
-                   "<h1 style='text-align: center;'>Liste des Équipements</h1>"
-                   "<table>";
-
-    // Ajouter les en-têtes du tableau
-    html += "<tr>";
-    for (int col = 0; col < ui->tableWidgetEq->columnCount() - 1; col++) { // -1 pour exclure la dernière colonne vide
-        html += "<th>" + ui->tableWidgetEq->horizontalHeaderItem(col)->text() + "</th>";
-    }
-    html += "</tr>";
-
-    // Ajouter les données du tableau
-    for (int row = 0; row < ui->tableWidgetEq->rowCount(); row++) {
-        html += "<tr>";
-        for (int col = 0; col < ui->tableWidgetEq->columnCount() - 1; col++) {
-            if (col == 7) { // Colonne Image
-                html += "<td>Image</td>"; // On met juste "Image" car on ne peut pas inclure l'image directement
-            } else {
-                QTableWidgetItem *item = ui->tableWidgetEq->item(row, col);
-                QString text = item ? item->text() : "";
-                html += "<td>" + text + "</td>";
-            }
-        }
-        html += "</tr>";
-    }
-
-    html += "</table></body></html>";
-    doc.setHtml(html);
-
-    // Configurer l'imprimante pour générer un PDF
-    QPrinter printer(QPrinter::HighResolution);
-    QString fileName = QFileDialog::getSaveFileName(this, "Sauvegarder PDF",
-                                                    QDir::homePath() + "/equipements.pdf", "PDF Files (*.pdf)");
-
-    if (fileName.isEmpty()) {
-        return;
-    }
-
-    if (!fileName.endsWith(".pdf", Qt::CaseInsensitive)) {
-        fileName += ".pdf";
-    }
-
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(fileName);
-
-    // Ajuster la mise en page
-    printer.setPageMargins(QMarginsF(15, 15, 15, 15), QPageLayout::Millimeter);
-    printer.setPageOrientation(QPageLayout::Portrait);
-
-    // Générer le PDF
-    doc.print(&printer);
-
-    QMessageBox::information(this, "Succès", "Le PDF a été généré avec succès !");
-}
-*/
-
 #include <QFile>
 #include <QTextStream>
 #include <QDesktopServices>
 #include <QUrl>
 
 void MainWindow::on_pdfEmp_5_clicked() {
-    // Créer le contenu HTML
     QString html = "<html><head>"
                    "<style>"
                    "table { border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; }"
@@ -588,18 +384,16 @@ void MainWindow::on_pdfEmp_5_clicked() {
                    "<h1 style='text-align: center;'>Liste des Équipements</h1>"
                    "<table>";
 
-    // Ajouter les en-têtes du tableau
     html += "<tr>";
     for (int col = 0; col < ui->tableWidgetEq->columnCount() - 1; col++) {
         html += "<th>" + ui->tableWidgetEq->horizontalHeaderItem(col)->text() + "</th>";
     }
     html += "</tr>";
 
-    // Ajouter les données du tableau
     for (int row = 0; row < ui->tableWidgetEq->rowCount(); row++) {
         html += "<tr>";
         for (int col = 0; col < ui->tableWidgetEq->columnCount() - 1; col++) {
-            if (col == 7) { // Colonne Image
+            if (col == 7) {
                 html += "<td>Image</td>";
             } else {
                 QTableWidgetItem *item = ui->tableWidgetEq->item(row, col);
@@ -612,7 +406,6 @@ void MainWindow::on_pdfEmp_5_clicked() {
 
     html += "</table></body></html>";
 
-    // Demander à l'utilisateur où sauvegarder le fichier
     QString fileName = QFileDialog::getSaveFileName(this, "Sauvegarder en HTML",
                                                     QDir::homePath() + "/equipements.html", "HTML Files (*.html)");
 
@@ -624,7 +417,6 @@ void MainWindow::on_pdfEmp_5_clicked() {
         fileName += ".html";
     }
 
-    // Écrire le contenu dans un fichier HTML
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::warning(this, "Erreur", "Impossible de créer le fichier HTML !");
@@ -635,7 +427,6 @@ void MainWindow::on_pdfEmp_5_clicked() {
     out << html;
     file.close();
 
-    // Ouvre le fichier dans le navigateur par défaut
     QDesktopServices::openUrl(QUrl::fromLocalFile(fileName));
 
     QMessageBox::information(this, "Succès",
@@ -645,38 +436,35 @@ void MainWindow::on_pdfEmp_5_clicked() {
 
 void MainWindow::on_comboBox_6_currentIndexChanged(int index) {
     if (index < 0 || ui->tableWidgetEq->rowCount() == 0) {
-        return; // Ne rien faire si aucune option n'est sélectionnée ou si le tableau est vide
+        return;
     }
 
-    // Mapper l'index de comboBox_6 aux colonnes du tableau
     int columnToSort;
     switch (index) {
-    case 0: // "ID"
+    case 0:
         columnToSort = 0;
         break;
-    case 1: // "Nom"
+    case 1:
         columnToSort = 1;
         break;
-    case 2: // "Quantité"
+    case 2:
         columnToSort = 4;
         break;
     default:
-        return; // Ne rien faire pour les cas inattendus
+        return;
     }
 
-    Qt::SortOrder order = Qt::AscendingOrder; // Par défaut : croissant
+    Qt::SortOrder order = Qt::AscendingOrder;
     ui->tableWidgetEq->sortItems(columnToSort, order);
 
-    // Optionnel : Afficher un message de confirmation
     QMessageBox::information(this, "Tri", "Tableau trié par " + ui->comboBox_6->currentText());
 }
 
 void MainWindow::on_champRecherche_6_textChanged(const QString &text) {
-    QString searchText = text.trimmed().toLower(); // Texte recherché, insensible à la casse
+    QString searchText = text.trimmed().toLower();
 
     for (int row = 0; row < ui->tableWidgetEq->rowCount(); ++row) {
         bool match = false;
-        // Rechercher dans toutes les colonnes sauf "Image" (colonne 7)
         for (int col = 0; col < ui->tableWidgetEq->columnCount() - 1; ++col) {
             QTableWidgetItem *item = ui->tableWidgetEq->item(row, col);
             if (item && item->text().toLower().contains(searchText)) {
@@ -684,101 +472,9 @@ void MainWindow::on_champRecherche_6_textChanged(const QString &text) {
                 break;
             }
         }
-        // Afficher ou masquer la ligne selon si elle correspond au critère
         ui->tableWidgetEq->setRowHidden(row, !match);
     }
 }
-/*
-void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
-    if (reply->error() != QNetworkReply::NoError) {
-        QString errorMsg = reply->errorString();
-        QString serverResponse = reply->readAll();
-        qDebug() << "Erreur Clarifai :" << errorMsg;
-        qDebug() << "Réponse du serveur :" << serverResponse;
-        QMessageBox::warning(this, "Erreur", "Erreur lors de la vérification de l'image :\n" + errorMsg + "\nRéponse du serveur : " + serverResponse);
-        ui->AjouterEquipement->setEnabled(true);
-        reply->deleteLater();
-        return;
-    }
-
-    QByteArray response = reply->readAll();
-    QJsonDocument doc = QJsonDocument::fromJson(response);
-    QJsonObject json = doc.object();
-    QJsonArray outputs = json["outputs"].toArray();
-    if (outputs.isEmpty()) {
-        QMessageBox::warning(this, "Erreur", "Aucune donnée renvoyée par Clarifai.");
-        ui->AjouterEquipement->setEnabled(true);
-        reply->deleteLater();
-        return;
-    }
-
-    QJsonArray concepts = outputs[0].toObject()["data"].toObject()["concepts"].toArray();
-    QString expectedName = ui->AjouterEquipement->property("expectedName").toString();
-    bool matchFound = false;
-
-    for (const QJsonValue &concept : concepts) {
-        QString detectedName = concept.toObject()["name"].toString().toLower();
-        if (detectedName.contains(expectedName)) {
-            matchFound = true;
-            break;
-        }
-    }
-
-    if (!matchFound) {
-        QMessageBox::warning(this, "Erreur", "L'image ne correspond pas au nom de l'équipement (" + expectedName + ").");
-        ui->AjouterEquipement->setEnabled(true);
-        reply->deleteLater();
-        return;
-    }
-
-    // If match is found, proceed with adding the equipment
-    QString idQstr = ui->idEqinput->text();
-    QString nomQStr = ui->nomEqinput->text();
-    QString typeQStr = ui->typeEqInput->text();
-    QString etatQStr = ui->etatEqinput->currentText();
-    QString marqueQStr = ui->marqueEqinput->text();
-    QString quantiteQStr = ui->quantiteEqinput->text();
-    QDate date = ui->dateEqinput->date();
-    QString dateSqlite = date.toString("yyyy-MM-dd");
-
-    int id = idQstr.toInt();
-    int quantite = quantiteQStr.toInt();
-    std::string nom = nomQStr.toStdString();
-    std::string type = typeQStr.toStdString();
-    std::string etat = etatQStr.toStdString();
-    std::string marque = marqueQStr.toStdString();
-    std::vector<unsigned char> photo;
-
-    QFile file(imagePathAjout);
-    if (file.open(QIODevice::ReadOnly)) {
-        QByteArray imageData = file.readAll();
-        photo = std::vector<unsigned char>(imageData.begin(), imageData.end());
-        file.close();
-    }
-
-    Equipements eq(id, nom, etat, type, quantite, photo, dateSqlite.toStdString(), marque);
-    if (eq.ajouterEq()) {
-        QMessageBox::information(this, "Succès", "Équipement ajouté avec succès !");
-        ui->idEqinput->clear();
-        ui->nomEqinput->clear();
-        ui->typeEqInput->clear();
-        ui->etatEqinput->setCurrentIndex(0);
-        ui->marqueEqinput->clear();
-        ui->quantiteEqinput->clear();
-        ui->dateEqinput->setDate(QDate::currentDate());
-        imagePathAjout = "";
-        if (ui->imagePreviewLabel) {
-            ui->imagePreviewLabel->clear();
-        }
-        on_afficherEq_clicked();
-    } else {
-        QMessageBox::warning(this, "Erreur", "Échec de l'ajout de l'équipement.");
-    }
-
-    ui->AjouterEquipement->setEnabled(true);
-    reply->deleteLater();
-}
-*/
 
 void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
     if (reply->error() != QNetworkReply::NoError) {
@@ -792,7 +488,6 @@ void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
         return;
     }
 
-    // Lire et analyser la réponse de Clarifai
     QByteArray response = reply->readAll();
     qDebug() << "Réponse de Clarifai :" << response;
 
@@ -813,7 +508,6 @@ void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
         return;
     }
 
-    // Vérifier si l'image correspond au nom attendu
     QJsonArray concepts = outputs[0].toObject()["data"].toObject()["concepts"].toArray();
     QString expectedName = ui->AjouterEquipement->property("nom").toString().toLower();
     bool matchFound = false;
@@ -822,7 +516,7 @@ void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
         QString detectedName = concept.toObject()["name"].toString().toLower();
         double confidence = concept.toObject()["value"].toDouble();
         qDebug() << "Concept détecté :" << detectedName << " (confiance :" << confidence << ")";
-        if (detectedName.contains(expectedName) && confidence > 0.9) { // Seuil de confiance à 90%
+        if (detectedName.contains(expectedName) && confidence > 0.9) {
             matchFound = true;
             break;
         }
@@ -835,7 +529,6 @@ void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
         return;
     }
 
-    // Si la vérification est réussie, ajouter l'équipement
     int id = ui->AjouterEquipement->property("id").toInt();
     QString nomQStr = ui->AjouterEquipement->property("nom").toString();
     QString typeQStr = ui->AjouterEquipement->property("type").toString();
