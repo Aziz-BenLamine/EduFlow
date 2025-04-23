@@ -30,7 +30,7 @@ QWidget { background: transparent; }  </string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background: transparent;</string>
+     <string notr="true">background-color: rgb(0, 0, 255);</string>
     </property>
     <property name="currentIndex">
      <number>1</number>
@@ -289,16 +289,13 @@ font: 400 12pt &quot;Segoe UI&quot;;</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>251</width>
+        <width>341</width>
         <height>1081</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">/*background-color: rgb(255, 255, 0);*/
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, 
-                            stop:0 rgba(11, 61, 145, 1),  /* Solid Dark Blue */
-                            stop:0.7 rgba(11, 61, 145, 0.3), /* Fading earlier */
-                            stop:1 rgba(11, 61, 145, 0));  /* Fully Transparent */
+background-color: rgb(0, 0, 255);
 
 
 </string>
@@ -369,7 +366,7 @@ image: url(:/logo.png);</string>
       <widget class="QPushButton" name="etablissementBTN">
        <property name="geometry">
         <rect>
-         <x>70</x>
+         <x>80</x>
          <y>350</y>
          <width>171</width>
          <height>41</height>
@@ -548,8 +545,8 @@ background-color:transparent;</string>
      <widget class="QStackedWidget" name="mainApp">
       <property name="geometry">
        <rect>
-        <x>240</x>
-        <y>0</y>
+        <x>350</x>
+        <y>20</y>
         <width>1351</width>
         <height>1081</height>
        </rect>
@@ -560,7 +557,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
                                 stop:0 #5ef0d1, stop:1 #0b3d91);</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="employesPage">
        <widget class="QPushButton" name="afficherEmp">
@@ -588,10 +585,10 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
        <widget class="QStackedWidget" name="employeesNavBar">
         <property name="geometry">
          <rect>
-          <x>0</x>
-          <y>90</y>
-          <width>1351</width>
-          <height>991</height>
+          <x>340</x>
+          <y>110</y>
+          <width>600</width>
+          <height>400</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -599,7 +596,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
 background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="ajouterEmployes">
          <widget class="QFrame" name="formBackground">
@@ -1931,7 +1928,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="ajouterEtablissements">
          <widget class="QFrame" name="frame_2">
@@ -2601,12 +2598,12 @@ border: 0px;</string>
        </widget>
       </widget>
       <widget class="QWidget" name="examensPage">
-       <widget class="QPushButton" name="modiferExam">
+       <widget class="QPushButton" name="statsExam">
         <property name="geometry">
          <rect>
-          <x>690</x>
+          <x>450</x>
           <y>10</y>
-          <width>251</width>
+          <width>221</width>
           <height>61</height>
          </rect>
         </property>
@@ -2620,13 +2617,13 @@ border: 0px;</string>
     border-radius: 8px;  </string>
         </property>
         <property name="text">
-         <string>Modifier </string>
+         <string>    Statistiques</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="statsExam">
+       <widget class="QPushButton" name="afficherExam">
         <property name="geometry">
          <rect>
-          <x>1020</x>
+          <x>270</x>
           <y>10</y>
           <width>161</width>
           <height>61</height>
@@ -2642,67 +2639,23 @@ border: 0px;</string>
     border-radius: 8px;  </string>
         </property>
         <property name="text">
-         <string>Statistiques</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="afficherExam">
-        <property name="geometry">
-         <rect>
-          <x>380</x>
-          <y>10</y>
-          <width>241</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
-    padding: 7px 15px;
-    border-radius: 8px;  </string>
-        </property>
-        <property name="text">
-         <string>Afficher </string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="ajouterExam">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>10</y>
-          <width>241</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
-    padding: 7px 15px;
-    border-radius: 8px;  </string>
-        </property>
-        <property name="text">
-         <string>Ajouter </string>
+         <string>    Afficher </string>
         </property>
        </widget>
        <widget class="QStackedWidget" name="examensNavBar">
         <property name="geometry">
          <rect>
-          <x>0</x>
-          <y>100</y>
-          <width>1351</width>
-          <height>991</height>
+          <x>20</x>
+          <y>110</y>
+          <width>1141</width>
+          <height>621</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterExams">
          <widget class="QFrame" name="frame_4">
@@ -2730,8 +2683,8 @@ border-radius: 15px;
           <widget class="QLabel" name="label_49">
            <property name="geometry">
             <rect>
-             <x>110</x>
-             <y>50</y>
+             <x>80</x>
+             <y>170</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -2751,8 +2704,8 @@ border: 0px;</string>
           <widget class="QLineEdit" name="nomInputE">
            <property name="geometry">
             <rect>
-             <x>100</x>
-             <y>100</y>
+             <x>60</x>
+             <y>230</y>
              <width>331</width>
              <height>41</height>
             </rect>
@@ -2769,8 +2722,8 @@ font-size: 14px;</string>
           <widget class="QLabel" name="label_47">
            <property name="geometry">
             <rect>
-             <x>110</x>
-             <y>190</y>
+             <x>70</x>
+             <y>290</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -2787,31 +2740,13 @@ border: 0px;</string>
             <string>Matiere:</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="matiereInput">
-           <property name="geometry">
-            <rect>
-             <x>90</x>
-             <y>240</y>
-             <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
           <widget class="QLabel" name="label_51">
            <property name="geometry">
             <rect>
-             <x>110</x>
-             <y>320</y>
-             <width>111</width>
-             <height>21</height>
+             <x>80</x>
+             <y>390</y>
+             <width>201</width>
+             <height>41</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -2823,32 +2758,14 @@ background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Durée:</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="dureeInputE">
-           <property name="geometry">
-            <rect>
-             <x>80</x>
-             <y>360</y>
-             <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
-           </property>
-           <property name="text">
-            <string/>
+            <string>Durée (par heure):</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_53">
            <property name="geometry">
             <rect>
-             <x>110</x>
-             <y>420</y>
+             <x>680</x>
+             <y>320</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -2865,42 +2782,13 @@ border: 0px;</string>
             <string>Niveau:</string>
            </property>
           </widget>
-          <widget class="QComboBox" name="niveauInputE">
-           <property name="geometry">
-            <rect>
-             <x>90</x>
-             <y>480</y>
-             <width>351</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);
-color: black;</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>Admin</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Professeur</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Livreur</string>
-            </property>
-           </item>
-          </widget>
           <widget class="QLabel" name="label_50">
            <property name="geometry">
             <rect>
              <x>680</x>
-             <y>50</y>
-             <width>111</width>
-             <height>21</height>
+             <y>60</y>
+             <width>131</width>
+             <height>41</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -2912,10 +2800,10 @@ background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Prenom:</string>
+            <string>nbquestion:</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="prenomInputE">
+          <widget class="QLineEdit" name="nbquestionInputE">
            <property name="geometry">
             <rect>
              <x>670</x>
@@ -2933,50 +2821,11 @@ font-size: 14px;</string>
             <string/>
            </property>
           </widget>
-          <widget class="QLineEdit" name="emailInputE">
-           <property name="geometry">
-            <rect>
-             <x>670</x>
-             <y>240</y>
-             <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_48">
-           <property name="geometry">
-            <rect>
-             <x>690</x>
-             <y>180</y>
-             <width>111</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Email:</string>
-           </property>
-          </widget>
           <widget class="QLabel" name="label_52">
            <property name="geometry">
             <rect>
-             <x>690</x>
-             <y>310</y>
+             <x>680</x>
+             <y>190</y>
              <width>191</width>
              <height>21</height>
             </rect>
@@ -2996,8 +2845,8 @@ border: 0px;</string>
           <widget class="QDateEdit" name="dateInputE">
            <property name="geometry">
             <rect>
-             <x>680</x>
-             <y>360</y>
+             <x>670</x>
+             <y>250</y>
              <width>381</width>
              <height>51</height>
             </rect>
@@ -3007,45 +2856,7 @@ border: 0px;</string>
 background-color: white</string>
            </property>
           </widget>
-          <widget class="QLabel" name="label_54">
-           <property name="geometry">
-            <rect>
-             <x>710</x>
-             <y>440</y>
-             <width>111</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Examen:</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="examenInput">
-           <property name="geometry">
-            <rect>
-             <x>730</x>
-             <y>480</y>
-             <width>301</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: white;
-border-radius: 5px;</string>
-           </property>
-           <property name="text">
-            <string>Importer l'examen</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="ajouterEmp_9">
+          <widget class="QPushButton" name="ajouterex">
            <property name="geometry">
             <rect>
              <x>450</x>
@@ -3067,174 +2878,250 @@ border-radius: 5px;</string>
             <string>Ajouter examen</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="MessageForme_7">
+          <widget class="QPushButton" name="planInput">
            <property name="geometry">
             <rect>
-             <x>310</x>
-             <y>620</y>
-             <width>621</width>
-             <height>81</height>
+             <x>700</x>
+             <y>500</y>
+             <width>271</width>
+             <height>41</height>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: transparent;
-font: 600 22pt &quot;Segoe UI&quot;;
+            <string notr="true">background: transparent;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+           </property>
+           <property name="text">
+            <string>download</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_plan">
+           <property name="geometry">
+            <rect>
+             <x>770</x>
+             <y>460</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black; font-size: 20px; font-weight: 500; font: 14pt &quot;Titillium Web&quot;; background: transparent; border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Plan (PDF):</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_54">
+           <property name="geometry">
+            <rect>
+             <x>680</x>
+             <y>410</y>
+             <width>131</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Examen ajouté avec succès ✅</string>
+            <string>plan:</string>
            </property>
+          </widget>
+          <widget class="QLineEdit" name="IDInputE">
+           <property name="geometry">
+            <rect>
+             <x>70</x>
+             <y>110</y>
+             <width>331</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_65">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
+             <y>60</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>ID:</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="matiereInputE">
+           <property name="geometry">
+            <rect>
+             <x>70</x>
+             <y>330</y>
+             <width>331</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>math</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>physique</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>SVT</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>francais</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>arabe</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>anglais</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>informatique </string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>economie</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>gestion</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>phylosophie </string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>technique</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QComboBox" name="matiereInputE_2">
+           <property name="geometry">
+            <rect>
+             <x>70</x>
+             <y>440</y>
+             <width>331</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QComboBox" name="matiereInputE_3">
+           <property name="geometry">
+            <rect>
+             <x>680</x>
+             <y>350</y>
+             <width>351</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>1eme</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2eme</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3eme</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4eme</string>
+            </property>
+           </item>
           </widget>
          </widget>
         </widget>
         <widget class="QWidget" name="afficherExams">
-         <widget class="QTableWidget" name="tableWidget_4">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>140</y>
-            <width>721</width>
-            <height>141</height>
-           </rect>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>801</width>
-            <height>141</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">
-        QTableWidget {
-           border: none;
-           gridline-color: #e0e0e0;
-           font-family: 'Roboto', sans-serif;
-           font-size: 16px;
-          background : grey;
-           selection-background-color: #4CAF50;
-           selection-color: white;
-           border-radius: 10px;
-        }
-     </string>
-          </property>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row/>
-          <column>
-           <property name="text">
-            <string>ID</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Nom</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Prenom</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Email</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Telephone</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Date de naissance</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Role</string>
-           </property>
-          </column>
-          <item row="0" column="0">
-           <property name="text">
-            <string>2</string>
-           </property>
-          </item>
-          <item row="0" column="1">
-           <property name="text">
-            <string>Ahmed</string>
-           </property>
-          </item>
-          <item row="0" column="2">
-           <property name="text">
-            <string>Hammouda</string>
-           </property>
-          </item>
-          <item row="0" column="3">
-           <property name="text">
-            <string>hammouda@gmail.com</string>
-           </property>
-          </item>
-          <item row="0" column="4">
-           <property name="text">
-            <string>27444555</string>
-           </property>
-          </item>
-          <item row="0" column="5">
-           <property name="text">
-            <string>22/01/2011</string>
-           </property>
-          </item>
-          <item row="0" column="6">
-           <property name="text">
-            <string>Admin</string>
-           </property>
-          </item>
-          <item row="1" column="0">
-           <property name="text">
-            <string>1</string>
-           </property>
-          </item>
-          <item row="1" column="1">
-           <property name="text">
-            <string>Aziz</string>
-           </property>
-          </item>
-          <item row="1" column="2">
-           <property name="text">
-            <string>Ben Lamine</string>
-           </property>
-          </item>
-          <item row="1" column="3">
-           <property name="text">
-            <string>azizbenlamine@gmail.com</string>
-           </property>
-          </item>
-          <item row="1" column="4">
-           <property name="text">
-            <string>22444555</string>
-           </property>
-          </item>
-          <item row="1" column="5">
-           <property name="text">
-            <string>24/02/2010</string>
-           </property>
-          </item>
-          <item row="1" column="6">
-           <property name="text">
-            <string>Admin</string>
-           </property>
-          </item>
-         </widget>
          <widget class="QLabel" name="label_55">
           <property name="geometry">
            <rect>
-            <x>10</x>
+            <x>150</x>
             <y>20</y>
-            <width>241</width>
+            <width>71</width>
             <height>71</height>
            </rect>
           </property>
@@ -3248,10 +3135,10 @@ border: 0px;</string>
     border-radius: 8px;  </string>
           </property>
           <property name="text">
-           <string>Recherche :</string>
+           <string/>
           </property>
          </widget>
-         <widget class="QLineEdit" name="champRecherche_4">
+         <widget class="QLineEdit" name="rechlabel">
           <property name="geometry">
            <rect>
             <x>230</x>
@@ -3277,9 +3164,9 @@ box-sizing: border-box;   outline: none; </string>
          <widget class="QLabel" name="label_56">
           <property name="geometry">
            <rect>
-            <x>710</x>
-            <y>10</y>
-            <width>111</width>
+            <x>200</x>
+            <y>140</y>
+            <width>81</width>
             <height>71</height>
            </rect>
           </property>
@@ -3293,14 +3180,14 @@ box-sizing: border-box;   outline: none; </string>
     border-radius: 8px;  </string>
           </property>
           <property name="text">
-           <string>Tri :</string>
+           <string/>
           </property>
          </widget>
-         <widget class="QComboBox" name="comboBox_4">
+         <widget class="QComboBox" name="trierexamen">
           <property name="geometry">
            <rect>
-            <x>810</x>
-            <y>30</y>
+            <x>300</x>
+            <y>140</y>
             <width>91</width>
             <height>41</height>
            </rect>
@@ -3309,82 +3196,47 @@ box-sizing: border-box;   outline: none; </string>
            <string notr="true">background-color: rgb(255, 255, 255);
 color: black;</string>
           </property>
-          <item>
-           <property name="text">
-            <string>Age</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Nom(desc)</string>
-           </property>
-          </item>
          </widget>
-         <widget class="QPushButton" name="recEmp_3">
+         <widget class="QTableView" name="tableExamen">
           <property name="geometry">
            <rect>
-            <x>830</x>
-            <y>110</y>
-            <width>401</width>
-            <height>61</height>
+            <x>40</x>
+            <y>230</y>
+            <width>1031</width>
+            <height>301</height>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
-    border-radius: 8px;  </string>
+           <string notr="true">/* Header styling (works for both QTableWidget and QTableView) */
+QHeaderView::section {
+    background-color: #0E3B52;
+    padding: 4px;
+    border: 1px solid #fffff8;
+    font-size: 14pt;
+}
+
+/* Styling for QTableView */
+QTableView {
+    color: black;
+    background-color: #F7F9FB;
+    border: 2px solid #2a82da;
+    gridline-color: #ddd;
+    selection-background-color: #2a82da;
+    selection-color: white;
+}</string>
           </property>
-          <property name="text">
-           <string>Correction Examens</string>
+          <property name="sortingEnabled">
+           <bool>false</bool>
           </property>
-         </widget>
-         <widget class="QPushButton" name="pdfEmp_3">
-          <property name="geometry">
-           <rect>
-            <x>830</x>
-            <y>200</y>
-            <width>401</width>
-            <height>61</height>
-           </rect>
+          <property name="cornerButtonEnabled">
+           <bool>false</bool>
           </property>
-          <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
-    border-radius: 8px;  </string>
-          </property>
-          <property name="text">
-           <string>Generer PDF</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="sentEMP_3">
-          <property name="geometry">
-           <rect>
-            <x>830</x>
-            <y>310</y>
-            <width>401</width>
-            <height>61</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
-    border-radius: 8px;  </string>
-          </property>
-          <property name="text">
-           <string>Envoyer Resultats</string>
-          </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>150</number>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
          </widget>
         </widget>
         <widget class="QWidget" name="ModifierExams">
@@ -3413,8 +3265,8 @@ border-radius: 15px;
           <widget class="QLabel" name="label_57">
            <property name="geometry">
             <rect>
-             <x>100</x>
-             <y>20</y>
+             <x>80</x>
+             <y>110</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -3431,7 +3283,243 @@ border: 0px;</string>
             <string>Nom:</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="nomInputE_2">
+          <widget class="QLineEdit" name="nomInputM">
+           <property name="geometry">
+            <rect>
+             <x>80</x>
+             <y>150</y>
+             <width>331</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_58">
+           <property name="geometry">
+            <rect>
+             <x>80</x>
+             <y>210</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Matiere:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_59">
+           <property name="geometry">
+            <rect>
+             <x>80</x>
+             <y>320</y>
+             <width>191</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Durée (par heure):</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_60">
+           <property name="geometry">
+            <rect>
+             <x>690</x>
+             <y>240</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Niveau:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_61">
+           <property name="geometry">
+            <rect>
+             <x>680</x>
+             <y>20</y>
+             <width>131</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>nbquestion:</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="nbquestionInputM">
+           <property name="geometry">
+            <rect>
+             <x>670</x>
+             <y>70</y>
+             <width>331</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-radius: 15px;
+background-color: white;
+font-size: 14px;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_63">
+           <property name="geometry">
+            <rect>
+             <x>680</x>
+             <y>120</y>
+             <width>191</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Date de l'examen:</string>
+           </property>
+          </widget>
+          <widget class="QDateEdit" name="dateInputM">
+           <property name="geometry">
+            <rect>
+             <x>670</x>
+             <y>160</y>
+             <width>381</width>
+             <height>51</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+background-color: white</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="modifierex">
+           <property name="geometry">
+            <rect>
+             <x>440</x>
+             <y>460</y>
+             <width>241</width>
+             <height>61</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+           </property>
+           <property name="text">
+            <string>modifier </string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="planInputM">
+           <property name="geometry">
+            <rect>
+             <x>730</x>
+             <y>430</y>
+             <width>261</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: transparent;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+           </property>
+           <property name="text">
+            <string>download</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_planM">
+           <property name="geometry">
+            <rect>
+             <x>800</x>
+             <y>400</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black; font-size: 20px; font-weight: 500; font: 14pt &quot;Titillium Web&quot;; background: transparent; border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Plan (PDF):</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_62">
+           <property name="geometry">
+            <rect>
+             <x>710</x>
+             <y>340</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>plan:</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="IDinputM">
            <property name="geometry">
             <rect>
              <x>80</x>
@@ -3449,50 +3537,11 @@ font-size: 14px;</string>
             <string/>
            </property>
           </widget>
-          <widget class="QLabel" name="label_58">
-           <property name="geometry">
-            <rect>
-             <x>90</x>
-             <y>130</y>
-             <width>111</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Matiere:</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="matiereInput_2">
+          <widget class="QLabel" name="label_64">
            <property name="geometry">
             <rect>
              <x>80</x>
-             <y>170</y>
-             <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_59">
-           <property name="geometry">
-            <rect>
-             <x>100</x>
-             <y>230</y>
+             <y>10</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -3506,54 +3555,15 @@ background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Durée:</string>
+            <string>ID:</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="dureeInputE_2">
+          <widget class="QComboBox" name="matiereInputM">
            <property name="geometry">
             <rect>
-             <x>70</x>
-             <y>270</y>
+             <x>80</x>
+             <y>250</y>
              <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_60">
-           <property name="geometry">
-            <rect>
-             <x>100</x>
-             <y>330</y>
-             <width>111</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Niveau:</string>
-           </property>
-          </widget>
-          <widget class="QComboBox" name="niveauInputE_2">
-           <property name="geometry">
-            <rect>
-             <x>70</x>
-             <y>370</y>
-             <width>351</width>
              <height>41</height>
             </rect>
            </property>
@@ -3563,214 +3573,530 @@ color: black;</string>
            </property>
            <item>
             <property name="text">
-             <string>Admin</string>
+             <string>math</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Professeur</string>
+             <string>physique</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Livreur</string>
+             <string>SVT</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>francais</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>arabe</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>anglais</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>informatique </string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>economie</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>gestion</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>phylosophie </string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>technique</string>
             </property>
            </item>
           </widget>
-          <widget class="QLabel" name="label_61">
+          <widget class="QComboBox" name="durreInputM">
            <property name="geometry">
             <rect>
-             <x>680</x>
-             <y>20</y>
-             <width>111</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Prenom:</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="prenomInputE_2">
-           <property name="geometry">
-            <rect>
-             <x>670</x>
-             <y>50</y>
+             <x>80</x>
+             <y>360</y>
              <width>331</width>
              <height>41</height>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
+            <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
            </property>
-           <property name="text">
-            <string/>
-           </property>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
           </widget>
-          <widget class="QLineEdit" name="emailInputE_2">
+          <widget class="QComboBox" name="niveauInputM">
            <property name="geometry">
             <rect>
-             <x>670</x>
-             <y>160</y>
-             <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_62">
-           <property name="geometry">
-            <rect>
-             <x>690</x>
-             <y>130</y>
-             <width>111</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Email:</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_63">
-           <property name="geometry">
-            <rect>
-             <x>680</x>
-             <y>230</y>
-             <width>191</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Date de l'examen:</string>
-           </property>
-          </widget>
-          <widget class="QDateEdit" name="dateInputE_2">
-           <property name="geometry">
-            <rect>
-             <x>670</x>
-             <y>260</y>
+             <x>660</x>
+             <y>280</y>
              <width>381</width>
-             <height>51</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-background-color: white</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_64">
-           <property name="geometry">
-            <rect>
-             <x>680</x>
-             <y>330</y>
-             <width>111</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: black;
-font-size: 20px;
-font-weight: 500;
-font: 14pt &quot;Titillium Web&quot;;
-background: transparent;
-border: 0px;</string>
-           </property>
-           <property name="text">
-            <string>Examen:</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="examenInput_2">
-           <property name="geometry">
-            <rect>
-             <x>670</x>
-             <y>370</y>
-             <width>301</width>
              <height>41</height>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: white;
-border-radius: 5px;</string>
+            <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
            </property>
-           <property name="text">
-            <string>Importer l'examen</string>
-           </property>
+           <item>
+            <property name="text">
+             <string>1eme</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2eme</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3eme</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4eme</string>
+            </property>
+           </item>
           </widget>
-          <widget class="QPushButton" name="ajouterEmp_10">
-           <property name="geometry">
-            <rect>
-             <x>440</x>
-             <y>440</y>
-             <width>241</width>
-             <height>61</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
+         </widget>
+        </widget>
+        <widget class="QWidget" name="statistiquesExams"/>
+        <widget class="QWidget" name="chatbotPage">
+         <widget class="QPushButton" name="sendChatButton">
+          <property name="geometry">
+           <rect>
+            <x>880</x>
+            <y>490</y>
+            <width>241</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: #0E3B52;  
     border: none;  
     color: skyblue;  
     font-weight: bold; 
     font-size: 24px; 
     padding: 7px 15px;
     border-radius: 8px;  </string>
-           </property>
-           <property name="text">
-            <string>Ajouter examen</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="MessageForme_8">
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="chatInput">
+          <property name="geometry">
+           <rect>
+            <x>390</x>
+            <y>490</y>
+            <width>471</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 0px;
+font-size: 14px;
+color: black;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QTextEdit" name="chatDisplay">
+          <property name="geometry">
+           <rect>
+            <x>390</x>
+            <y>0</y>
+            <width>321</width>
+            <height>481</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="genererPDF">
+          <property name="geometry">
+           <rect>
+            <x>890</x>
+            <y>200</y>
+            <width>241</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(85, 255, 0);
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+          </property>
+          <property name="text">
+           <string>    generer PDF</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_66">
+          <property name="geometry">
+           <rect>
+            <x>960</x>
+            <y>490</y>
+            <width>91</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: transparent;  
+    border: none;  
+    color: white;  
+    font-weight: bold; 
+    font-size: 32px; 
+    padding: 10px 20px;  
+    border-radius: 8px;  </string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="todoPage">
+         <widget class="QWidget" name="todoContainer" native="true">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1351</width>
+            <height>521</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:1,
+                         stop:0 rgba(255, 255, 255, 100),
+                         stop:1 rgba(255, 255, 255, 20));
+                         border-radius: 15px;
+                         border: 1px solid rgba(255, 255, 255, 30);</string>
+          </property>
+          <widget class="QWidget" name="toDoColumn" native="true">
            <property name="geometry">
             <rect>
-             <x>270</x>
-             <y>520</y>
-             <width>621</width>
-             <height>81</height>
+             <x>20</x>
+             <y>10</y>
+             <width>351</width>
+             <height>860</height>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: transparent;
-font: 600 22pt &quot;Segoe UI&quot;;
-border: 0px;</string>
+            <string notr="true">background: rgba(0, 128, 0, 128); border-radius: 10px;</string>
            </property>
-           <property name="text">
-            <string>Examen ajouté avec succès ✅</string>
+           <widget class="QLabel" name="toDoLabel">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>161</width>
+              <height>40</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: bold 18pt &quot;Segoe UI&quot;; color: white; background: transparent;</string>
+            </property>
+            <property name="text">
+             <string>To Do</string>
+            </property>
+           </widget>
+           <widget class="QListWidget" name="toDoList">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>60</y>
+              <width>331</width>
+              <height>790</height>
+             </rect>
+            </property>
+            <property name="acceptDrops">
+             <bool>true</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: white; border-radius: 5px;</string>
+            </property>
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::DragDropMode::DragDrop</enum>
+            </property>
+           </widget>
+           <widget class="QLabel" name="toDoLabel_2">
+            <property name="geometry">
+             <rect>
+              <x>180</x>
+              <y>10</y>
+              <width>101</width>
+              <height>40</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: bold 18pt &quot;Segoe UI&quot;; color: white; background: transparent;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="inProgressColumn" native="true">
+           <property name="geometry">
+            <rect>
+             <x>380</x>
+             <y>10</y>
+             <width>361</width>
+             <height>860</height>
+            </rect>
            </property>
+           <property name="styleSheet">
+            <string notr="true">background: rgba(255, 165, 0, 128); border-radius: 10px;</string>
+           </property>
+           <widget class="QLabel" name="inProgressLabel">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>181</width>
+              <height>40</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: bold 18pt &quot;Segoe UI&quot;; color: white; background: transparent;</string>
+            </property>
+            <property name="text">
+             <string>In Progress</string>
+            </property>
+           </widget>
+           <widget class="QListWidget" name="inProgressList">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>60</y>
+              <width>341</width>
+              <height>790</height>
+             </rect>
+            </property>
+            <property name="acceptDrops">
+             <bool>true</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: white; border-radius: 5px;</string>
+            </property>
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::DragDropMode::DragDrop</enum>
+            </property>
+           </widget>
+           <widget class="QLabel" name="inProgressLabel_2">
+            <property name="geometry">
+             <rect>
+              <x>200</x>
+              <y>10</y>
+              <width>91</width>
+              <height>40</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: bold 18pt &quot;Segoe UI&quot;; color: white; background: transparent;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="doneColumn" native="true">
+           <property name="geometry">
+            <rect>
+             <x>750</x>
+             <y>10</y>
+             <width>361</width>
+             <height>860</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: rgba(128, 0, 128, 128); border-radius: 10px;</string>
+           </property>
+           <widget class="QLabel" name="doneLabel">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>131</width>
+              <height>40</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: bold 18pt &quot;Segoe UI&quot;; color: white; background: transparent;</string>
+            </property>
+            <property name="text">
+             <string>Done</string>
+            </property>
+           </widget>
+           <widget class="QListWidget" name="doneList">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>60</y>
+              <width>341</width>
+              <height>790</height>
+             </rect>
+            </property>
+            <property name="acceptDrops">
+             <bool>true</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: white; border-radius: 5px;</string>
+            </property>
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::DragDropMode::DragDrop</enum>
+            </property>
+           </widget>
+           <widget class="QLabel" name="doneLabel_2">
+            <property name="geometry">
+             <rect>
+              <x>160</x>
+              <y>10</y>
+              <width>91</width>
+              <height>40</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: bold 18pt &quot;Segoe UI&quot;; color: white; background: transparent;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
           </widget>
          </widget>
         </widget>
-        <widget class="QWidget" name="statistiquesExams"/>
+        <widget class="QChartView" name="statsWidgetExam">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QPushButton" name="ajouterExam">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>10</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+        </property>
+        <property name="text">
+         <string>   Ajouter </string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="chatbotBTN">
+        <property name="geometry">
+         <rect>
+          <x>700</x>
+          <y>10</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+        </property>
+        <property name="text">
+         <string>    chatbot</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="todoExam">
+        <property name="geometry">
+         <rect>
+          <x>890</x>
+          <y>10</y>
+          <width>201</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 7px 15px;
+    border-radius: 8px;  </string>
+        </property>
+        <property name="text">
+         <string>    to do list </string>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="distributionsPage">
@@ -3853,7 +4179,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterCollis">
          <widget class="QFrame" name="frame_7">
@@ -5048,6 +5374,13 @@ border: 0px;</string>
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QChartView</class>
+   <extends>QWidget</extends>
+   <header>qchartview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
