@@ -357,7 +357,7 @@ void MainWindow::on_ajouterEtab_2_clicked()
 
 }
 
-// supprimer les etablissements
+// supprimer tous les etablissements
 
 void MainWindow::on_checkBox_2_stateChanged(int arg1)
 {
@@ -539,29 +539,31 @@ void MainWindow::on_pdfEtab_clicked()
     QPainter painter(&pdfWriter);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    const int margin = 300; // Marges réduites
-    int rowHeight = 500; // Hauteur des lignes augmentée pour le wrapping
+    const int margin = 200; // Reduced margins for more space
+    int rowHeight = 600; // Increased row height for better readability
     const int colCountExpected = 8;
     const int pageWidth = pdfWriter.width() - 2 * margin;
     const int pageHeight = pdfWriter.height() - 2 * margin;
 
-    // Adjusted column widths to prevent truncation of "Longitude"
+    // Adjusted column widths to prevent truncation and ensure readability
     QVector<int> colWidths(colCountExpected);
-    colWidths[0] = pageWidth * 0.04;  // ID
-    colWidths[1] = pageWidth * 0.12;  // Nom
-    colWidths[2] = pageWidth * 0.18;  // Gouvernorat (slightly reduced)
-    colWidths[3] = pageWidth * 0.12;  // Longitude (increased)
-    colWidths[4] = pageWidth * 0.12;  // Latitude (increased)
-    colWidths[5] = pageWidth * 0.10;  // Capacité
-    colWidths[6] = pageWidth * 0.20;  // Email (slightly reduced)
-    colWidths[7] = pageWidth * 0.11;  // Téléphone
+    colWidths[0] = pageWidth * 0.05;  // ID (small column)
+    colWidths[1] = pageWidth * 0.15;  // Nom (wider for names)
+    colWidths[2] = pageWidth * 0.15;  // Gouvernorat
+    colWidths[3] = pageWidth * 0.12;  // Longitude
+    colWidths[4] = pageWidth * 0.12;  // Latitude
+    colWidths[5] = pageWidth * 0.08;  // Capa (small column)
+    colWidths[6] = pageWidth * 0.22;  // Email (wider for long email addresses)
+    colWidths[7] = pageWidth * 0.11;  // Tél
 
-    const int columnSpacing = 15; // Espacement augmenté entre colonnes
+    const int columnSpacing = 10; // Spacing between columns
     int totalWidth = 0;
     for (int i = 0; i < colCountExpected; ++i) {
         totalWidth += colWidths[i];
     }
     totalWidth += columnSpacing * (colCountExpected - 1);
+
+    // Scale columns if total width exceeds page width
     if (totalWidth > pageWidth) {
         float scaleFactor = static_cast<float>(pageWidth) / totalWidth;
         for (int i = 0; i < colCountExpected; ++i) {
@@ -569,14 +571,14 @@ void MainWindow::on_pdfEtab_clicked()
         }
     }
 
-    const int fontSize = 9; // Taille de police pour le corps
-    const int headerFontSize = 9; // Taille de police pour les en-têtes
-    const int titleFontSize = 16; // Taille de police pour le titre
-    const int headerSpacing = 150; // Espacement après les en-têtes
+    const int fontSize = 8; // Smaller font size for body to fit more content
+    const int headerFontSize = 9; // Header font size
+    const int titleFontSize = 14; // Title font size
+    const int headerSpacing = 100; // Spacing after headers
 
-    QFont headerFont("Arial", headerFontSize, QFont::Bold); // Police Arial pour un look moderne
-    QFont bodyFont("Arial", fontSize); // Police claire pour le corps
-    QFont titleFont("Arial", titleFontSize, QFont::Bold); // Titre en gras
+    QFont headerFont("Arial", headerFontSize, QFont::Bold);
+    QFont bodyFont("Arial", fontSize);
+    QFont titleFont("Arial", titleFontSize, QFont::Bold);
 
     QSqlQueryModel* model = qobject_cast<QSqlQueryModel*>(ui->tabV->model());
     if (!model) {
@@ -590,8 +592,8 @@ void MainWindow::on_pdfEtab_clicked()
         qDebug() << "Nombre de colonnes inattendu :" << colCount;
     }
 
-    // Calculer la hauteur totale pour ajustement
-    int totalHeight = rowHeight * (rowCount + 1) + headerSpacing + 600;
+    // Calculate total height for scaling
+    int totalHeight = rowHeight * (rowCount + 1) + headerSpacing + 500;
     float scaleFactor = 1.0;
     if (totalHeight > pageHeight) {
         scaleFactor = static_cast<float>(pageHeight) / totalHeight;
@@ -607,97 +609,93 @@ void MainWindow::on_pdfEtab_clicked()
     columnMap["Gouvernorat"] = -1;
     columnMap["Longitude"] = -1;
     columnMap["Latitude"] = -1;
-    columnMap["Capacité"] = -1;
+    columnMap["Capa"] = -1;
     columnMap["Email"] = -1;
-    columnMap["Téléphone"] = -1;
+    columnMap["Tél"] = -1;
 
-    // Mappage des colonnes sans traitement des accents
-
+    // Map columns with flexible matching
     for (int col = 0; col < colCount; ++col) {
         QString header = model->headerData(col, Qt::Horizontal).toString();
         qDebug() << "En-tête de la colonne" << col << ":" << header;
 
-        // Use more flexible matching for column names, accepting accents
         if (header.contains("ID", Qt::CaseInsensitive) || header == "id_etablissement") columnMap["ID"] = col;
         else if (header.contains("Nom", Qt::CaseInsensitive) || header == "nom_etablissement") columnMap["Nom"] = col;
         else if (header.contains("Gouvernorat", Qt::CaseInsensitive)) columnMap["Gouvernorat"] = col;
         else if (header.contains("Longitude", Qt::CaseInsensitive) || header.contains("long", Qt::CaseInsensitive)) columnMap["Longitude"] = col;
         else if (header.contains("Latitude", Qt::CaseInsensitive) || header.contains("lat", Qt::CaseInsensitive)) columnMap["Latitude"] = col;
-        else if (header.contains("Capacité", Qt::CaseInsensitive) || header.contains("capacity", Qt::CaseInsensitive)) columnMap["Capacité"] = col;
+        else if (header.contains("Capacité", Qt::CaseInsensitive) || header.contains("capacity", Qt::CaseInsensitive)) columnMap["Capa"] = col;
         else if (header.contains("Email", Qt::CaseInsensitive) || header.contains("mail", Qt::CaseInsensitive)) columnMap["Email"] = col;
-        else if (header.contains("Téléphone", Qt::CaseInsensitive) || header.contains("phone", Qt::CaseInsensitive) || header.contains("tel", Qt::CaseInsensitive)) columnMap["Téléphone"] = col;
+        else if (header.contains("Téléphone", Qt::CaseInsensitive) || header.contains("phone", Qt::CaseInsensitive) || header.contains("tel", Qt::CaseInsensitive)) columnMap["Tél"] = col;
     }
 
-    // Verify mapping and warn if any columns are unmapped
+    // Verify mapping
     for (const QString& key : columnMap.keys()) {
         if (columnMap[key] == -1) {
             qDebug() << "Avertissement : Colonne non mappée pour" << key;
         }
     }
 
-    // Titre
+    // Draw title
     painter.setFont(titleFont);
     painter.setPen(Qt::black);
     QString title = tr("Liste des Établissements - %1")
                         .arg(QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm"));
-    QRect titleRect = QRect(margin, margin, pageWidth, 400);
+    QRect titleRect = QRect(margin, margin, pageWidth, 300);
     painter.drawText(titleRect, Qt::AlignCenter, title);
-    int yPos = margin + 500;
+    int yPos = margin + 400;
 
-    // En-têtes avec fond coloré
+    // Draw headers with background
     painter.setFont(headerFont);
-    painter.setPen(Qt::white); // Texte blanc pour contraste
-    painter.setBrush(QColor(33, 97, 140)); // Fond bleu foncé pour les en-têtes
+    painter.setPen(Qt::white);
+    painter.setBrush(QColor(33, 97, 140));
     QStringList headers = {"ID", "Nom", "Gouvernorat", "Longitude", "Latitude",
-                           "Capacité", "Email", "Téléphone"};
+                           "Capa", "Email", "Tél"};
     int xPos = margin;
     for (int col = 0; col < colCountExpected; ++col) {
         QRect boundingRect = QRect(xPos, yPos, colWidths[col], rowHeight);
         painter.drawRect(boundingRect);
-        painter.drawText(boundingRect.adjusted(5, 5, -5, -5), Qt::AlignCenter | Qt::TextWordWrap, headers[col]);
+        painter.drawText(boundingRect.adjusted(10, 10, -10, -10), Qt::AlignCenter | Qt::TextWordWrap, headers[col]);
         xPos += colWidths[col] + columnSpacing;
     }
     painter.setBrush(Qt::NoBrush);
     yPos += rowHeight;
 
-    // Ligne séparatrice
+    // Separator line
     painter.setPen(QPen(Qt::black, 2));
     painter.drawLine(margin, yPos, margin + pageWidth, yPos);
     yPos += headerSpacing;
 
-    // Corps du tableau avec alternance de couleurs
+    // Draw table body with alternating row colors
     painter.setFont(bodyFont);
     painter.setPen(QPen(Qt::black, 1));
     for (int row = 0; row < rowCount; ++row) {
         xPos = margin;
-        // Fond alternant pour les lignes
-        painter.setBrush(row % 2 == 0 ? QColor(245, 245, 245) : Qt::white); // Gris clair / blanc
+        painter.setBrush(row % 2 == 0 ? QColor(245, 245, 245) : Qt::white);
         for (int col = 0; col < colCountExpected; ++col) {
             QString header = headers[col];
             int modelCol = columnMap[header];
             QString text = "";
             if (modelCol != -1) {
                 QVariant data = model->data(model->index(row, modelCol));
-                text = data.toString(); // Direct conversion, no "N/A" replacement
+                text = data.toString();
             }
             QRect boundingRect = QRect(xPos, yPos, colWidths[col], rowHeight);
             painter.drawRect(boundingRect);
-            painter.setPen(Qt::black); // Texte noir pour le corps
-            painter.drawText(boundingRect.adjusted(5, 5, -5, -5), Qt::AlignLeft | Qt::TextWordWrap, text);
+            painter.setPen(Qt::black);
+            painter.drawText(boundingRect.adjusted(10, 10, -10, -10), Qt::AlignLeft | Qt::TextWordWrap, text);
             xPos += colWidths[col] + columnSpacing;
         }
         painter.setBrush(Qt::NoBrush);
         yPos += rowHeight;
     }
 
-    // Pied de page
+    // Draw footer
     painter.setFont(QFont("Arial", 8));
     painter.setPen(Qt::gray);
     painter.end();
 
     QMessageBox::information(this, tr("Succès"), tr("Le fichier PDF a été généré avec succès."));
 }
-
 
 // statistique etablissement
 
@@ -1164,15 +1162,12 @@ void MainWindow::on_textSpchBTN_clicked()
         "    background-color: #b71c1c;"
         "}"
         );
-
     layout->addWidget(closeButton);
 
     // Ajouter un espaceur pour centrer les éléments
-
     layout->addStretch();
 
     // Appliquer un style à la fenêtre
-
     speechDialog->setStyleSheet(
         "QDialog {"
         "    background-color: #ffffff;"
@@ -1182,9 +1177,38 @@ void MainWindow::on_textSpchBTN_clicked()
         );
 
     // Connexions des signaux
-
     connect(speakButton, &QPushButton::clicked, this, &MainWindow::on_speakButtonClicked);
     connect(closeButton, &QPushButton::clicked, this, &MainWindow::on_closeSpeechDialogClicked);
+
+    // Ajout de la logique pour la sélection dans le QTableView
+    QTableView *tableView = ui->tabV; // Assurez-vous que 'tableView' est le bon nom dans votre UI
+    if (tableView && tableView->selectionModel()->hasSelection()) {
+        // Récupérer l'index de la ligne sélectionnée
+
+        QModelIndexList selectedRows = tableView->selectionModel()->selectedRows();
+        if (!selectedRows.isEmpty()) {
+            QModelIndex index = selectedRows.at(0); // Prendre la première ligne sélectionnée
+            QAbstractItemModel *model = tableView->model();
+
+            // Récupérer les valeurs des colonnes ID_ETAB (index 0) et CAPACITE (index 5)
+            QString id = model->data(model->index(index.row(), 0)).toString();
+            QString capacite = model->data(model->index(index.row(), 5)).toString();
+
+            // Générer le message
+            QString message = QString("Etablissement de l'id %1 sa capacité est %2").arg(id).arg(capacite);
+
+            // Assigner le message au champ textInput
+            textInput->setText(message);
+
+            // Arrêter la lecture en cours, si nécessaire
+            if (speech->state() == QTextToSpeech::Speaking) {
+                speech->stop();
+            }
+
+            // Lire le message immédiatement
+            speech->say(message);
+        }
+    }
 
     // Afficher la fenêtre
     speechDialog->show();
