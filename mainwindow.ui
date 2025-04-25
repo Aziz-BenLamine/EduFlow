@@ -1971,7 +1971,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="ajouterEtablissements">
          <widget class="QFrame" name="frame_2">
@@ -2454,9 +2454,9 @@ color: black;</string>
           <property name="geometry">
            <rect>
             <x>-20</x>
-            <y>30</y>
-            <width>241</width>
-            <height>71</height>
+            <y>20</y>
+            <width>221</width>
+            <height>81</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -2724,7 +2724,7 @@ QTableView::item:selected {
            <rect>
             <x>550</x>
             <y>40</y>
-            <width>181</width>
+            <width>191</width>
             <height>51</height>
            </rect>
           </property>
@@ -2918,7 +2918,7 @@ color: black;</string>
             <rect>
              <x>320</x>
              <y>520</y>
-             <width>351</width>
+             <width>331</width>
              <height>51</height>
             </rect>
            </property>
