@@ -1971,7 +1971,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterEtablissements">
          <widget class="QFrame" name="frame_2">
@@ -2464,7 +2464,7 @@ color: black;</string>
     border: none;  
     color: white;  
     font-weight: bold; 
-    font-size: 32px; 
+    font-size: 30px; 
     padding: 10px 20px;  
     border-radius: 8px;  </string>
           </property>
@@ -2475,9 +2475,9 @@ color: black;</string>
          <widget class="QLineEdit" name="champRecherche_3">
           <property name="geometry">
            <rect>
-            <x>190</x>
+            <x>180</x>
             <y>40</y>
-            <width>421</width>
+            <width>411</width>
             <height>51</height>
            </rect>
           </property>
@@ -2498,7 +2498,7 @@ box-sizing: border-box;   outline: none; </string>
          <widget class="QLabel" name="label_46">
           <property name="geometry">
            <rect>
-            <x>660</x>
+            <x>630</x>
             <y>30</y>
             <width>111</width>
             <height>61</height>
@@ -2520,7 +2520,7 @@ box-sizing: border-box;   outline: none; </string>
          <widget class="QComboBox" name="comboBox_3">
           <property name="geometry">
            <rect>
-            <x>760</x>
+            <x>730</x>
             <y>40</y>
             <width>141</width>
             <height>41</height>
@@ -2640,9 +2640,9 @@ color: black;</string>
          <widget class="QCheckBox" name="checkBox">
           <property name="geometry">
            <rect>
-            <x>930</x>
-            <y>20</y>
-            <width>321</width>
+            <x>890</x>
+            <y>10</y>
+            <width>341</width>
             <height>26</height>
            </rect>
           </property>
@@ -2651,18 +2651,24 @@ color: black;</string>
     font-size: 20px;</string>
           </property>
           <property name="text">
-           <string>supprimer un etablissement</string>
+           <string>supprimer un établissement</string>
           </property>
           <property name="icon">
            <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
          </widget>
          <widget class="QCheckBox" name="checkBox_2">
           <property name="geometry">
            <rect>
-            <x>930</x>
-            <y>70</y>
-            <width>371</width>
+            <x>890</x>
+            <y>60</y>
+            <width>391</width>
             <height>26</height>
            </rect>
           </property>
@@ -2671,10 +2677,16 @@ color: black;</string>
     font-size: 20px;</string>
           </property>
           <property name="text">
-           <string>supprimer tous les etablissements</string>
+           <string>supprimer tous les établissements</string>
           </property>
           <property name="icon">
            <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
          </widget>
          <widget class="QTableView" name="tabV">
@@ -2722,9 +2734,9 @@ QTableView::item:selected {
          <widget class="QPushButton" name="modiferEtab_2">
           <property name="geometry">
            <rect>
-            <x>550</x>
+            <x>530</x>
             <y>40</y>
-            <width>191</width>
+            <width>181</width>
             <height>51</height>
            </rect>
           </property>
