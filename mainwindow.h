@@ -11,7 +11,13 @@
 #include <opencv2/face.hpp>
 #include <QStringList>
 #include <QRandomGenerator>
+#include <QMap>
 
+
+//ARDUINO
+#include <QSerialPort>       // For serial communication with Arduino
+#include <QSerialPortInfo>   // For detecting Arduino port
+#include "arduino.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,6 +33,7 @@ public:
     void refreshStats();
 
 private slots:
+    void handleUidReceived(const QString &uid);
     void toggleEmotionRecognition();
     void refreshEmployeeTable();
     void onEmployeeTableClicked(const QModelIndex &index);
@@ -106,7 +113,9 @@ private:
     QTimer *toggleTimer;
     int happyFrameCount;
 
-    //STAT
+    //ARDUINO
+    Arduino *arduino; // Arduino object
+    QMap<QString, int> uidToEmployeeId;
 
 };
 #endif // MAINWINDOW_H

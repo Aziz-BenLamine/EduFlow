@@ -12,9 +12,12 @@
 #include <QVBoxLayout>
 #include "statswidgetemp.h"
 #include <QDateTime>
+#include <QSqlError>
 //GG
 
 #include "employe.h"
+#include "arduino.h"   //arduino
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -27,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     , lastSentiment("None")
     , cheerUpQuote("")
     ,happyFrameCount(0)
+    ,arduino(new Arduino(this))
 {
     ui->setupUi(this);
     ui->cameraLabel->hide();
@@ -74,6 +78,30 @@ MainWindow::MainWindow(QWidget *parent)
     toggleTimer = new QTimer(this);
     connect(toggleTimer, &QTimer::timeout, this, &MainWindow::toggleEmotionRecognition);
     toggleTimer->start(60000); // Start toggling every 60 seconds
+
+    // Initialize Arduino connection
+    QStringList ports = arduino->availablePorts();
+    if (!ports.isEmpty()) {
+        if (arduino->connectArduino(ports.first())) {
+            qDebug() << "Arduino connected successfully on" << ports.first();
+        } else {
+            qDebug() << "Failed to connect to Arduino on" << ports.first();
+            QMessageBox::warning(this, "Arduino Error", "Failed to connect to Arduino. Please check the connection.");
+        }
+    } else {
+        qDebug() << "No serial ports available";
+        QMessageBox::warning(this, "Arduino Error", "No serial ports available. Please connect the Arduino.");
+    }
+
+    // Connect Arduino UID signal
+    connect(arduino, &Arduino::uidReceived, this, &MainWindow::handleUidReceived);
+
+    //MAPPING
+    uidToEmployeeId = {
+        {"FE1D7C4", 14447777},
+        {"141554B", 14444623},
+        //{"F434F54", }
+    };
 }
 
 MainWindow::~MainWindow()
@@ -102,8 +130,6 @@ void MainWindow::refreshStats() {
         qDebug() << "Error: ui->statsWidget is not a StatsWidgetEmp!";
     }
 }
-
-
 
 void MainWindow::refreshEmployeeTable()
 {
@@ -1144,5 +1170,47 @@ void MainWindow::toggleEmotionRecognition()
         cheerUpQuote = "";
         ui->emotionLabel->hide();
         qDebug() << "Auto-toggle: Emotion recognition stopped";
+    }
+}
+
+
+//ARDUINO
+//arduino
+void MainWindow::handleUidReceived(const QString &uid)
+{
+    QString cleanedUid = uid.trimmed(); // Remove whitespace and newlines
+    qDebug() << " swaps Received UID:" << uid;
+    qDebug() << "Cleaned UID:" << cleanedUid;
+    qDebug() << "Received UID (hex):" << uid.toUtf8().toHex();
+
+    // Step 1: Look up id_employe in the mapping
+    if (!uidToEmployeeId.contains(cleanedUid)) {
+        qDebug() << "No id_employe found for UID:" << cleanedUid;
+        arduino->sendData("Access Denied");
+        return;
+    }
+
+    int id_employe = uidToEmployeeId.value(cleanedUid);
+
+    // Step 2: Query the EMPLOYE table using id_employe
+    QSqlQuery query;
+    query.prepare("SELECT NOMEMP, PRENOMEMP FROM EMPLOYE WHERE id_employe = :id_employe");
+    query.bindValue(":id_employe", id_employe);
+
+    if (!query.exec()) {
+        qDebug() << "Employee query failed with error:" << query.lastError().text();
+        qDebug() << "Employee query text:" << query.executedQuery();
+        arduino->sendData("Access Denied");
+        return;
+    }
+
+    if (query.next()) {
+        QString name = query.value("NOMEMP").toString() + " " + query.value("PRENOMEMP").toString();
+        arduino->sendData(name);
+        qDebug() << "Sent employee name to Arduino:" << name;
+    } else {
+        qDebug() << "No employee found for id_employe:" << id_employe;
+        qDebug() << "Query executed:" << query.executedQuery();
+        arduino->sendData("Access Denied");
     }
 }

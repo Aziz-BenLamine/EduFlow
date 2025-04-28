@@ -631,7 +631,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
 background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterEmployes">
          <widget class="QFrame" name="formBackground">
@@ -1275,10 +1275,10 @@ QTableView {
          <widget class="QLabel" name="emotionLabel">
           <property name="geometry">
            <rect>
-            <x>360</x>
-            <y>120</y>
-            <width>651</width>
-            <height>471</height>
+            <x>50</x>
+            <y>460</y>
+            <width>291</width>
+            <height>201</height>
            </rect>
           </property>
           <property name="text">
