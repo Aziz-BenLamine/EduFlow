@@ -10,5 +10,16 @@
         <file>equipmentIcon.png</file>
         <file>examIcon.png</file>
         <file>shutdownIcon.png</file>
+        <file>pdf.png</file>
+        <file>rechercher.png</file>
+        <file>historique.png</file>
+        <file>qr.png</file>
+        <file>supprimer.png</file>
+        <file>trier.png</file>
+        <file>style.png</file>
+        <file>ajouter.png</file>
+        <file>ajout.png</file>
+        <file>crayon.png</file>
+        <file>supprime.png</file>
     </qresource>
 </RCC>

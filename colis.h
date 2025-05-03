@@ -1,42 +1,46 @@
 #ifndef COLIS_H
 #define COLIS_H
-#include <QDate>
+
 #include <QString>
 #include <QSqlQuery>
+#include <QSqlQueryModel>
 
-class Colis
-{
+class Colis {
+private:
+    int id_employe;
+    int id_etab;
+    int capacite;
+    QString date_arrivee_estimee;
+    QString date_sortie;
+    QString statut;
+    int id_colis;
+
 public:
     Colis();
-    Colis(int idColis, int idEmploye, int idEtab, int capacite, QDate dateArrivee, QDate dateSortie, QString statut);
+    Colis(int id_emp, int id_etab, int capacite, QString date_arrivee, QString date_sortie, QString statut, int id_colis = 0);
 
-    // Getters
-    int getIdColis() const { return idColis; }
-    int getIdEmploye() const { return idEmploye; }
-    int getIdEtab() const { return idEtab; }
-    int getCapacite() const { return capacite; }
-    QDate getDateArrivee() const { return dateArrivee; }
-    QDate getDateSortie() const { return dateSortie; }
-    QString getStatut() const { return statut; }
+    int getIdEmploye() const;
+    int getIdEtab() const;
+    int getCapacite() const;
+    QString getDateArrivee() const;
+    QString getDateSortie() const;
+    QString getStatut() const;
+    int getIdColis() const;
 
-    // Setters
-    void setIdColis(int id) { idColis = id; }
-    void setIdEmploye(int id) { idEmploye = id; }
-    void setIdEtab(int id) { idEtab = id; }
-    void setCapacite(int cap) { capacite = cap; }
-    void setDateArrivee(QDate date) { dateArrivee = date; }
-    void setDateSortie(QDate date) { dateSortie = date; }
-    void setStatut(QString stat) { statut = stat; }
+    void setIdEmploye(int id);
+    void setIdEtab(int id);
+    void setCapacite(int c);
+    void setDateArrivee(QString date);
+    void setDateSortie(QString date);
+    void setStatut(QString s);
+    void setIdColis(int id);
 
-    // CRUD Operations
     bool ajouter();
+    QSqlQueryModel* afficher();
     bool modifier();
-    bool supprimer(int idColis);
-
-private:
-    int idColis, idEmploye, idEtab, capacite;
-    QDate dateArrivee, dateSortie;
-    QString statut;
+    bool supprimer(int id);
+    bool logHistory(const QString &action, const QString &details);
+    bool fetchCurrentState(int id_colis, Colis &out);
 };
 
 #endif // COLIS_H
