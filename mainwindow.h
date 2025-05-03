@@ -3,18 +3,27 @@
 
 #include <QMainWindow>
 #include <QModelIndex>
+#include "examen.h"
 #include "employe.h"
 #include "statswidgetemp.h"
-#include <Qdebug>
 #include <QTimer>
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QBarSeries>
+#include <QNetworkAccessManager> // For HTTP requests
+#include <QNetworkReply>         // For handling API responses
+#include <QJsonDocument>         // For parsing JSON responses
+#include <QJsonObject>           // For QJsonObject
+#include <QJsonArray>            // For QJsonArray
+#include <QChart>
+#include <QMimeData>
+#include <QListWidget>
+#include <QDebug>
 #include <opencv2/opencv.hpp>
 #include <opencv2/face.hpp>
 #include <QStringList>
 #include <QRandomGenerator>
 #include <QMap>
-
-
-//ARDUINO
 #include <QSerialPort>       // For serial communication with Arduino
 #include <QSerialPortInfo>   // For detecting Arduino port
 #include "arduino.h"
@@ -33,6 +42,11 @@ public:
     void refreshStats();
 
 private slots:
+    void refreshExamTable(const QString &sortColumn = "ID_EXAM", const QString &sortOrder = "ASC");
+    void onExamTableClicked(const QModelIndex &index);
+    void on_rechlabel_textChanged(const QString &text);
+    void on_trierex_clicked();
+    void refreshExamStats(); // Renamed for exam-specific stats refresh
     void handleUidReceived(const QString &uid);
     void toggleEmotionRecognition();
     void refreshEmployeeTable();
@@ -66,33 +80,48 @@ private slots:
     void on_pushButton_clicked();
     void on_deconnexionBTN_clicked();
     void on_ajouterEmp_4_clicked();
+    void on_ajouterex_clicked();
+    void on_modifierex_clicked();
+    void on_chatbotBTN_clicked();
+    void on_todoExam_clicked();
+    void on_sendChatButton_clicked(); // Triggered when user sends a message
+    void on_chatReplyFinished(QNetworkReply *reply); // Handle API response
+    void onItemChanged(); // Handle item changes after drop
+    void on_genererPDF_clicked();
+    void on_planInput_clicked(); // New slot for Add Exam PDF
+    void on_planInputM_clicked(); // New slot for Modify Exam PDF
     void on_ajouterEmpBD_clicked();
     void on_photoInput_clicked();
-
     void on_modifierEmpBD_clicked();
-
     void on_champRecherche_textChanged(const QString &arg1);
-
     void on_pdfEmp_clicked();
-
     void on_photoInputM_clicked();
-
     void on_LOGINBTN_clicked();
-
     void on_LOGINFACIAL_clicked();
-
-
     void on_facialEmotion_clicked();
 
 private:
     Ui::MainWindow *ui;
+    Examen exam;
     Employe emp;
+    int originalExamId;
+    QString lastSortColumn = "ID_EXAM";
+    QString lastSortOrder = "ASC";
+    QTimer *refreshTimer;
+    QChart *statusChart;  // Persistent chart for status (pie chart)
+    QChart *levelChart;   // Persistent chart for level (bar chart)
+    QNetworkAccessManager *networkManager; // Manages HTTP requests to the API
+    const QString apiKey = "AIzaSyDTS7x8BmQVes6cDDPrDhbIwlyeZr_EA_s"; // Your API key
+    QByteArray planData; // Store PDF data
+    Arduino *arduino; // Arduino object
+    QString lastChatbotResponse; // Store last chatbot response
+    bool timestampAdded = false; // Flag for timestamp
+    void updateExamStatsDisplay(); // Renamed for exam stats display update
+    void populateTodoLists(); // Populate to-do lists
+    void updateExamStatusFromDrop(QListWidget *targetList, QListWidgetItem *item); // Handle drop updates
     void filterEmployeeTable(const QString &searchText);
     bool newPhotoSelected;
     QString currentPhotoPath;
-
-
-
     // FACE ID
     cv::VideoCapture cap;
     QTimer *timer;
@@ -101,7 +130,6 @@ private:
     std::vector<std::string> user_names;
     bool faceRecognitionActive;
     int consecutiveDetections;
-
     // Emotion recognition (smile detection)
     cv::CascadeClassifier smileCascade;
     bool emotionRecognitionActive;
@@ -112,10 +140,8 @@ private:
     void displayCheerUpContent();
     QTimer *toggleTimer;
     int happyFrameCount;
-
-    //ARDUINO
-    Arduino *arduino; // Arduino object
+    // ARDUINO
     QMap<QString, int> uidToEmployeeId;
-
 };
+
 #endif // MAINWINDOW_H

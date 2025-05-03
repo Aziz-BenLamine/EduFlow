@@ -1,7 +1,5 @@
-QT       += core gui serialport
-QT       += sql
-QT       += charts
-QT       += multimedia multimediawidgets
+QT += core gui sql widgets charts network serialport multimedia multimediawidgets
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -14,6 +12,7 @@ SOURCES += \
     arduino.cpp \
     connection.cpp \
     employe.cpp \
+    examen.cpp \
     main.cpp \
     mainwindow.cpp \
     statswidgetemp.cpp
@@ -22,6 +21,7 @@ HEADERS += \
     arduino.h \
     connection.h \
     employe.h \
+    examen.h \
     mainwindow.h \
     statswidgetemp.h
 
