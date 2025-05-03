@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QModelIndex>
 #include "examen.h"
+#include "employe.h"
+#include "statswidgetemp.h"
 #include <QTimer>
 #include <QtCharts/QChartView>
 #include <QtCharts/QPieSeries>
@@ -11,11 +13,17 @@
 #include <QNetworkAccessManager> // For HTTP requests
 #include <QNetworkReply>         // For handling API responses
 #include <QJsonDocument>         // For parsing JSON responses
-#include <QJsonObject>           // Added for QJsonObject
-#include <QJsonArray>            // Added for QJsonArray
+#include <QJsonObject>           // For QJsonObject
+#include <QJsonArray>            // For QJsonArray
 #include <QChart>
 #include <QMimeData>
 #include <QListWidget>
+#include <QDebug>
+#include <opencv2/opencv.hpp>
+#include <opencv2/face.hpp>
+#include <QStringList>
+#include <QRandomGenerator>
+#include <QMap>
 #include <QSerialPort>       // For serial communication with Arduino
 #include <QSerialPortInfo>   // For detecting Arduino port
 #include "arduino.h"
@@ -31,6 +39,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void refreshStats();
 
 private slots:
     void refreshExamTable(const QString &sortColumn = "ID_EXAM", const QString &sortOrder = "ASC");
@@ -38,7 +47,11 @@ private slots:
     void on_rechlabel_textChanged(const QString &text);
     void on_trierex_clicked();
     void refreshExamStats(); // Renamed for exam-specific stats refresh
-
+    void handleUidReceived(const QString &uid);
+    void toggleEmotionRecognition();
+    void refreshEmployeeTable();
+    void onEmployeeTableClicked(const QModelIndex &index);
+    void updateFrame();
     void on_ajouterEmp_clicked();
     void on_afficherEmp_clicked();
     void on_modiferEmp_clicked();
@@ -77,28 +90,58 @@ private slots:
     void on_genererPDF_clicked();
     void on_planInput_clicked(); // New slot for Add Exam PDF
     void on_planInputM_clicked(); // New slot for Modify Exam PDF
-    void handleUidReceived(const QString &uid); // New slot for UID handling arduino
-
+    void on_ajouterEmpBD_clicked();
+    void on_photoInput_clicked();
+    void on_modifierEmpBD_clicked();
+    void on_champRecherche_textChanged(const QString &arg1);
+    void on_pdfEmp_clicked();
+    void on_photoInputM_clicked();
+    void on_LOGINBTN_clicked();
+    void on_LOGINFACIAL_clicked();
+    void on_facialEmotion_clicked();
 
 private:
     Ui::MainWindow *ui;
     Examen exam;
+    Employe emp;
     int originalExamId;
     QString lastSortColumn = "ID_EXAM";
     QString lastSortOrder = "ASC";
     QTimer *refreshTimer;
     QChart *statusChart;  // Persistent chart for status (pie chart)
     QChart *levelChart;   // Persistent chart for level (bar chart)
-    void updateExamStatsDisplay(); // Renamed for exam stats display update
     QNetworkAccessManager *networkManager; // Manages HTTP requests to the API
     const QString apiKey = "AIzaSyDTS7x8BmQVes6cDDPrDhbIwlyeZr_EA_s"; // Your API key
-    void populateTodoLists(); // Populate to-do lists
-    void updateExamStatusFromDrop(QListWidget *targetList, QListWidgetItem *item); // Handle drop updates
-    bool timestampAdded = false; // Add this to MainWindow class
-    QString lastChatbotResponse; // Add this line to declare the variable
     QByteArray planData; // Store PDF data
     Arduino *arduino; // Arduino object
-
+    QString lastChatbotResponse; // Store last chatbot response
+    bool timestampAdded = false; // Flag for timestamp
+    void updateExamStatsDisplay(); // Renamed for exam stats display update
+    void populateTodoLists(); // Populate to-do lists
+    void updateExamStatusFromDrop(QListWidget *targetList, QListWidgetItem *item); // Handle drop updates
+    void filterEmployeeTable(const QString &searchText);
+    bool newPhotoSelected;
+    QString currentPhotoPath;
+    // FACE ID
+    cv::VideoCapture cap;
+    QTimer *timer;
+    cv::CascadeClassifier faceCascade;
+    cv::Ptr<cv::face::LBPHFaceRecognizer> recognizer;
+    std::vector<std::string> user_names;
+    bool faceRecognitionActive;
+    int consecutiveDetections;
+    // Emotion recognition (smile detection)
+    cv::CascadeClassifier smileCascade;
+    bool emotionRecognitionActive;
+    QStringList cheerMessages;
+    int neutralFrameCount;
+    QString lastSentiment;
+    QString cheerUpQuote;
+    void displayCheerUpContent();
+    QTimer *toggleTimer;
+    int happyFrameCount;
+    // ARDUINO
+    QMap<QString, int> uidToEmployeeId;
 };
 
 #endif // MAINWINDOW_H

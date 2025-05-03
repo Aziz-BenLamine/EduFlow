@@ -13,5 +13,9 @@
         <file>add_icon.jpg</file>
         <file>delete_icon.png</file>
         <file>edit_icon.png</file>
+        <file>loupe.png</file>
+        <file>modify.png</file>
+        <file>trash.png</file>
+        <file>emotion.png</file>
     </qresource>
 </RCC>
