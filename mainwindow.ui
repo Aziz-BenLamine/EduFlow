@@ -4383,9 +4383,9 @@ border: 0px;</string>
          <widget class="QPushButton" name="afficherEq">
           <property name="geometry">
            <rect>
-            <x>380</x>
+            <x>320</x>
             <y>10</y>
-            <width>241</width>
+            <width>201</width>
             <height>61</height>
            </rect>
           </property>
@@ -4399,15 +4399,25 @@ border: 0px;</string>
     border-radius: 8px;  </string>
           </property>
           <property name="text">
-           <string>Afficher </string>
+           <string>     Afficher </string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../../Downloads/afficher.png</normaloff>../../../Downloads/afficher.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
           </property>
          </widget>
          <widget class="QPushButton" name="statsEq">
           <property name="geometry">
            <rect>
-            <x>680</x>
+            <x>590</x>
             <y>10</y>
-            <width>161</width>
+            <width>221</width>
             <height>61</height>
            </rect>
           </property>
@@ -4421,7 +4431,17 @@ border: 0px;</string>
     border-radius: 8px;  </string>
           </property>
           <property name="text">
-           <string>Statistiques</string>
+           <string>    Statistiques</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../../Downloads/statistique.png</normaloff>../../../Downloads/statistique.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
           </property>
          </widget>
          <widget class="QPushButton" name="ajouterEq">
@@ -4429,7 +4449,7 @@ border: 0px;</string>
            <rect>
             <x>60</x>
             <y>10</y>
-            <width>241</width>
+            <width>191</width>
             <height>61</height>
            </rect>
           </property>
@@ -4443,7 +4463,20 @@ border: 0px;</string>
     border-radius: 8px;  </string>
           </property>
           <property name="text">
-           <string>Ajouter </string>
+           <string>     Ajouter </string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>res/ajouter.png</normaloff>res/ajouter.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
           </property>
          </widget>
          <widget class="QStackedWidget" name="equipementsNavBar">
@@ -4457,6 +4490,9 @@ border: 0px;</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: transparent;</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
           </property>
           <widget class="QWidget" name="ajouterEquip">
            <widget class="QFrame" name="photoinputEq">
@@ -4949,7 +4985,7 @@ color: black;</string>
             <property name="geometry">
              <rect>
               <x>830</x>
-              <y>200</y>
+              <y>150</y>
               <width>261</width>
               <height>61</height>
              </rect>
@@ -4971,7 +5007,7 @@ color: black;</string>
             <property name="geometry">
              <rect>
               <x>860</x>
-              <y>300</y>
+              <y>310</y>
               <width>211</width>
               <height>61</height>
              </rect>
@@ -5083,6 +5119,27 @@ QTableView {
             </property>
             <property name="text">
              <string>Modifier</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="utiliserEquipement">
+            <property name="geometry">
+             <rect>
+              <x>860</x>
+              <y>230</y>
+              <width>211</width>
+              <height>61</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: #0E3B52;  
+    border: none;  
+    color: skyblue;  
+    font-weight: bold; 
+	border-radius: 8px;  
+	font-size: 16px; </string>
+            </property>
+            <property name="text">
+             <string>utiliser equipement</string>
             </property>
            </widget>
           </widget>
@@ -5352,6 +5409,7 @@ background-color: white</string>
           <widget class="QWidget" name="statistiquesEq"/>
          </widget>
         </widget>
+        <widget class="QWidget" name="page"/>
        </widget>
       </widget>
       <widget class="QWidget" name="no_herit"/>

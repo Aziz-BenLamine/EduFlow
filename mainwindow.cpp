@@ -17,6 +17,15 @@
 #include <QJsonArray>
 #include <QtGlobal>
 #include "statistics_window.h"
+#include <QSerialPortInfo>
+#include <QInputDialog>
+#include <QSqlQuery>
+#include <QFile>
+#include <QTextStream>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QApplication>
+#include <QComboBox> // For port selection dialog
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), statsWindow(nullptr) {
@@ -47,11 +56,73 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidgetEq->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableWidgetEq->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidgetEq->setIconSize(QSize(100, 100));
+
+    // Initialize serialPort
+    serialPort = new QSerialPort(this);
+    if (!initializeSerialPort()) {
+        QMessageBox::warning(this, "Erreur", "Impossible d'ouvrir le port série pour l'Arduino. Vérifiez la connexion et relancez l'application.");
+    }
 }
 
 MainWindow::~MainWindow() {
+    if (serialPort->isOpen()) {
+        serialPort->close();
+    }
+    delete serialPort;
     delete statsWindow;
     delete ui;
+}
+
+bool MainWindow::initializeSerialPort() {
+    QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
+    if (ports.isEmpty()) {
+        qDebug() << "Aucun port série disponible.";
+        QMessageBox::warning(this, "Erreur", "Aucun port série détecté. Assurez-vous que l'Arduino est connecté et que les pilotes sont installés.");
+        return false;
+    }
+
+    // Log available ports for debugging
+    qDebug() << "Ports série disponibles :";
+    QStringList portNames;
+    for (const QSerialPortInfo &info : ports) {
+        qDebug() << "Port :" << info.portName() << "Description :" << info.description();
+        portNames << info.portName();
+    }
+
+    // Let the user select a port if multiple are available
+    bool ok;
+    QString selectedPortName = QInputDialog::getItem(this, "Sélectionner le port série",
+                                                     "Choisissez le port de l'Arduino :", portNames,
+                                                     0, false, &ok);
+    if (!ok || selectedPortName.isEmpty()) {
+        qDebug() << "Aucun port sélectionné par l'utilisateur.";
+        return false;
+    }
+
+    // Find the selected port
+    QSerialPortInfo selectedPort;
+    for (const QSerialPortInfo &info : ports) {
+        if (info.portName() == selectedPortName) {
+            selectedPort = info;
+            break;
+        }
+    }
+
+    serialPort->setPort(selectedPort);
+    serialPort->setBaudRate(QSerialPort::Baud9600);
+    serialPort->setDataBits(QSerialPort::Data8);
+    serialPort->setParity(QSerialPort::NoParity);
+    serialPort->setStopBits(QSerialPort::OneStop);
+    serialPort->setFlowControl(QSerialPort::NoFlowControl);
+
+    if (!serialPort->open(QIODevice::ReadWrite)) {
+        qDebug() << "Erreur lors de l'ouverture du port série :" << serialPort->errorString();
+        QMessageBox::warning(this, "Erreur", "Impossible d'ouvrir le port série " + selectedPortName + " : " + serialPort->errorString());
+        return false;
+    }
+
+    qDebug() << "Port série ouvert avec succès :" << selectedPort.portName();
+    return true;
 }
 
 void MainWindow::on_statsEq_clicked() {
@@ -367,11 +438,6 @@ void MainWindow::on_ajouterEq_clicked() {
     ui->equipementsNavBar->setCurrentIndex(0);
 }
 
-#include <QFile>
-#include <QTextStream>
-#include <QDesktopServices>
-#include <QUrl>
-
 void MainWindow::on_pdfEmp_5_clicked() {
     QString html = "<html><head>"
                    "<style>"
@@ -565,6 +631,82 @@ void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
 
     ui->AjouterEquipement->setEnabled(true);
     reply->deleteLater();
+}
+
+void MainWindow::on_utiliserEquipement_clicked() {
+    bool ok;
+    QString nomEq = QInputDialog::getText(this, "Utiliser Équipement",
+                                          "Entrez le nom de l'équipement :", QLineEdit::Normal,
+                                          "", &ok);
+    if (!ok || nomEq.isEmpty()) {
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare("SELECT ID_EQ, QT FROM EQUIPEMENTS WHERE NOM_EQ = :nomEq");
+    query.bindValue(":nomEq", nomEq);
+
+    if (!query.exec()) {
+        QMessageBox::warning(this, "Erreur", "Erreur lors de la vérification de l'équipement : " + query.lastError().text());
+        return;
+    }
+
+    if (!query.next()) {
+        if (serialPort->isOpen()) {
+            serialPort->write("2");
+            serialPort->flush();
+            QMessageBox::warning(this, "Erreur", "Équipement '" + nomEq + "' non trouvé dans la base de données.");
+        } else {
+            QMessageBox::warning(this, "Erreur", "Port série non connecté. Équipement non trouvé.");
+        }
+        return;
+    }
+
+    int idEq = query.value("ID_EQ").toInt();
+    int quantite = query.value("QT").toInt();
+
+    if (quantite <= 0) {
+        if (serialPort->isOpen()) {
+            serialPort->write("3");
+            serialPort->flush();
+            QMessageBox::warning(this, "Erreur", "Équipement '" + nomEq + "' en rupture de stock.");
+        } else {
+            QMessageBox::warning(this, "Erreur", "Port série non connecté. Équipement en rupture de stock.");
+        }
+        return;
+    }
+
+    int ret = QMessageBox::question(this, "Confirmation",
+                                    "Voulez-vous utiliser l'équipement '" + nomEq + "' ? La quantité sera réduite de 1.",
+                                    QMessageBox::Yes | QMessageBox::No);
+    if (ret != QMessageBox::Yes) {
+        return;
+    }
+
+    query.prepare("UPDATE EQUIPEMENTS SET QT = QT - 1 WHERE ID_EQ = :idEq");
+    query.bindValue(":idEq", idEq);
+
+    if (!query.exec()) {
+        QMessageBox::warning(this, "Erreur", "Erreur lors de la mise à jour de la quantité : " + query.lastError().text());
+        return;
+    }
+
+    if (serialPort->isOpen()) {
+        serialPort->write("1");
+        serialPort->flush();
+        QMessageBox::information(this, "Succès", "Équipement '" + nomEq + "' utilisé avec succès ! Quantité mise à jour.");
+    } else {
+        // Retry opening the serial port
+        if (initializeSerialPort()) {
+            serialPort->write("1");
+            serialPort->flush();
+            QMessageBox::information(this, "Succès", "Équipement '" + nomEq + "' utilisé avec succès ! Quantité mise à jour.");
+        } else {
+            QMessageBox::warning(this, "Erreur", "Port série non connecté. Équipement utilisé mais Arduino non notifié.");
+        }
+    }
+
+    on_afficherEq_clicked();
 }
 
 void MainWindow::on_pushButton_clicked() {
