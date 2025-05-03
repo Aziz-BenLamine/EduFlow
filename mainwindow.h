@@ -16,8 +16,9 @@
 #include <QChart>
 #include <QMimeData>
 #include <QListWidget>
-
-
+#include <QSerialPort>       // For serial communication with Arduino
+#include <QSerialPortInfo>   // For detecting Arduino port
+#include "arduino.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -76,6 +77,8 @@ private slots:
     void on_genererPDF_clicked();
     void on_planInput_clicked(); // New slot for Add Exam PDF
     void on_planInputM_clicked(); // New slot for Modify Exam PDF
+    void handleUidReceived(const QString &uid); // New slot for UID handling arduino
+
 
 private:
     Ui::MainWindow *ui;
@@ -94,6 +97,7 @@ private:
     bool timestampAdded = false; // Add this to MainWindow class
     QString lastChatbotResponse; // Add this line to declare the variable
     QByteArray planData; // Store PDF data
+    Arduino *arduino; // Arduino object
 
 };
 

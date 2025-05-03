@@ -25,11 +25,12 @@
 #include <QtCharts/QBarSet>
 #include <QtCharts/QBarCategoryAxis>
 #include <QtCharts/QValueAxis>
-
+#include "arduino.h"   //arduino
 #include "examen.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , arduino(new Arduino(this)) // Initialize Arduino
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -41,6 +42,22 @@ MainWindow::MainWindow(QWidget *parent)
     ui->trierexamen->addItem("Date");
     statusChart = new QChart();
     levelChart = new QChart();
+    // Initialize Arduino connection
+    QStringList ports = arduino->availablePorts();
+    if (!ports.isEmpty()) {
+        if (arduino->connectArduino(ports.first())) {
+            qDebug() << "Arduino connected successfully on" << ports.first();
+        } else {
+            qDebug() << "Failed to connect to Arduino on" << ports.first();
+            QMessageBox::warning(this, "Arduino Error", "Failed to connect to Arduino. Please check the connection.");
+        }
+    } else {
+        qDebug() << "No serial ports available";
+        QMessageBox::warning(this, "Arduino Error", "No serial ports available. Please connect the Arduino.");
+    }
+
+    // Connect Arduino UID signal
+    connect(arduino, &Arduino::uidReceived, this, &MainWindow::handleUidReceived);
 
 
     ui->statsWidgetExam->setChart(statusChart);
@@ -136,6 +153,35 @@ MainWindow::MainWindow(QWidget *parent)
 
    // Assuming UI has a QLineEdit (chatInput) and QPushButton (sendChatButton) for chatbot
    connect(ui->sendChatButton, &QPushButton::clicked, this, &MainWindow::on_sendChatButton_clicked);
+}
+//arduino
+void MainWindow::handleUidReceived(const QString &uid)
+{
+    QString cleanedUid = uid.trimmed(); // Supprime les espaces et sauts de ligne
+    qDebug() << "Received UID:" << uid;
+    qDebug() << "Cleaned UID:" << cleanedUid;
+    qDebug() << "Received UID (hex):" << uid.toUtf8().toHex();
+
+    QSqlQuery query;
+    query.prepare("SELECT NOMEMP, PRENOMEMP FROM EMPLOYE WHERE \"UID\" = :uid");
+    query.bindValue(":uid", cleanedUid);
+
+    if (!query.exec()) {
+        qDebug() << "Query failed with error:" << query.lastError().text();
+        qDebug() << "Query text:" << query.executedQuery();
+        arduino->sendData("Access Denied");
+        return;
+    }
+
+    if (query.next()) {
+        QString name = query.value("NOMEMP").toString() + " " + query.value("PRENOMEMP").toString();
+        arduino->sendData(name);
+        qDebug() << "Sent employee name to Arduino:" << name;
+    } else {
+        qDebug() << "No rows returned for UID:" << cleanedUid;
+        qDebug() << "Query executed:" << query.executedQuery();
+        arduino->sendData("Access Denied");
+    }
 }
 
 
