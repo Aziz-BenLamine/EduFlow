@@ -38,6 +38,8 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
+#include <arduino.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -46,11 +48,13 @@ MainWindow::MainWindow(QWidget *parent)
     , speech(new QTextToSpeech(this)) // Initialisation de QTextToSpeech
     , speechDialog(nullptr)           // Initialisation du dialogue
     , textInput(nullptr)
+    , arduino(new Arduino(this))
 
 {
     ui->setupUi(this);
 
     // Configuration de QTextToSpeech
+
     speech->setVolume(0.7); // Volume à 70%
     speech->setRate(0.0);   // Vitesse normale
     speech->setPitch(0.0);  // Tonalité normale
@@ -60,19 +64,64 @@ MainWindow::MainWindow(QWidget *parent)
     if (speech->availableVoices().isEmpty()) {
         qDebug() << "Aucune voix disponible pour la synthèse vocale.";
     } else {
+
         // Sélectionner la première voix disponible
+
         speech->setVoice(speech->availableVoices().first());
     }
+
+    // verifier les ports branché de l' arduino
+
+    QStringList ports = arduino->availablePorts();
+    if (!ports.isEmpty()) {
+        if (arduino->connectArduino(ports.first())) {
+            qDebug() << "Arduino connected successfully on" << ports.first();
+        } else {
+            qDebug() << "Failed to connect to Arduino on" << ports.first();
+            QMessageBox::warning(this, "Arduino Error", "Failed to connect to Arduino. Please check the connection.");
+        }
+    } else {
+        qDebug() << "No serial ports available";
+        QMessageBox::warning(this, "Arduino Error", "No serial ports available. Please connect the Arduino.");
+    }
+
+    // Connexion des signaux Arduino
+
+    connect(arduino, &Arduino::motionDetected, this, &MainWindow::onMotionDetected);
 }
 
 
+void MainWindow::onMotionDetected(int motionCount)
+{
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE ETABLISSEMENTS SET MOUV = :motionCount WHERE ID_ETAB = :id");
+    updateQuery.bindValue(":motionCount", motionCount);
+
+    qDebug() << "motionCount:" << motionCount << "id:" << 602;
+
+    updateQuery.bindValue(":id", 602);
+
+    if (!updateQuery.exec()) {
+        qDebug() << "Erreur lors de la mise à jour du champ mouv :" << updateQuery.lastError().text();
+        QMessageBox::warning(this, "Erreur SQL", "Impossible de mettre à jour le nombre de mouvements.");
+        return;
+    }
+
+    QString message = QString("Mouvement détecté : %1").arg(motionCount);
+    QMessageBox::information(this, "Information", message);
+
+    if (speech->state() == QTextToSpeech::Speaking) {
+        speech->stop();
+    }
+    speech->say(message);
+}
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete speech; // Libérer QTextToSpeech
-
 }
+
 
 void MainWindow::on_ajouterEmp_clicked()
 {
@@ -1181,8 +1230,9 @@ void MainWindow::on_textSpchBTN_clicked()
     connect(closeButton, &QPushButton::clicked, this, &MainWindow::on_closeSpeechDialogClicked);
 
     // Ajout de la logique pour la sélection dans le QTableView
-    QTableView *tableView = ui->tabV; // Assurez-vous que 'tableView' est le bon nom dans votre UI
+    QTableView *tableView = ui->tabV;
     if (tableView && tableView->selectionModel()->hasSelection()) {
+
         // Récupérer l'index de la ligne sélectionnée
 
         QModelIndexList selectedRows = tableView->selectionModel()->selectedRows();
@@ -1249,3 +1299,4 @@ void MainWindow::on_closeSpeechDialogClicked()
         textInput = nullptr;
     }
 }
+

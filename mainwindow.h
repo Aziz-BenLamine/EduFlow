@@ -7,6 +7,8 @@
 #include <QDialog>       // Pour la fenêtre modale
 #include <QLineEdit>     // Pour le champ de saisie
 #include <QPushButton>   // Pour les boutons
+#include <arduino.h>
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -111,6 +113,9 @@ private slots:
 
     void on_closeSpeechDialogClicked();
 
+    // Nouveaux slots pour les signaux Arduino
+
+    void onMotionDetected(int motionCount);
 
 private:
     Ui::MainWindow *ui;
@@ -120,5 +125,6 @@ private:
     QTextToSpeech *speech; // Pointeur pour la synthèse vocale
     QDialog *speechDialog; // Fenêtre modale pour l'interface
     QLineEdit *textInput;  // Champ de saisie du texte
+    Arduino *arduino;
 };
 #endif // MAINWINDOW_H
