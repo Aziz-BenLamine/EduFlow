@@ -28,11 +28,17 @@
 #include <QJsonArray>
 #include <opencv2/opencv.hpp>
 #include <opencv2/face.hpp>
+#include <QTableWidget>
+#include <QList>
 
 #include "examen.h"
 #include "employe.h"
 #include "statswidgetemp.h"
 #include "arduino.h"
+
+/* COLIS*/
+#include "colis.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -45,7 +51,25 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
     void refreshStats();
+
+    //COLIS
+    struct ColisAction {
+        QString timestamp;
+        QString action; // "Ajouter", "Modifier", "Supprimer"
+        int colisId;
+        QString id_employe; // Changed or original ID_EMPLOYE
+        QString id_etab; // Changed or original ID_ETAB
+        QString capacite; // Changed or original CAPACITE
+        QString date_arrivee; // Changed or original DATE_ARRIVEE_ESTIMEE
+        QString date_sortie; // Changed or original DATE_SORTIE
+        QString statut; // Changed or original STATUT
+        QString details; // Additional details (e.g., old vs new values for modifications)
+    };
+    void appendColisAction(const QString &action, int colisId, const QString &id_employe, const QString &id_etab,
+                           const QString &capacite, const QString &date_arrivee, const QString &date_sortie,
+                           const QString &statut, const QString &details = "");
 
 private slots:
     void refreshExamTable(const QString &sortColumn = "ID_EXAM", const QString &sortOrder = "ASC");
@@ -108,14 +132,11 @@ private slots:
 
     // Additional slots from second file
     void on_ajouterEtab_2_clicked();
-    void on_affBtn_clicked();
+
     void on_checkBox_2_stateChanged(int arg1);
     void on_checkBox_stateChanged(int arg1);
     void on_ajouterEmp_8_clicked();
-    void on_ajouterEmp_16_clicked();
-    void on_charger_clicked();
     void on_pdfEtab_clicked();
-    void on_comboBox_3_currentIndexChanged(int index);
     void on_champRecherche_3_textChanged(const QString &arg1);
     void on_textSpchBTN_clicked();
     void on_geoBTN_clicked();
@@ -125,6 +146,20 @@ private slots:
     void on_closeSpeechDialogClicked();
     void onMotionDetected(int motionCount);
 
+    //colis
+    void on_pushButton_ajouter_clicked();
+    void on_tableWidget_5_clicked(QTableWidgetItem *item);
+    void on_supprimerColis_clicked();
+    void on_modiferColis_2_clicked();
+    void on_champRecherche_5_textChanged(const QString &text);
+    void on_pdfEmp_4_clicked();
+    void on_comboBox_tris_currentTextChanged(const QString &text);
+    void on_recEmp_4_clicked();
+    void on_affichestat_clicked();
+    void on_style_clicked();
+    void on_sentEMP_4_clicked();
+    void print_to_lcd();
+    void read_from_arduino();
 private:
     Ui::MainWindow *ui;
     Examen exam;
@@ -179,6 +214,20 @@ private:
     QLineEdit *textInput;
 
     void setupStatsChart();
+
+    //colis
+    bool isPieChart = true;
+    Colis colis;
+    int selectedIdColis;
+    QString currentSortColumn;
+    QList<ColisAction> colisActions; // In-memory action log
+    void clearInputFields();
+    void populateTable();
+    void displayColisStats();
+    void on_modifyButtonClicked(int row);
+    void saveActionToLogFile(const ColisAction &action); // Save action to persistent log file
+    Arduino ar;
+    QTimer *lcdTimer; // Timer for print_to_lcd
 };
 
 #endif // MAINWINDOW_H

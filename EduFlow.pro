@@ -12,21 +12,25 @@ CONFIG += c++17
 
 SOURCES += \
     arduino.cpp \
+    colis.cpp \
     connection.cpp \
     employe.cpp \
     etablissement.cpp \
     examen.cpp \
     main.cpp \
     mainwindow.cpp \
+    qrcodegen.cpp \
     statswidgetemp.cpp
 
 HEADERS += \
     arduino.h \
+    colis.h \
     connection.h \
     employe.h \
     etablissement.h \
     examen.h \
     mainwindow.h \
+    qrcodegen.hpp \
     statswidgetemp.h
 
 FORMS += \
@@ -36,6 +40,7 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+TARGET = EduFlow
 
 RESOURCES += \
     res/res.qrc \
