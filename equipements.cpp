@@ -15,19 +15,25 @@ Equipements::Equipements(int idEq, std::string nomEq, std::string etatEq, std::s
 
 bool Equipements::ajouterEq() {
     QSqlQuery query;
-    query.prepare("SELECT COUNT(*) FROM EQUIPEMENTS WHERE ID_EQ = :IdEq");
-    query.bindValue(":IdEq", idEq);
-    if (!query.exec() || !query.next()) {
-        qDebug() << "Erreur lors de la vérification de l'ID :" << query.lastError().text();
+    if (idEq <= 0) {
+        qDebug() << "Erreur : ID invalide (" << idEq << ").";
         return false;
     }
-    if (query.value(0).toInt() > 0) {
-        qDebug() << "Erreur : L'ID " << idEq << " existe déjà.";
+    if (quantiteEq <= 0) {
+        qDebug() << "Erreur : Quantité invalide (" << quantiteEq << ").";
         return false;
     }
 
-    if (quantiteEq <= 0) {
-        qDebug() << "Erreur : Quantité invalide (" << quantiteEq << ").";
+    // Check for duplicate ID_EQ
+    query.prepare("SELECT COUNT(*) FROM EQUIPEMENTS WHERE ID_EQ = :idEq");
+    query.bindValue(":idEq", idEq);
+    if (!query.exec()) {
+        qDebug() << "Erreur lors de la vérification de l'ID :" << query.lastError().text();
+        return false;
+    }
+    query.next();
+    if (query.value(0).toInt() > 0) {
+        qDebug() << "Erreur : ID_EQ " << idEq << " existe déjà.";
         return false;
     }
 
@@ -37,15 +43,14 @@ bool Equipements::ajouterEq() {
     }
 
     query.prepare("INSERT INTO EQUIPEMENTS (ID_EQ, NOM_EQ, TYPEEQ, ETATEQ, MARQUEEQ, QT, DATEEQ, IMAGE_EQ) "
-                  "VALUES (:IdEq, :nomEq, :typeEq, :etatEq, :marqueEq, :quantiteEq, :dateEq, :photoEq)");
-
-    query.bindValue(":IdEq", idEq);
+                  "VALUES (:idEq, :nomEq, :typeEq, :etatEq, :marqueEq, :quantiteEq, TO_DATE(:dateEq, 'YYYY-MM-DD'), :photoEq)");
+    query.bindValue(":idEq", idEq);
     query.bindValue(":nomEq", QString::fromStdString(nomEq));
     query.bindValue(":typeEq", QString::fromStdString(typeEq));
     query.bindValue(":etatEq", QString::fromStdString(etatEq));
     query.bindValue(":marqueEq", QString::fromStdString(marqueEq));
     query.bindValue(":quantiteEq", quantiteEq);
-    query.bindValue(":dateEq", QString::fromStdString(dateEq)); // SQLite utilise YYYY-MM-DD directement
+    query.bindValue(":dateEq", QString::fromStdString(dateEq)); // Expects YYYY-MM-DD
     query.bindValue(":photoEq", imageData);
 
     if (!query.exec()) {
@@ -57,7 +62,7 @@ bool Equipements::ajouterEq() {
 
 QSqlQuery Equipements::afficherEq() {
     QSqlQuery query;
-    query.prepare("SELECT ID_EQ, NOM_EQ, TYPEEQ, ETATEQ, MARQUEEQ, QT, DATEEQ, IMAGE_EQ "
+    query.prepare("SELECT ID_EQ, NOM_EQ, TYPEEQ, ETATEQ, MARQUEEQ, QT, TO_CHAR(DATEEQ, 'YYYY-MM-DD') AS DATEEQ, IMAGE_EQ "
                   "FROM EQUIPEMENTS ORDER BY ID_EQ");
     if (!query.exec()) {
         qDebug() << "Erreur lors de l'affichage :" << query.lastError().text();
@@ -83,7 +88,7 @@ bool Equipements::modifierEq(int id) {
                   "ETATEQ = :etatEq, "
                   "MARQUEEQ = :marqueEq, "
                   "QT = :quantiteEq, "
-                  "DATEEQ = :dateEq, "
+                  "DATEEQ = TO_DATE(:dateEq, 'YYYY-MM-DD'), "
                   "IMAGE_EQ = :photoEq "
                   "WHERE ID_EQ = :id");
 
@@ -114,28 +119,15 @@ bool Equipements::supprimerEq(int id) {
     return true;
 }
 
-// equipements.cpp
-#include "equipements.h"
-#include <map>
-
-// Constructor and other methods...
-/*
 std::map<std::string, int> Equipements::getQuantiteStatistics() {
     std::map<std::string, int> stats;
-    sqlite3 *db;
-    sqlite3_stmt *stmt;
-
-    if (sqlite3_open("equipements.db", &db) != SQLITE_OK) {
-        return stats; // Return empty map on error
-    }
-
-    const char *sql = "SELECT quantite FROM equipements;";
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
-        sqlite3_close(db);
+    QSqlQuery query;
+    query.prepare("SELECT QT FROM EQUIPEMENTS");
+    if (!query.exec()) {
+        qDebug() << "Erreur lors de la récupération des quantités :" << query.lastError().text();
         return stats;
     }
 
-    // Define quantity ranges
     std::map<std::string, int> ranges = {
         {"1-5", 0},
         {"6-10", 0},
@@ -143,8 +135,8 @@ std::map<std::string, int> Equipements::getQuantiteStatistics() {
         {"21+", 0}
     };
 
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        int quantite = sqlite3_column_int(stmt, 0);
+    while (query.next()) {
+        int quantite = query.value(0).toInt();
         if (quantite >= 1 && quantite <= 5) {
             ranges["1-5"]++;
         } else if (quantite >= 6 && quantite <= 10) {
@@ -156,10 +148,6 @@ std::map<std::string, int> Equipements::getQuantiteStatistics() {
         }
     }
 
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    // Only include non-zero ranges in the final stats
     for (const auto &pair : ranges) {
         if (pair.second > 0) {
             stats[pair.first] = pair.second;
@@ -168,4 +156,3 @@ std::map<std::string, int> Equipements::getQuantiteStatistics() {
 
     return stats;
 }
-*/

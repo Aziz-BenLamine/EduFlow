@@ -25,7 +25,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QApplication>
-#include <QComboBox> // For port selection dialog
+#include <QComboBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), statsWindow(nullptr) {
@@ -81,7 +81,6 @@ bool MainWindow::initializeSerialPort() {
         return false;
     }
 
-    // Log available ports for debugging
     qDebug() << "Ports série disponibles :";
     QStringList portNames;
     for (const QSerialPortInfo &info : ports) {
@@ -89,7 +88,6 @@ bool MainWindow::initializeSerialPort() {
         portNames << info.portName();
     }
 
-    // Let the user select a port if multiple are available
     bool ok;
     QString selectedPortName = QInputDialog::getItem(this, "Sélectionner le port série",
                                                      "Choisissez le port de l'Arduino :", portNames,
@@ -99,7 +97,6 @@ bool MainWindow::initializeSerialPort() {
         return false;
     }
 
-    // Find the selected port
     QSerialPortInfo selectedPort;
     for (const QSerialPortInfo &info : ports) {
         if (info.portName() == selectedPortName) {
@@ -151,7 +148,7 @@ void MainWindow::on_statsEq_clicked() {
 void MainWindow::on_AjouterEquipement_clicked() {
     ui->AjouterEquipement->setEnabled(false);
 
-    QString idQstr = ui->idEqinput->text();
+    QString idQStr = ui->idEqinput->text();
     QString nomQStr = ui->nomEqinput->text();
     QString typeQStr = ui->typeEqInput->text();
     QString etatQStr = ui->etatEqinput->currentText();
@@ -159,7 +156,7 @@ void MainWindow::on_AjouterEquipement_clicked() {
     QString quantiteQStr = ui->quantiteEqinput->text();
     QDate date = ui->dateEqinput->date();
 
-    if (idQstr.isEmpty() || nomQStr.isEmpty() || typeQStr.isEmpty() || etatQStr.isEmpty() ||
+    if (idQStr.isEmpty() || nomQStr.isEmpty() || typeQStr.isEmpty() || etatQStr.isEmpty() ||
         marqueQStr.isEmpty() || quantiteQStr.isEmpty() || !date.isValid()) {
         QMessageBox::warning(this, "Erreur", "Tous les champs doivent être remplis.");
         ui->AjouterEquipement->setEnabled(true);
@@ -167,7 +164,7 @@ void MainWindow::on_AjouterEquipement_clicked() {
     }
 
     bool okId, okQt;
-    int id = idQstr.toInt(&okId);
+    int id = idQStr.toInt(&okId);
     int quantite = quantiteQStr.toInt(&okQt);
 
     if (!okId || id <= 0) {
@@ -375,7 +372,8 @@ void MainWindow::on_modifierEq_clicked() {
     ui->equipementsNavBar->setCurrentIndex(2);
 
     QSqlQuery query;
-    query.prepare("SELECT * FROM EQUIPEMENTS WHERE ID_EQ = :id");
+    query.prepare("SELECT ID_EQ, NOM_EQ, TYPEEQ, ETATEQ, MARQUEEQ, QT, TO_CHAR(DATEEQ, 'YYYY-MM-DD') AS DATEEQ, IMAGE_EQ "
+                  "FROM EQUIPEMENTS WHERE ID_EQ = :id");
     query.bindValue(":id", currentModificationId);
 
     if (!query.exec() || !query.next()) {
@@ -626,7 +624,7 @@ void MainWindow::onClarifaiReplyFinished(QNetworkReply *reply) {
         }
         on_afficherEq_clicked();
     } else {
-        QMessageBox::warning(this, "Erreur", "Échec de l'ajout de l'équipement.");
+        QMessageBox::warning(this, "Erreur", "Échec de l'ajout de l'équipement. Vérifiez si l'ID existe déjà.");
     }
 
     ui->AjouterEquipement->setEnabled(true);
@@ -696,7 +694,6 @@ void MainWindow::on_utiliserEquipement_clicked() {
         serialPort->flush();
         QMessageBox::information(this, "Succès", "Équipement '" + nomEq + "' utilisé avec succès ! Quantité mise à jour.");
     } else {
-        // Retry opening the serial port
         if (initializeSerialPort()) {
             serialPort->write("1");
             serialPort->flush();
