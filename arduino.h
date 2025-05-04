@@ -18,6 +18,7 @@ public:
 
 signals:
     void uidReceived(const QString &uid); // Signal emitted when UID is received
+    void motionDetected(int motionCount); // Signal emitted when motion is detected with counter
 
 private slots:
     void readSerialData(); // Slot to read data from Arduino

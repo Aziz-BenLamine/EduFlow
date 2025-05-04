@@ -67,19 +67,44 @@ void Arduino::readSerialData()
 {
     buffer += serialPort->readAll();
     qDebug() << "Raw serial data received:" << buffer;
-    qDebug() << "Raw serial data (hex):" << buffer.toUtf8().toHex();
-    if (buffer.contains('\n')) {
-        QStringList lines = buffer.split('\n', Qt::SkipEmptyParts);
-        for (const QString &line : lines) {
-            qDebug() << "Processing line:" << line;
-            if (line.startsWith("UID: ")) {
-                QString uid = line.mid(5).trimmed();
-                qDebug() << "Extracted UID:" << uid;
-                emit uidReceived(uid);
+
+    while (buffer.contains('\n')) {
+        int newlineIndex = buffer.indexOf('\n');
+        QString line = buffer.left(newlineIndex).trimmed();
+        buffer.remove(0, newlineIndex + 1);
+
+        if (line.isEmpty()) {
+            continue;
+        }
+
+        qDebug() << "Processing line:" << line;
+
+        // Handle UID data (from HEAD)
+        if (line.startsWith("UID: ")) {
+            QString uid = line.mid(5).trimmed();
+            qDebug() << "Extracted UID:" << uid;
+            emit uidReceived(uid);
+        }
+        // Handle motion detection data (from Gestion-Etablissement)
+        else if (line.startsWith("Mouvement détecté ! Compteur : ")) {
+            QString countStr = line.mid(30).trimmed();
+            bool ok;
+            int motionCount = countStr.toInt(&ok);
+            if (ok) {
+                qDebug() << "Motion detected, counter:" << motionCount;
+                emit motionDetected(motionCount);
             } else {
-                qDebug() << "Line does not start with 'UID: ': " << line;
+                qDebug() << "Error converting counter:" << countStr;
             }
         }
-        buffer.clear();
+        // Handle no motion detected (from Gestion-Etablissement)
+        else if (line == "Aucun mouvement détecté") {
+            qDebug() << "No motion detected received";
+            // Optional: emit a signal if needed
+        }
+        // Unrecognized line
+        else {
+            qDebug() << "Unrecognized line:" << line;
+        }
     }
 }

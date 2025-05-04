@@ -3,29 +3,35 @@
 
 #include <QMainWindow>
 #include <QModelIndex>
-#include "examen.h"
-#include "employe.h"
-#include "statswidgetemp.h"
 #include <QTimer>
+#include <QListWidget>
+#include <QDebug>
+#include <QStringList>
+#include <QMap>
+#include <QSerialPort>
+#include <QSerialPortInfo>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QDialog>
+#include <QTextToSpeech>
+#include <QQmlApplicationEngine>
+#include <QtQuickWidgets/QQuickWidget>
+#include <QtCharts>
 #include <QtCharts/QChartView>
 #include <QtCharts/QPieSeries>
 #include <QtCharts/QBarSeries>
-#include <QNetworkAccessManager> // For HTTP requests
-#include <QNetworkReply>         // For handling API responses
-#include <QJsonDocument>         // For parsing JSON responses
-#include <QJsonObject>           // For QJsonObject
-#include <QJsonArray>            // For QJsonArray
-#include <QChart>
 #include <QMimeData>
-#include <QListWidget>
-#include <QDebug>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include <opencv2/opencv.hpp>
 #include <opencv2/face.hpp>
-#include <QStringList>
-#include <QRandomGenerator>
-#include <QMap>
-#include <QSerialPort>       // For serial communication with Arduino
-#include <QSerialPortInfo>   // For detecting Arduino port
+
+#include "examen.h"
+#include "employe.h"
+#include "statswidgetemp.h"
 #include "arduino.h"
 
 QT_BEGIN_NAMESPACE
@@ -46,7 +52,7 @@ private slots:
     void onExamTableClicked(const QModelIndex &index);
     void on_rechlabel_textChanged(const QString &text);
     void on_trierex_clicked();
-    void refreshExamStats(); // Renamed for exam-specific stats refresh
+    void refreshExamStats();
     void handleUidReceived(const QString &uid);
     void toggleEmotionRecognition();
     void refreshEmployeeTable();
@@ -84,12 +90,12 @@ private slots:
     void on_modifierex_clicked();
     void on_chatbotBTN_clicked();
     void on_todoExam_clicked();
-    void on_sendChatButton_clicked(); // Triggered when user sends a message
-    void on_chatReplyFinished(QNetworkReply *reply); // Handle API response
-    void onItemChanged(); // Handle item changes after drop
+    void on_sendChatButton_clicked();
+    void on_chatReplyFinished(QNetworkReply *reply);
+    void onItemChanged();
     void on_genererPDF_clicked();
-    void on_planInput_clicked(); // New slot for Add Exam PDF
-    void on_planInputM_clicked(); // New slot for Modify Exam PDF
+    void on_planInput_clicked();
+    void on_planInputM_clicked();
     void on_ajouterEmpBD_clicked();
     void on_photoInput_clicked();
     void on_modifierEmpBD_clicked();
@@ -100,6 +106,25 @@ private slots:
     void on_LOGINFACIAL_clicked();
     void on_facialEmotion_clicked();
 
+    // Additional slots from second file
+    void on_ajouterEtab_2_clicked();
+    void on_affBtn_clicked();
+    void on_checkBox_2_stateChanged(int arg1);
+    void on_checkBox_stateChanged(int arg1);
+    void on_ajouterEmp_8_clicked();
+    void on_ajouterEmp_16_clicked();
+    void on_charger_clicked();
+    void on_pdfEtab_clicked();
+    void on_comboBox_3_currentIndexChanged(int index);
+    void on_champRecherche_3_textChanged(const QString &arg1);
+    void on_textSpchBTN_clicked();
+    void on_geoBTN_clicked();
+    void onMapWindowClosed();
+    void on_comboBox_3_activated(int index);
+    void on_speakButtonClicked();
+    void on_closeSpeechDialogClicked();
+    void onMotionDetected(int motionCount);
+
 private:
     Ui::MainWindow *ui;
     Examen exam;
@@ -108,20 +133,21 @@ private:
     QString lastSortColumn = "ID_EXAM";
     QString lastSortOrder = "ASC";
     QTimer *refreshTimer;
-    QChart *statusChart;  // Persistent chart for status (pie chart)
-    QChart *levelChart;   // Persistent chart for level (bar chart)
-    QNetworkAccessManager *networkManager; // Manages HTTP requests to the API
-    const QString apiKey = "AIzaSyDTS7x8BmQVes6cDDPrDhbIwlyeZr_EA_s"; // Your API key
-    QByteArray planData; // Store PDF data
-    Arduino *arduino; // Arduino object
-    QString lastChatbotResponse; // Store last chatbot response
-    bool timestampAdded = false; // Flag for timestamp
-    void updateExamStatsDisplay(); // Renamed for exam stats display update
-    void populateTodoLists(); // Populate to-do lists
-    void updateExamStatusFromDrop(QListWidget *targetList, QListWidgetItem *item); // Handle drop updates
+    QChart *statusChart;
+    QChart *levelChart;
+    QNetworkAccessManager *networkManager;
+    const QString apiKey = "AIzaSyDTS7x8BmQVes6cDDPrDhbIwlyeZr_EA_s";
+    QByteArray planData;
+    Arduino *arduino;
+    QString lastChatbotResponse;
+    bool timestampAdded = false;
+    void updateExamStatsDisplay();
+    void populateTodoLists();
+    void updateExamStatusFromDrop(QListWidget *targetList, QListWidgetItem *item);
     void filterEmployeeTable(const QString &searchText);
     bool newPhotoSelected;
     QString currentPhotoPath;
+
     // FACE ID
     cv::VideoCapture cap;
     QTimer *timer;
@@ -130,7 +156,8 @@ private:
     std::vector<std::string> user_names;
     bool faceRecognitionActive;
     int consecutiveDetections;
-    // Emotion recognition (smile detection)
+
+    // Emotion detection
     cv::CascadeClassifier smileCascade;
     bool emotionRecognitionActive;
     QStringList cheerMessages;
@@ -140,8 +167,18 @@ private:
     void displayCheerUpContent();
     QTimer *toggleTimer;
     int happyFrameCount;
-    // ARDUINO
+
+    // Arduino UID mapping
     QMap<QString, int> uidToEmployeeId;
+
+    // Added for QML map & speech
+    QQmlApplicationEngine *engine;
+    QObject *mapWindow;
+    QTextToSpeech *speech;
+    QDialog *speechDialog;
+    QLineEdit *textInput;
+
+    void setupStatsChart();
 };
 
 #endif // MAINWINDOW_H

@@ -37,7 +37,7 @@ QWidget { background: transparent; }  </string>
     </property>
     <widget class="QWidget" name="Login">
      <property name="styleSheet">
-      <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+      <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
                                 stop:0 #5ef0d1, stop:1 #0b3d91);</string>
      </property>
      <widget class="QLabel" name="LOGO_LOGIN">
@@ -367,8 +367,8 @@ image: url(:/logo.png);</string>
        <property name="styleSheet">
         <string notr="true">background: transparent;
     border: none;
-    color: skyblue;  
-    font-weight: bold; 
+    color: skyblue;
+    font-weight: bold;
     font-size: 24px;  </string>
        </property>
        <property name="text">
@@ -387,8 +387,8 @@ image: url(:/logo.png);</string>
        <property name="styleSheet">
         <string notr="true">background: transparent;
     border: none;
-    color: skyblue;  
-    font-weight: bold; 
+    color: skyblue;
+    font-weight: bold;
     font-size: 24px;  </string>
        </property>
        <property name="text">
@@ -407,8 +407,8 @@ image: url(:/logo.png);</string>
        <property name="styleSheet">
         <string notr="true">background: transparent;
     border: none;
-    color: skyblue;  
-    font-weight: bold; 
+    color: skyblue;
+    font-weight: bold;
     font-size: 24px;  </string>
        </property>
        <property name="text">
@@ -427,8 +427,8 @@ image: url(:/logo.png);</string>
        <property name="styleSheet">
         <string notr="true">background: transparent;
     border: none;
-    color: skyblue;  
-    font-weight: bold; 
+    color: skyblue;
+    font-weight: bold;
     font-size: 24px; </string>
        </property>
        <property name="text">
@@ -447,8 +447,8 @@ image: url(:/logo.png);</string>
        <property name="styleSheet">
         <string notr="true">background: transparent;
     border: none;
-    color: skyblue;  
-    font-weight: bold; 
+    color: skyblue;
+    font-weight: bold;
     font-size: 24px; </string>
        </property>
        <property name="text">
@@ -468,7 +468,7 @@ image: url(:/logo.png);</string>
         <string notr="true">background: transparent;
     border: none;
 color: rgb(255, 64, 0);
-    font-weight: bold; 
+    font-weight: bold;
     font-size: 24px; </string>
        </property>
        <property name="text">
@@ -585,11 +585,11 @@ background-color:transparent;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">/*background-color: rgb(255, 0, 255);*/
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
                                 stop:0 #5ef0d1, stop:1 #0b3d91);</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="employesPage">
        <widget class="QPushButton" name="afficherEmp">
@@ -602,11 +602,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -1004,11 +1004,11 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
@@ -1090,12 +1090,12 @@ border: 0px;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -1115,13 +1115,13 @@ border: 0px;</string>
            <string notr="true">background : white;
 selection-background-color: #4CAF50;
 selection-color: white;
-border: 1px solid #dcdcdc; 
-border-radius: 24px; 
-padding: 10px 20px; 
+border: 1px solid #dcdcdc;
+border-radius: 24px;
+padding: 10px 20px;
 font-size: 16px;
 font-family: 'Roboto', sans-serif;
-color: #333; 
-transition: all 0.3s ease; 
+color: #333;
+transition: all 0.3s ease;
 box-sizing: border-box;   outline: none; </string>
           </property>
          </widget>
@@ -1135,12 +1135,12 @@ box-sizing: border-box;   outline: none; </string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -1181,12 +1181,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -1657,11 +1657,11 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
@@ -1755,11 +1755,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -1777,11 +1777,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -1794,45 +1794,65 @@ border: 0px;</string>
        <widget class="QPushButton" name="modiferEtab">
         <property name="geometry">
          <rect>
-          <x>690</x>
+          <x>680</x>
           <y>10</y>
-          <width>251</width>
+          <width>201</width>
           <height>61</height>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
         <property name="text">
          <string>Modifier </string>
         </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/modif.jpeg</normaloff>:/modif.jpeg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>40</height>
+         </size>
+        </property>
        </widget>
        <widget class="QPushButton" name="afficherEtab">
         <property name="geometry">
          <rect>
-          <x>380</x>
+          <x>370</x>
           <y>10</y>
-          <width>241</width>
+          <width>191</width>
           <height>61</height>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
         <property name="text">
          <string>Afficher </string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/affichier.jpeg</normaloff>:/affichier.jpeg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>40</height>
+         </size>
         </property>
        </widget>
        <widget class="QPushButton" name="ajouterEtab">
@@ -1840,43 +1860,63 @@ border: 0px;</string>
          <rect>
           <x>60</x>
           <y>10</y>
-          <width>241</width>
+          <width>181</width>
           <height>61</height>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
         <property name="text">
          <string>Ajouter </string>
         </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/add.jpeg</normaloff>:/add.jpeg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>40</height>
+         </size>
+        </property>
        </widget>
        <widget class="QPushButton" name="statsEtab">
         <property name="geometry">
          <rect>
-          <x>1020</x>
+          <x>990</x>
           <y>10</y>
-          <width>161</width>
+          <width>201</width>
           <height>61</height>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
         <property name="text">
          <string>Statistiques</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/stat.jpeg</normaloff>:/stat.jpeg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>40</height>
+         </size>
         </property>
        </widget>
        <widget class="QStackedWidget" name="etablissementsNavBar">
@@ -1892,16 +1932,16 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterEtablissements">
          <widget class="QFrame" name="frame_2">
           <property name="geometry">
            <rect>
-            <x>180</x>
-            <y>60</y>
+            <x>110</x>
+            <y>20</y>
             <width>971</width>
-            <height>541</height>
+            <height>561</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -1921,7 +1961,7 @@ border-radius: 15px;
            <property name="geometry">
             <rect>
              <x>50</x>
-             <y>60</y>
+             <y>30</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -1941,8 +1981,8 @@ border: 0px;</string>
           <widget class="QLineEdit" name="nomEtabInput">
            <property name="geometry">
             <rect>
-             <x>40</x>
-             <y>100</y>
+             <x>50</x>
+             <y>60</y>
              <width>331</width>
              <height>41</height>
             </rect>
@@ -1958,12 +1998,12 @@ color: black;</string>
             <string/>
            </property>
           </widget>
-          <widget class="QLineEdit" name="localInput">
+          <widget class="QLineEdit" name="long_2">
            <property name="geometry">
             <rect>
-             <x>40</x>
-             <y>260</y>
-             <width>331</width>
+             <x>50</x>
+             <y>190</y>
+             <width>151</width>
              <height>41</height>
             </rect>
            </property>
@@ -1982,9 +2022,9 @@ color: black;</string>
            <property name="geometry">
             <rect>
              <x>50</x>
-             <y>210</y>
-             <width>131</width>
-             <height>21</height>
+             <y>150</y>
+             <width>141</width>
+             <height>31</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -1996,14 +2036,14 @@ background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Localisation:</string>
+            <string>Longitude:</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_38">
            <property name="geometry">
             <rect>
              <x>560</x>
-             <y>50</y>
+             <y>70</y>
              <width>131</width>
              <height>21</height>
             </rect>
@@ -2017,34 +2057,14 @@ background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Governorat:</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="govInput">
-           <property name="geometry">
-            <rect>
-             <x>550</x>
-             <y>90</y>
-             <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background: white;
-border: 1px solid #ccc;
-border-radius: 15px;
-font-size: 14px;
-color: black;</string>
-           </property>
-           <property name="text">
-            <string/>
+            <string>Gouvernorat:</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_40">
            <property name="geometry">
             <rect>
-             <x>570</x>
-             <y>210</y>
+             <x>60</x>
+             <y>280</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -2061,12 +2081,12 @@ border: 0px;</string>
             <string>Capacité:</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="capInput">
+          <widget class="QLineEdit" name="cap">
            <property name="geometry">
             <rect>
-             <x>550</x>
-             <y>250</y>
-             <width>331</width>
+             <x>50</x>
+             <y>310</y>
+             <width>151</width>
              <height>41</height>
             </rect>
            </property>
@@ -2081,35 +2101,45 @@ color: black;</string>
             <string/>
            </property>
           </widget>
-          <widget class="QPushButton" name="ajouterEmp_7">
+          <widget class="QPushButton" name="ajouterEtab_2">
            <property name="geometry">
             <rect>
-             <x>310</x>
-             <y>330</y>
-             <width>301</width>
+             <x>330</x>
+             <y>490</y>
+             <width>321</width>
              <height>61</height>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
            <property name="text">
             <string>Ajouter Etablissement</string>
            </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/add.jpeg</normaloff>:/add.jpeg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
+           </property>
           </widget>
           <widget class="QLineEdit" name="MessageForme_5">
            <property name="geometry">
             <rect>
-             <x>190</x>
-             <y>410</y>
-             <width>621</width>
-             <height>81</height>
+             <x>210</x>
+             <y>520</y>
+             <width>631</width>
+             <height>61</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -2118,8 +2148,265 @@ font: 600 22pt &quot;Segoe UI&quot;;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Etablissement ajouté avec succès ✅</string>
+            <string/>
            </property>
+          </widget>
+          <widget class="QLabel" name="label_65">
+           <property name="geometry">
+            <rect>
+             <x>570</x>
+             <y>160</y>
+             <width>131</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Latittude:</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="lat">
+           <property name="geometry">
+            <rect>
+             <x>570</x>
+             <y>190</y>
+             <width>161</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_66">
+           <property name="geometry">
+            <rect>
+             <x>570</x>
+             <y>280</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Mail:</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="mail">
+           <property name="geometry">
+            <rect>
+             <x>570</x>
+             <y>310</y>
+             <width>321</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="tel">
+           <property name="geometry">
+            <rect>
+             <x>60</x>
+             <y>420</y>
+             <width>231</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_69">
+           <property name="geometry">
+            <rect>
+             <x>60</x>
+             <y>390</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Tel:</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="combo">
+           <property name="geometry">
+            <rect>
+             <x>710</x>
+             <y>70</y>
+             <width>151</width>
+             <height>28</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Ariana</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Béja</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Ben Arous</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Bizerte</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Gabès</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Gafsa</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Jendouba</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Kairouan</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Kasserine</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Kébili</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Le Kef</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Mahdia</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>La Manouba</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Médenine</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Monastir</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Nabeul</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Sfax</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Sidi Bouzid</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Siliana</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Sousse</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Tataouine</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Tozeur</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Tunis</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Zaghouan</string>
+            </property>
+           </item>
           </widget>
          </widget>
         </widget>
@@ -2127,19 +2414,19 @@ border: 0px;</string>
          <widget class="QLabel" name="label_45">
           <property name="geometry">
            <rect>
-            <x>10</x>
+            <x>-20</x>
             <y>20</y>
-            <width>241</width>
-            <height>71</height>
+            <width>221</width>
+            <height>81</height>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -2149,9 +2436,9 @@ border: 0px;</string>
          <widget class="QLineEdit" name="champRecherche_3">
           <property name="geometry">
            <rect>
-            <x>230</x>
-            <y>30</y>
-            <width>481</width>
+            <x>180</x>
+            <y>40</y>
+            <width>411</width>
             <height>51</height>
            </rect>
           </property>
@@ -2159,32 +2446,32 @@ border: 0px;</string>
            <string notr="true">background : white;
 selection-background-color: #4CAF50;
 selection-color: white;
-border: 1px solid #dcdcdc; 
-border-radius: 24px; 
-padding: 10px 20px; 
+border: 1px solid #dcdcdc;
+border-radius: 24px;
+padding: 10px 20px;
 font-size: 16px;
 font-family: 'Roboto', sans-serif;
-color: #333; 
-transition: all 0.3s ease; 
+color: #333;
+transition: all 0.3s ease;
 box-sizing: border-box;   outline: none; </string>
           </property>
          </widget>
          <widget class="QLabel" name="label_46">
           <property name="geometry">
            <rect>
-            <x>710</x>
-            <y>10</y>
+            <x>630</x>
+            <y>30</y>
             <width>111</width>
-            <height>71</height>
+            <height>61</height>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -2194,9 +2481,9 @@ box-sizing: border-box;   outline: none; </string>
          <widget class="QComboBox" name="comboBox_3">
           <property name="geometry">
            <rect>
-            <x>810</x>
-            <y>30</y>
-            <width>121</width>
+            <x>730</x>
+            <y>40</y>
+            <width>141</width>
             <height>41</height>
            </rect>
           </property>
@@ -2206,115 +2493,249 @@ color: black;</string>
           </property>
           <item>
            <property name="text">
-            <string>Governorat</string>
+            <string>Par Gouvernorat</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Par ID</string>
            </property>
           </item>
          </widget>
          <widget class="QPushButton" name="geoBTN">
           <property name="geometry">
            <rect>
-            <x>830</x>
-            <y>110</y>
-            <width>401</width>
+            <x>860</x>
+            <y>130</y>
+            <width>311</width>
             <height>61</height>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
            <string>Geolocalisation</string>
           </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>:/map.png</normaloff>:/map.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>50</height>
+           </size>
+          </property>
          </widget>
          <widget class="QPushButton" name="pdfEtab">
           <property name="geometry">
            <rect>
-            <x>830</x>
-            <y>200</y>
-            <width>401</width>
+            <x>860</x>
+            <y>250</y>
+            <width>311</width>
             <height>61</height>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
            <string>Generer PDF</string>
           </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>:/pdf.png</normaloff>:/pdf.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>50</height>
+           </size>
+          </property>
          </widget>
          <widget class="QPushButton" name="textSpchBTN">
           <property name="geometry">
            <rect>
-            <x>830</x>
-            <y>310</y>
-            <width>401</width>
+            <x>860</x>
+            <y>370</y>
+            <width>311</width>
             <height>61</height>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
            <string>Text-To-Speech</string>
           </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>:/text.png</normaloff>:/text.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>50</height>
+           </size>
+          </property>
          </widget>
-         <widget class="QTableWidget" name="tableWidget_3">
+         <widget class="QCheckBox" name="checkBox">
           <property name="geometry">
            <rect>
-            <x>80</x>
-            <y>130</y>
-            <width>501</width>
-            <height>192</height>
+            <x>890</x>
+            <y>10</y>
+            <width>341</width>
+            <height>26</height>
            </rect>
           </property>
-          <column>
-           <property name="text">
-            <string>ID</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Nom</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Localisation</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Capacite</string>
-           </property>
-          </column>
+          <property name="styleSheet">
+           <string notr="true">font-weight: bold;
+    font-size: 20px;</string>
+          </property>
+          <property name="text">
+           <string>Supprimer un établissement</string>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="checkBox_2">
+          <property name="geometry">
+           <rect>
+            <x>890</x>
+            <y>60</y>
+            <width>391</width>
+            <height>26</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-weight: bold;
+    font-size: 20px;</string>
+          </property>
+          <property name="text">
+           <string>Supprimer tous les établissements</string>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QTableView" name="tabV">
+          <property name="geometry">
+           <rect>
+            <x>30</x>
+            <y>130</y>
+            <width>771</width>
+            <height>301</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">/* Header styling */
+QHeaderView::section {
+    background-color: #0E3B52;
+    padding: 4px;
+    border: 1px solid #fffff8;
+    font-size: 12pt;
+    color: white;
+    font-weight: bold;
+}
+
+/* TableView styling */
+QTableView {
+    color: black;
+    background-color: #F7F9FB;
+    border: 2px solid #2a82da;
+    gridline-color: #ddd;
+    selection-background-color: #2a82da;
+    selection-color: white;
+    alternate-background-color: #E3EAF1;
+}
+
+/* Selected row highlight */
+QTableView::item:selected {
+    background-color: #2a82da;
+    color: white;
+}
+</string>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderHighlightSections">
+           <bool>true</bool>
+          </attribute>
+         </widget>
+         <widget class="QPushButton" name="modiferEtab_2">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>40</y>
+            <width>181</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>:/search.png</normaloff>:/search.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
+          </property>
          </widget>
         </widget>
         <widget class="QWidget" name="ModifierEtablissements">
          <widget class="QFrame" name="frame_3">
           <property name="geometry">
            <rect>
-            <x>160</x>
-            <y>40</y>
-            <width>971</width>
-            <height>541</height>
+            <x>100</x>
+            <y>0</y>
+            <width>1041</width>
+            <height>591</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -2334,7 +2755,7 @@ border-radius: 15px;
            <property name="geometry">
             <rect>
              <x>50</x>
-             <y>60</y>
+             <y>50</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -2351,11 +2772,11 @@ border: 0px;</string>
             <string>Nom:</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="nomEtabInput_2">
+          <widget class="QLineEdit" name="nom">
            <property name="geometry">
             <rect>
              <x>40</x>
-             <y>100</y>
+             <y>80</y>
              <width>331</width>
              <height>41</height>
             </rect>
@@ -2371,12 +2792,12 @@ color: black;</string>
             <string/>
            </property>
           </widget>
-          <widget class="QLineEdit" name="localInput_2">
+          <widget class="QLineEdit" name="long_3">
            <property name="geometry">
             <rect>
              <x>40</x>
-             <y>260</y>
-             <width>331</width>
+             <y>200</y>
+             <width>141</width>
              <height>41</height>
             </rect>
            </property>
@@ -2395,9 +2816,9 @@ color: black;</string>
            <property name="geometry">
             <rect>
              <x>50</x>
-             <y>210</y>
-             <width>131</width>
-             <height>21</height>
+             <y>160</y>
+             <width>151</width>
+             <height>41</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -2409,14 +2830,14 @@ background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Localisation:</string>
+            <string>Longitude:</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_43">
            <property name="geometry">
             <rect>
-             <x>560</x>
-             <y>50</y>
+             <x>540</x>
+             <y>40</y>
              <width>131</width>
              <height>21</height>
             </rect>
@@ -2430,34 +2851,14 @@ background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Governorat:</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="govInput_2">
-           <property name="geometry">
-            <rect>
-             <x>550</x>
-             <y>90</y>
-             <width>331</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background: white;
-border: 1px solid #ccc;
-border-radius: 15px;
-font-size: 14px;
-color: black;</string>
-           </property>
-           <property name="text">
-            <string/>
+            <string>Gouvernorat:</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_44">
            <property name="geometry">
             <rect>
-             <x>570</x>
-             <y>210</y>
+             <x>540</x>
+             <y>170</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -2471,15 +2872,15 @@ background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Capacité:</string>
+            <string>Lattitude:</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="capInput_2">
+          <widget class="QLineEdit" name="lat_2">
            <property name="geometry">
             <rect>
-             <x>550</x>
-             <y>250</y>
-             <width>331</width>
+             <x>540</x>
+             <y>200</y>
+             <width>151</width>
              <height>41</height>
             </rect>
            </property>
@@ -2497,46 +2898,201 @@ color: black;</string>
           <widget class="QPushButton" name="ajouterEmp_8">
            <property name="geometry">
             <rect>
-             <x>310</x>
-             <y>330</y>
-             <width>301</width>
-             <height>61</height>
+             <x>320</x>
+             <y>520</y>
+             <width>331</width>
+             <height>51</height>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
            <property name="text">
-            <string>Ajouter Etablissement</string>
+            <string>Modifier Etablissement</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/modif.jpeg</normaloff>:/modif.jpeg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
            </property>
           </widget>
-          <widget class="QLineEdit" name="MessageForme_6">
+          <widget class="QLineEdit" name="cap_2">
            <property name="geometry">
             <rect>
-             <x>150</x>
-             <y>420</y>
-             <width>661</width>
-             <height>81</height>
+             <x>40</x>
+             <y>330</y>
+             <width>141</width>
+             <height>41</height>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: transparent;
-font: 600 22pt &quot;Segoe UI&quot;;
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="mail_2">
+           <property name="geometry">
+            <rect>
+             <x>540</x>
+             <y>330</y>
+             <width>331</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_67">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>290</y>
+             <width>131</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
 border: 0px;</string>
            </property>
            <property name="text">
-            <string>Etablissement modifié avec succès ✅</string>
+            <string>Capacite:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_68">
+           <property name="geometry">
+            <rect>
+             <x>540</x>
+             <y>290</y>
+             <width>131</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Mail:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_70">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>410</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;
+font-size: 20px;
+font-weight: 500;
+font: 14pt &quot;Titillium Web&quot;;
+background: transparent;
+border: 0px;</string>
+           </property>
+           <property name="text">
+            <string>Tel:</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="tel_2">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>450</y>
+             <width>221</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="gov3">
+           <property name="geometry">
+            <rect>
+             <x>530</x>
+             <y>80</y>
+             <width>231</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </widget>
         </widget>
-        <widget class="QWidget" name="statistiquesEtablissements"/>
+        <widget class="QWidget" name="statistiquesEtablissements">
+         <widget class="QFrame" name="frame_10">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>-20</y>
+            <width>1171</width>
+            <height>651</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Raised</enum>
+          </property>
+         </widget>
+        </widget>
        </widget>
        <widget class="QPushButton" name="ajouterEmp_6">
         <property name="geometry">
@@ -2548,11 +3104,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -2572,11 +3128,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -2594,11 +3150,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -2619,7 +3175,7 @@ border: 0px;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="ajouterExams">
          <widget class="QFrame" name="frame_4">
@@ -2830,11 +3386,11 @@ background-color: white</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
@@ -2852,11 +3408,11 @@ background-color: white</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: transparent;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: transparent;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
@@ -3090,12 +3646,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -3115,13 +3671,13 @@ color: black;</string>
            <string notr="true">background : white;
 selection-background-color: #4CAF50;
 selection-color: white;
-border: 1px solid #dcdcdc; 
-border-radius: 24px; 
-padding: 10px 20px; 
+border: 1px solid #dcdcdc;
+border-radius: 24px;
+padding: 10px 20px;
 font-size: 16px;
 font-family: 'Roboto', sans-serif;
-color: #333; 
-transition: all 0.3s ease; 
+color: #333;
+transition: all 0.3s ease;
 box-sizing: border-box;   outline: none; </string>
           </property>
          </widget>
@@ -3135,12 +3691,12 @@ box-sizing: border-box;   outline: none; </string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -3412,11 +3968,11 @@ background-color: white</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
@@ -3434,11 +3990,11 @@ background-color: white</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: transparent;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: transparent;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
@@ -3673,11 +4229,11 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
           </property>
@@ -3695,7 +4251,7 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: white;
+           <string notr="true">background: transparent;
 border: 1px solid #ccc;
 border-radius: 0px;
 font-size: 14px;
@@ -3736,10 +4292,10 @@ color: black;</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(85, 255, 0);
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
           </property>
@@ -3757,12 +4313,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -4006,11 +4562,11 @@ color: black;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4028,11 +4584,11 @@ color: black;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4050,11 +4606,11 @@ color: black;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4074,11 +4630,11 @@ color: black;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4096,11 +4652,11 @@ color: black;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4118,11 +4674,11 @@ color: black;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4260,11 +4816,11 @@ color: black;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
@@ -4349,12 +4905,12 @@ border: 0px;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -4374,13 +4930,13 @@ border: 0px;</string>
            <string notr="true">background : white;
 selection-background-color: #4CAF50;
 selection-color: white;
-border: 1px solid #dcdcdc; 
-border-radius: 24px; 
-padding: 10px 20px; 
+border: 1px solid #dcdcdc;
+border-radius: 24px;
+padding: 10px 20px;
 font-size: 16px;
 font-family: 'Roboto', sans-serif;
-color: #333; 
-transition: all 0.3s ease; 
+color: #333;
+transition: all 0.3s ease;
 box-sizing: border-box;   outline: none; </string>
           </property>
          </widget>
@@ -4394,12 +4950,12 @@ box-sizing: border-box;   outline: none; </string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -4440,12 +4996,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -4462,12 +5018,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -4484,12 +5040,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -4612,11 +5168,11 @@ color: black;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
@@ -4656,11 +5212,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4680,11 +5236,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4702,11 +5258,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4724,11 +5280,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4746,11 +5302,11 @@ border: 0px;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+         <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
         </property>
@@ -4926,11 +5482,11 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>
@@ -5015,12 +5571,12 @@ border: 0px;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -5040,13 +5596,13 @@ border: 0px;</string>
            <string notr="true">background : white;
 selection-background-color: #4CAF50;
 selection-color: white;
-border: 1px solid #dcdcdc; 
-border-radius: 24px; 
-padding: 10px 20px; 
+border: 1px solid #dcdcdc;
+border-radius: 24px;
+padding: 10px 20px;
 font-size: 16px;
 font-family: 'Roboto', sans-serif;
-color: #333; 
-transition: all 0.3s ease; 
+color: #333;
+transition: all 0.3s ease;
 box-sizing: border-box;   outline: none; </string>
           </property>
          </widget>
@@ -5060,12 +5616,12 @@ box-sizing: border-box;   outline: none; </string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;  
-    border: none;  
-    color: white;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -5106,12 +5662,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -5128,12 +5684,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 32px; 
-    padding: 10px 20px;  
+           <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 32px;
+    padding: 10px 20px;
     border-radius: 8px;  </string>
           </property>
           <property name="text">
@@ -5297,11 +5853,11 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background: #0E3B52;  
-    border: none;  
-    color: skyblue;  
-    font-weight: bold; 
-    font-size: 24px; 
+            <string notr="true">background: #0E3B52;
+    border: none;
+    color: skyblue;
+    font-weight: bold;
+    font-size: 24px;
     padding: 7px 15px;
     border-radius: 8px;  </string>
            </property>

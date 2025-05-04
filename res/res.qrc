@@ -17,5 +17,14 @@
         <file>modify.png</file>
         <file>trash.png</file>
         <file>emotion.png</file>
+        <file>Mapview.qml</file>
+        <file>affichier.jpeg</file>
+        <file>stat.jpeg</file>
+        <file>modif.jpeg</file>
+        <file>pdf.png</file>
+        <file>text.png</file>
+        <file>map.png</file>
+        <file>add.jpeg</file>
+        <file>search.png</file>
     </qresource>
 </RCC>
