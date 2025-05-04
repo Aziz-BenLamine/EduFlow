@@ -178,16 +178,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->chatInput->setStyleSheet("QLineEdit { background-color: #ffffff; border: 1px solid #cccccc; border-radius: 5px; padding: 5px; font-size: 14px; }");
     ui->sendChatButton->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; border: none; border-radius: 5px; padding: 8px 16px; font-weight: bold; } QPushButton:hover { background-color: #45a049; }");
 
-    // === Icons ===
-    ui->ajouterExam->setIcon(QIcon("C:/.../add_icon.jpg"));
-    ui->afficherExam->setIcon(QIcon("C:/.../view.png"));
-    ui->statsExam->setIcon(QIcon("C:/.../stats.png"));
-    ui->chatbotBTN->setIcon(QIcon("C:/.../chat.png"));
-    ui->todoExam->setIcon(QIcon("C:/.../todo.png"));
-    ui->genererPDF->setIcon(QIcon("C:/.../pdf.png"));
-    ui->label_55->setPixmap(QPixmap("C:/.../recherche.png").scaled(32, 32, Qt::KeepAspectRatio));
-    ui->label_56->setPixmap(QPixmap("C:/.../tri.png").scaled(32, 32, Qt::KeepAspectRatio));
-    ui->label_66->setPixmap(QPixmap("C:/.../send.png").scaled(32, 32, Qt::KeepAspectRatio));
+    // === Icons ===C:\\ESPRIT\\Qt\\EduFlow\\res
+    ui->ajouterExam->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\add_icon.jpg"));
+    ui->ajouterExam->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\add_icon.jpg"));
+    ui->afficherExam->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\view.png"));
+    ui->statsExam->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\stats.png"));
+    ui->chatbotBTN->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\chat.png"));
+    ui->todoExam->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\todo.png"));
+    ui->genererPDF->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\pdf.png"));
+    ui->label_55->setPixmap(QPixmap("C:\\ESPRIT\\Qt\\EduFlow\\res\\recherche.png").scaled(32, 32, Qt::KeepAspectRatio));
+    ui->label_56->setPixmap(QPixmap("C:\\ESPRIT\\Qt\\EduFlow\\res\\tri.png").scaled(32, 32, Qt::KeepAspectRatio));
+    ui->label_66->setPixmap(QPixmap("C:\\ESPRIT\\Qt\\EduFlow\\res\\send.png").scaled(32, 32, Qt::KeepAspectRatio));
 }
 
 //arduino
@@ -681,9 +682,9 @@ void MainWindow::refreshExamTable(const QString &sortColumn, const QString &sort
     modelExamen->setHeaderData(9, Qt::Horizontal, tr("Status")); // New Status column
     modelExamen->setHeaderData(10, Qt::Horizontal, tr("Télécharger Plan"));
 
-    QIcon deleteIcon("C:\\Users\\Med Amri\\Documents\\GitHub\\EduFlow\\res\\delete_icon.png");
-    QIcon modifyIcon("C:\\Users\\Med Amri\\Documents\\GitHub\\EduFlow\\res\\edit_icon.png");
-    QIcon downloadIcon("C:\\Users\\Med Amri\\Documents\\GitHub\\EduFlow\\res\\téléchargement.png"); // Ensure you have a download icon resource
+    QIcon deleteIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\delete_icon.png");
+    QIcon modifyIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\edit_icon.png");
+    QIcon downloadIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\téléchargement.png"); // Ensure you have a download icon resource
     qDebug() << "Download icon is null:" << downloadIcon.isNull();
     QDate currentDate = QDate::currentDate();
 
@@ -1108,9 +1109,9 @@ void MainWindow::on_rechlabel_textChanged(const QString &text)
     modelExamen->setHeaderData(8, Qt::Horizontal, tr("Modifier"));
     modelExamen->setHeaderData(9, Qt::Horizontal, tr("Status"));
     modelExamen->setHeaderData(10, Qt::Horizontal, tr("Télécharger Plan"));
-    QIcon deleteIcon("C:\\Users\\Med Amri\\Documents\\GitHub\\EduFlow\\res\\delete_icon.png");
-    QIcon modifyIcon("C:\\Users\\Med Amri\\Documents\\GitHub\\EduFlow\\res\\edit_icon.png");
-    QIcon downloadIcon("C:\\Users\\Med Amri\\Documents\\GitHub\\EduFlow\\res\\téléchargement.png");
+    QIcon deleteIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\delete_icon.png");
+    QIcon modifyIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\edit_icon.png");
+    QIcon downloadIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\téléchargement.png");
     QDate currentDate = QDate::currentDate();
 
     // Populate the model with filtered data

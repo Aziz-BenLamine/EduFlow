@@ -1813,7 +1813,7 @@ border: 0px;</string>
          <string>Modifier </string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="res/res.qrc">
           <normaloff>:/modif.jpeg</normaloff>:/modif.jpeg</iconset>
         </property>
         <property name="iconSize">
@@ -1845,7 +1845,7 @@ border: 0px;</string>
          <string>Afficher </string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="res/res.qrc">
           <normaloff>:/affichier.jpeg</normaloff>:/affichier.jpeg</iconset>
         </property>
         <property name="iconSize">
@@ -1877,7 +1877,7 @@ border: 0px;</string>
          <string>Ajouter </string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="res/res.qrc">
           <normaloff>:/add.jpeg</normaloff>:/add.jpeg</iconset>
         </property>
         <property name="iconSize">
@@ -1909,7 +1909,7 @@ border: 0px;</string>
          <string>Statistiques</string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="res/res.qrc">
           <normaloff>:/stat.jpeg</normaloff>:/stat.jpeg</iconset>
         </property>
         <property name="iconSize">
@@ -2123,7 +2123,7 @@ color: black;</string>
             <string>Ajouter Etablissement</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="res/res.qrc">
              <normaloff>:/add.jpeg</normaloff>:/add.jpeg</iconset>
            </property>
            <property name="iconSize">
@@ -2524,7 +2524,7 @@ color: black;</string>
            <string>Geolocalisation</string>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="res/res.qrc">
             <normaloff>:/map.png</normaloff>:/map.png</iconset>
           </property>
           <property name="iconSize">
@@ -2556,7 +2556,7 @@ color: black;</string>
            <string>Generer PDF</string>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="res/res.qrc">
             <normaloff>:/pdf.png</normaloff>:/pdf.png</iconset>
           </property>
           <property name="iconSize">
@@ -2588,7 +2588,7 @@ color: black;</string>
            <string>Text-To-Speech</string>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="res/res.qrc">
             <normaloff>:/text.png</normaloff>:/text.png</iconset>
           </property>
           <property name="iconSize">
@@ -2717,7 +2717,7 @@ QTableView::item:selected {
            <string/>
           </property>
           <property name="icon">
-           <iconset>
+           <iconset resource="res/res.qrc">
             <normaloff>:/search.png</normaloff>:/search.png</iconset>
           </property>
           <property name="iconSize">
@@ -2917,7 +2917,7 @@ color: black;</string>
             <string>Modifier Etablissement</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="res/res.qrc">
              <normaloff>:/modif.jpeg</normaloff>:/modif.jpeg</iconset>
            </property>
            <property name="iconSize">
@@ -3175,7 +3175,7 @@ color: black;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>4</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="ajouterExams">
          <widget class="QFrame" name="frame_4">
@@ -3231,9 +3231,12 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;
+</string>
            </property>
            <property name="text">
             <string/>
@@ -3333,9 +3336,12 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;
+</string>
            </property>
            <property name="text">
             <string/>
@@ -3467,9 +3473,12 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;
+</string>
            </property>
            <property name="text">
             <string/>
@@ -3668,17 +3677,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background : white;
-selection-background-color: #4CAF50;
-selection-color: white;
-border: 1px solid #dcdcdc;
-border-radius: 24px;
-padding: 10px 20px;
-font-size: 16px;
-font-family: 'Roboto', sans-serif;
-color: #333;
-transition: all 0.3s ease;
-box-sizing: border-box;   outline: none; </string>
+           <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;
+</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_56">
@@ -3813,9 +3817,12 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;
+</string>
            </property>
            <property name="text">
             <string/>
@@ -3915,9 +3922,12 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;
+</string>
            </property>
            <property name="text">
             <string/>
@@ -4049,9 +4059,12 @@ border: 0px;</string>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-radius: 15px;
-background-color: white;
-font-size: 14px;</string>
+            <string notr="true">background: white;
+border: 1px solid #ccc;
+border-radius: 15px;
+font-size: 14px;
+color: black;
+</string>
            </property>
            <property name="text">
             <string/>
@@ -4251,11 +4264,12 @@ color: black;</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: transparent;
+           <string notr="true">background: white;
 border: 1px solid #ccc;
-border-radius: 0px;
+border-radius: 15px;
 font-size: 14px;
-color: black;</string>
+color: black;
+</string>
           </property>
           <property name="text">
            <string/>
@@ -4275,7 +4289,8 @@ color: black;</string>
 border: 1px solid #ccc;
 border-radius: 15px;
 font-size: 14px;
-color: black;</string>
+color: black;
+</string>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -5906,6 +5921,8 @@ border: 0px;</string>
    <header>statswidgetemp.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="res/res.qrc"/>
+ </resources>
  <connections/>
 </ui>

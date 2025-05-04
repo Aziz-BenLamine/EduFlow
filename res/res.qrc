@@ -26,5 +26,6 @@
         <file>map.png</file>
         <file>add.jpeg</file>
         <file>search.png</file>
+        <file>todo.png</file>
     </qresource>
 </RCC>
