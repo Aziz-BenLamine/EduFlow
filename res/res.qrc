@@ -36,5 +36,6 @@
         <file>ajout.png</file>
         <file>crayon.png</file>
         <file>supprime.png</file>
+        <file>send.jpg</file>
     </qresource>
 </RCC>

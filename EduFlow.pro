@@ -6,20 +6,18 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
 SOURCES += \
     arduino.cpp \
     colis.cpp \
     connection.cpp \
     employe.cpp \
+    equipements.cpp \
     etablissement.cpp \
     examen.cpp \
     main.cpp \
     mainwindow.cpp \
     qrcodegen.cpp \
+    statistics_window.cpp \
     statswidgetemp.cpp
 
 HEADERS += \
@@ -27,10 +25,12 @@ HEADERS += \
     colis.h \
     connection.h \
     employe.h \
+    equipements.h \
     etablissement.h \
     examen.h \
     mainwindow.h \
     qrcodegen.hpp \
+    statistics_window.h \
     statswidgetemp.h
 
 FORMS += \

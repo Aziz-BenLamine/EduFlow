@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
 #include <QModelIndex>
 #include <QTimer>
 #include <QListWidget>
@@ -21,11 +22,21 @@
 #include <QtCharts/QPieSeries>
 #include <QtCharts/QBarSeries>
 #include <QMimeData>
+
+#include <QString>
+#include <QTextDocument>
+#include <QtPrintSupport/QPrinter>
+#include <QFile>
+#include <QTextStream>
+#include <QDesktopServices>
+#include <QUrl>
+
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/face.hpp>
 #include <QTableWidget>
@@ -38,18 +49,20 @@
 
 /* COLIS*/
 #include "colis.h"
+#include "statistics_window.h"
+#include <QtCore>
+#include <QtGui>
 
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     void refreshStats();
@@ -129,6 +142,19 @@ private slots:
     void on_LOGINBTN_clicked();
     void on_LOGINFACIAL_clicked();
     void on_facialEmotion_clicked();
+    void on_AjouterEquipement_clicked();
+
+    // Equipements
+    void onClarifaiReplyFinished(QNetworkReply *reply);
+    void on_selectImageButton_clicked();
+    void on_supprimerEq_clicked();
+    void on_modifierEq_clicked();
+    void on_confirmerModification_clicked();
+    void on_pdfEmp_5_clicked();
+    void on_comboBox_6_currentIndexChanged(int index);
+    void on_champRecherche_6_textChanged(const QString &text);
+
+    void on_utiliserEquipement_clicked();
 
     // Additional slots from second file
     void on_ajouterEtab_2_clicked();
@@ -160,6 +186,7 @@ private slots:
     void on_sentEMP_4_clicked();
     void print_to_lcd();
     void read_from_arduino();
+
 private:
     Ui::MainWindow *ui;
     Examen exam;
@@ -170,8 +197,14 @@ private:
     QTimer *refreshTimer;
     QChart *statusChart;
     QChart *levelChart;
+
+    //CHATBOTS
     QNetworkAccessManager *networkManager;
     const QString apiKey = "AIzaSyDTS7x8BmQVes6cDDPrDhbIwlyeZr_EA_s";
+    QNetworkAccessManager *chatNetworkManager; // For Gemini API
+    QNetworkAccessManager *clarifaiNetworkManager; // For Clarifai API
+
+
     QByteArray planData;
     Arduino *arduino;
     QString lastChatbotResponse;
@@ -228,6 +261,13 @@ private:
     void saveActionToLogFile(const ColisAction &action); // Save action to persistent log file
     Arduino ar;
     QTimer *lcdTimer; // Timer for print_to_lcd
+    QString imagePathAjout;
+    QString imagePathModif;
+    int currentModificationId;
+    StatisticsWindow *statsWindow;
+    QSerialPort *serialPort; // Declare serialPort
+    bool initializeSerialPort(); // Method to initialize serial port
+
 };
 
 #endif // MAINWINDOW_H
