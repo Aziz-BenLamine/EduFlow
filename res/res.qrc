@@ -10,5 +10,32 @@
         <file>equipmentIcon.png</file>
         <file>examIcon.png</file>
         <file>shutdownIcon.png</file>
+        <file>add_icon.jpg</file>
+        <file>delete_icon.png</file>
+        <file>edit_icon.png</file>
+        <file>loupe.png</file>
+        <file>modify.png</file>
+        <file>trash.png</file>
+        <file>emotion.png</file>
+        <file>Mapview.qml</file>
+        <file>affichier.jpeg</file>
+        <file>stat.jpeg</file>
+        <file>modif.jpeg</file>
+        <file>pdf.png</file>
+        <file>text.png</file>
+        <file>map.png</file>
+        <file>add.jpeg</file>
+        <file>search.png</file>
+        <file>rechercher.png</file>
+        <file>historique.png</file>
+        <file>qr.png</file>
+        <file>supprimer.png</file>
+        <file>trier.png</file>
+        <file>style.png</file>
+        <file>ajouter.png</file>
+        <file>ajout.png</file>
+        <file>crayon.png</file>
+        <file>supprime.png</file>
+        <file>send.jpg</file>
     </qresource>
 </RCC>
