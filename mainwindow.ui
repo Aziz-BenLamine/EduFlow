@@ -326,11 +326,11 @@ color:white;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">/*background-color: rgb(255, 255, 0);*/
-background-color: rgb(0, 0, 255);
-
-
-</string>
+       <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,
+                            stop:0 rgba(11, 61, 145, 1),      /* Solid Dark Blue */
+                            stop:0.4 rgba(11, 61, 145, 0.6),  /* Softer mid-transition */
+                            stop:0.7 rgba(11, 61, 145, 0.2),  /* Gradual fade */
+                            stop:1 rgba(11, 61, 145, 0));     /* Fully Transparent */</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::Shape::StyledPanel</enum>
@@ -3175,7 +3175,7 @@ color: black;</string>
          <string notr="true">background-color: transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="ajouterExams">
          <widget class="QFrame" name="frame_4">

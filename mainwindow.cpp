@@ -198,15 +198,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->sendChatButton->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; border: none; border-radius: 5px; padding: 8px 16px; font-weight: bold; } QPushButton:hover { background-color: #45a049; }");
 
     // === Icons ===
-    ui->ajouterExam->setIcon(QIcon("C:/.../add_icon.jpg"));
-    ui->afficherExam->setIcon(QIcon("C:/.../view.png"));
-    ui->statsExam->setIcon(QIcon("C:/.../stats.png"));
-    ui->chatbotBTN->setIcon(QIcon("C:/.../chat.png"));
-    ui->todoExam->setIcon(QIcon("C:/.../todo.png"));
-    ui->genererPDF->setIcon(QIcon("C:/.../pdf.png"));
-    ui->label_55->setPixmap(QPixmap("C:/.../recherche.png").scaled(32, 32, Qt::KeepAspectRatio));
-    ui->label_56->setPixmap(QPixmap("C:/.../tri.png").scaled(32, 32, Qt::KeepAspectRatio));
-    ui->label_66->setPixmap(QPixmap("C:/.../send.png").scaled(32, 32, Qt::KeepAspectRatio));
+    ui->ajouterExam->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\add_icon.jpg"));
+    ui->afficherExam->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\view.png"));
+    ui->statsExam->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\stats.png"));
+    ui->chatbotBTN->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\chat.png"));
+    ui->todoExam->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\todo.png"));
+    ui->genererPDF->setIcon(QIcon("C:\\ESPRIT\\Qt\\EduFlow\\res\\pdf.png"));
+    ui->label_55->setPixmap(QPixmap("C:\\ESPRIT\\Qt\\EduFlow\\res\\recherche.png").scaled(32, 32, Qt::KeepAspectRatio));
+    ui->label_56->setPixmap(QPixmap("C:\\ESPRIT\\Qt\\EduFlow\\res\\tri.png").scaled(32, 32, Qt::KeepAspectRatio));
+    ui->label_66->setPixmap(QPixmap("C:\\ESPRIT\\Qt\\EduFlow\\res\\send.png").scaled(32, 32, Qt::KeepAspectRatio));
 
     //COLIS
     int ret = ar.connect_arduino();
