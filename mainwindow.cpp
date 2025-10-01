@@ -1,116 +1,100 @@
+// Main window headers
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMessageBox>
-#include <QSqlQueryModel>
-#include <QSqlQuery>
-#include <QFileDialog>
-#include <QStandardItemModel>
-#include <QRegularExpression>
-#include <QDate>
-#include <QTimer>
-#include <QVBoxLayout>
-#include <QSqlError>
-#include <QScrollBar>
-#include <QIcon>
-#include <QPdfWriter>
-#include <QPainter>
-#include <QDir>
-#include <QStandardPaths>
-#include <QTextDocumentFragment>
-#include <QtCharts/QChart>
-#include <QtCharts/QChartView>
-#include <QtCharts/QPieSeries>
-#include <QtCharts/QBarSeries>
-#include <QtCharts/QBarSet>
-#include <QtCharts/QBarCategoryAxis>
-#include <QtCharts/QValueAxis>
-#include <QDateTime>
+
+// Local project headers
 #include "arduino.h"
-#include "examen.h"
-#include "statswidgetemp.h"
-#include "employe.h"
-
-#include "QMessageBox"
-
-#include "etablissement.h"
-
-#include <string>
-#include <QString>
-
-#include <QSqlTableModel>
-#include <QTableView>
-#include <QModelIndex>
-
-#include <QDebug>
-#include <QSqlQuery>
-#include <QSqlQueryModel>
-#include <QSqlError>
-
-#include <QPdfWriter>
-#include <QPainter>
-#include <QFileDialog>
-#include <QDateTime>
-#include <QPainter>
-
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QBarSeries>
-#include <QtCharts/QBarSet>
-#include <QtCharts/QLegend>
-#include <QtCharts/QBarCategoryAxis>
-#include <QtCharts/QValueAxis>
-
-#include <QTextToSpeech>
-#include <QVoice>
-#include <QThread>
-
-#include <QVBoxLayout>
-#include <QLabel>
-
-#include <arduino.h>
-#include <QMessageBox>
-#include <QDebug>
-#include <QDateTime>
-#include <QFile>
-#include <QTextStream>
-#include <QPdfWriter>
-#include <QPainter>
-#include <QFileDialog>
-#include "qrcodegen.hpp"
-#include <QImage>
-#include <QLayout>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QMouseEvent>
-#include <cmath>
-#include <QMutex>
-
 #include "equipements.h"
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QSqlError>
-#include <QTableWidgetItem>
-#include <QPixmap>
-#include <QDebug>
-#include <QTextDocument>
-#include <QtPrintSupport/QPrinter>
-#include <QDir>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QtGlobal>
+#include "etablissement.h"
+#include "examen.h"
+#include "employe.h"
+#include "qrcodegen.hpp"
 #include "statistics_window.h"
-#include <QSerialPortInfo>
-#include <QInputDialog>
-#include <QSqlQuery>
-#include <QFile>
-#include <QTextStream>
-#include <QDesktopServices>
-#include <QUrl>
+#include "statswidgetemp.h"
+
+// Qt Core
 #include <QApplication>
 #include <QComboBox>
+#include <QDate>
+#include <QDateTime>
+#include <QDebug>
+#include <QDesktopServices>
+#include <QDir>
+#include <QFile>
+#include <QInputDialog>
+#include <QModelIndex>
+#include <QMouseEvent>
+#include <QMutex>
+#include <QString>
+#include <QTextStream>
+#include <QThread>
+#include <QTimer>
+#include <QUrl>
+#include <QtGlobal>
+
+// Qt GUI
+#include <QFileDialog>
+#include <QIcon>
+#include <QImage>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QScrollBar>
+#include <QStandardItemModel>
+#include <QStandardPaths>
+#include <QTableWidgetItem>
+#include <QTextDocument>
+#include <QTextDocumentFragment>
+
+// Qt Widgets
+#include <QLabel>
+#include <QLayout>
+#include <QTableView>
+#include <QVBoxLayout>
+
+// Qt SQL
+#include <QSqlError>
+#include <QSqlQuery>
+#include <QSqlQueryModel>
+#include <QSqlTableModel>
+
+// Qt Charts
+#include <QtCharts/QBarCategoryAxis>
+#include <QtCharts/QBarSeries>
+#include <QtCharts/QBarSet>
+#include <QtCharts/QChart>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLegend>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QValueAxis>
+
+// Qt Network
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+
+// Qt Serial Port
+#include <QSerialPortInfo>
+
+// Qt Text-to-Speech
+#include <QTextToSpeech>
+#include <QVoice>
+
+// Qt Print Support
+#include <QPdfWriter>
+#include <QtPrintSupport/QPrinter>
+
+// Qt JSON
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+
+// Qt Regular Expression
+#include <QRegularExpression>
+
+// Standard C++ Library
+#include <cmath>
+#include <string>
 
 using qrcodegen::QrCode;
 
