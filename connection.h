@@ -5,7 +5,6 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
-//gg
 class Connection
 {
 public:
